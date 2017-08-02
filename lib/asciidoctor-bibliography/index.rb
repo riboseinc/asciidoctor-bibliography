@@ -4,6 +4,8 @@ require_relative 'helpers'
 
 module AsciidoctorBibliography
   class Index
+    REGEXP = /^(bibliography)::(\S+)?\[(|.*?[^\\])\]$/
+
     attr_reader :macro, :target, :attributes
 
     def initialize(macro, target, attributes)

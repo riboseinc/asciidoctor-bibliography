@@ -26,9 +26,8 @@ module AsciidoctorBibliography
         document.bibliographer.formatter.import document.bibliographer.database
 
         # Find, store and format citations.
-        inline_regexp = /\\?(#{'cite'}):(\S+?)\[(|.*?[^\\])\]/
         processed_lines = reader.read_lines.map do |line|
-          line.gsub(inline_regexp) do
+          line.gsub(Citation::REGEXP) do
             citation = Citation.new(*Regexp.last_match.captures)
             document.bibliographer.citations << citation
             citation.render document.bibliographer.formatter
@@ -37,12 +36,11 @@ module AsciidoctorBibliography
         reader = ::Asciidoctor::Reader.new processed_lines
 
         # Find, store and format indices.
-        block_regexp = /^(#{'bibliography'})::(\S+)?\[(|.*?[^\\])\]$/
         processed_lines = reader.read_lines.map do |line|
-          if line =~ block_regexp
+          if line =~ Index::REGEXP
             index = Index.new(*Regexp.last_match.captures)
-            targets = document.bibliographer.citations.map(&:target).uniq
-            index.render(targets, document.bibliographer.formatter)
+            used_keys = document.bibliographer.citations.map(&:keys).flatten.uniq
+            index.render(used_keys, document.bibliographer.formatter)
           else
             line
           end

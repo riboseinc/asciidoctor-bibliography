@@ -2,24 +2,34 @@ require 'asciidoctor/attribute_list'
 
 module AsciidoctorBibliography
   class Citation
-    attr_reader :macro, :target, :attributes
+    REGEXP = /\\?(cite):(\S+)?\[(|.*?[^\\])\]/
+
+    attr_reader :macro, :target, :attributes, :keys
 
     def initialize(macro, target, attributes)
       @macro = macro
       @target = target
       @attributes = ::Asciidoctor::AttributeList.new(attributes).parse
-    end
-
-    def render_id
-      [self.target, 'bibliography'].compact.join('-')
-    end
-
-    def render_label(formatter)
-      formatter.render(:citation, id: self.target)
+      # Bibliographic keys are all and only the positional attributes.
+      @keys = @attributes.select { |hash_key, _| hash_key.is_a? Integer }.values
     end
 
     def render(formatter)
-      "xref:#{render_id}[#{render_label(formatter)}]"
+      @keys.map { |key| render_key(formatter, key) }.join(', ')
+    end
+
+    private
+
+    def render_id(key)
+      [key, 'bibliography'].compact.join('-')
+    end
+
+    def render_label(formatter, key)
+      formatter.render(:citation, id: key)
+    end
+
+    def render_key(formatter, key)
+      "xref:#{render_id(key)}[#{render_label(formatter, key)}]"
     end
   end
 end

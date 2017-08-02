@@ -2,15 +2,17 @@
 :bibliography-database: biblio.bib
 :bibliography-style: chicago-author-date
 
+cite:[Lane12a,foo=bar,Lane12b]
+
 References can be inserted in lists, too:
-See cite:Lane12a[], whatever.
+See cite:[Lane12a], whatever.
 
-1. See cite:Lane12a[].
-2. See cite:Lane12b[].
+1. See cite:[Lane12a].
+2. See cite:[Lane12b].
 
-Another one: cite:Lane12a[].
+Another one: cite:[Lane12a].
 
-cite:Anderson98[]
+cite:[Anderson98]
 
 [sect2] 
 == Bibliography
