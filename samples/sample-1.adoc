@@ -2,7 +2,8 @@
 :bibliography-database: biblio.bib
 :bibliography-style: chicago-author-date
 
-cite:[Lane12a,foo=bar,Lane12b]
+New syntax: cite:[Lane12a,foo=bar]+[Lane12b]
+
 
 References can be inserted in lists, too:
 See cite:[Lane12a], whatever.
