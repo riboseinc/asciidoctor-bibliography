@@ -1,7 +1,8 @@
 = Sample of using asciidoctor-bibtex
 :bibliography-database: biblio.bib
-:bibliography-format: authoryear
-:bibliography-style: chicago-author-date
+:bibliography-order: alphabetical
+:bibliography-citation-style: authoryear
+:bibliography-reference-style: chicago-author-date
 
 ## Standard
 
@@ -14,6 +15,8 @@ cite:[Anderson04, chapter=10]
 cite:[Anderson04, page=10, chapter=12]
 
 ## TeX-compatible
+
+fullcite:[Anderson04] (fullcite, single)
 
 citet:[Anderson04] (citet, single)
 

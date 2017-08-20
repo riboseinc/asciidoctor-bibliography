@@ -31,7 +31,7 @@ module AsciidoctorBibliography
         keys = parent.document.bibliographer.occurrences.map { |o| o[:target] }.uniq
 
 
-        # NOTE: bibliography-file and bibliography-style set by this macro
+        # NOTE: bibliography-file and bibliography-reference-style set by this macro
         #   shall be overridable by document attributes and commandline arguments.
         #   So we respect the convention here.
 
@@ -43,8 +43,8 @@ module AsciidoctorBibliography
           parent.document.bibliographer.load_database parent.document.attributes['bibliography-database']
         end
 
-        # if attrs.key? :style and not parent.document.attr? 'bibliography-style'
-        #   parent.document.set_attribute 'bibliography-style', attrs[:style]
+        # if attrs.key? :style and not parent.document.attr? 'bibliography-reference-style'
+        #   parent.document.set_attribute 'bibliography-reference-style', attrs[:style]
         # end
 
         # index = AsciidoctorBibliography::Index.new parent, target, attrs, SecureRandom.uuid

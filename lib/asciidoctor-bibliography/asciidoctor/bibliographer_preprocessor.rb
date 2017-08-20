@@ -19,13 +19,13 @@ module AsciidoctorBibliography
             .parse(reader, ::Asciidoctor::Document.new, header_only: true)
             .attributes
         # We extract only the ones we recognize.
-        document_attributes = Helpers.slice document_attributes, 'bibliography-format', 'bibliography-order', 'bibliography-style', 'bibliography-database'
+        document.bibliographer.options = Hash[Helpers.slice(document_attributes, 'bibliography-citation-style', 'bibliography-order', 'bibliography-reference-style', 'bibliography-database').map {|k, v| [k.sub(/^bibliography-/, ''), v] }]
 
         # We're handling single database/formatters; generalization will be straightforward when needed.
-        document.bibliographer.database = Database.new(document_attributes['bibliography-database'])
-        document.bibliographer.index_formatter = Formatters::CSL.new(document_attributes['bibliography-style'])
+        document.bibliographer.database = Database.new(document.bibliographer.options['database'])
+        document.bibliographer.index_formatter = Formatters::CSL.new(document.bibliographer.options['reference-style'])
         document.bibliographer.index_formatter.import document.bibliographer.database
-        document.bibliographer.citation_formatter = Formatters::TeX.new(document_attributes['bibliography-format'])
+        document.bibliographer.citation_formatter = Formatters::TeX.new(document.bibliographer.options['citation-style'])
         document.bibliographer.citation_formatter.import document.bibliographer.database
 
         # Find, store and replace citations with uuids.
@@ -48,13 +48,14 @@ module AsciidoctorBibliography
           end
         end
         processed_lines = processed_lines.lines.map(&:chomp)
+
+        byebug
         reader = ::Asciidoctor::Reader.new processed_lines
 
         # Find and format indices.
         processed_lines = reader.read_lines.map do |line|
           if line =~ Index::REGEXP
             index = Index.new(*Regexp.last_match.captures)
-            # document.bibliographer.add_index(index)
             index.render document.bibliographer
           else
             line

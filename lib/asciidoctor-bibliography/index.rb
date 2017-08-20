@@ -17,10 +17,13 @@ module AsciidoctorBibliography
     def render(bibliographer)
       lines = []
       bibliographer.occurring_keys.each_with_index do |target, index|
-        lines << render_entry(target, bibliographer.index_formatter)
+        line = ''
+        line << "[#{index + 1}] " if bibliographer.options['citation-style'] == 'numbers'
+        line << render_entry(target, bibliographer.index_formatter)
+        lines << line
       end
 
-      # Intersperse the lines with empty ones.
+      # Intersperse the lines with empty ones to render as paragraphs.
       lines.join("\n\n").lines.map(&:strip)
     end
 

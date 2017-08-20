@@ -1,6 +1,6 @@
 = Latex Macros In Bibtex Items
 :bibliography-database: reference.bib
-:bibliography-style: ieee
+:bibliography-reference-style: ieee
 
 == Contents
 

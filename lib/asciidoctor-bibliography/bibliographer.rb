@@ -6,10 +6,12 @@ module AsciidoctorBibliography
     attr_accessor :index_formatter
     attr_accessor :citation_formatter
     attr_reader :occurring_keys
+    attr_accessor :options
 
     # NOTE: while database and formatter are singular, they're meant for future generalization.
 
     def initialize
+      @options = {}
       @citations = []
       @indices = []
       @database = nil

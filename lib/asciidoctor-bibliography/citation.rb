@@ -3,7 +3,7 @@ require 'asciidoctor/attribute_list'
 
 module AsciidoctorBibliography
   class Citation
-    TEX_MACROS_NAMES = Formatters::TeX::MACROS.keys.map { |s| Regexp.escape s }.join('|')
+    TEX_MACROS_NAMES = Formatters::TeX::MACROS.keys.map { |s| Regexp.escape s }.concat(['fullcite']).join('|')
     REGEXP = /\\?(#{TEX_MACROS_NAMES}):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
 
     # No need for a fully fledged class right now.
@@ -31,12 +31,20 @@ module AsciidoctorBibliography
       end
     end
 
-    def uuid
-      ":#{@uuid}:"
+    def render(bibliographer)
+      if macro == 'fullcite'
+        # NOTE: we reinstantiate to avoid tracking used keys.
+        formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
+        formatter.import bibliographer.database
+        # TODO: as is, cites other than the first are simply ignored.
+        Helpers.html_to_asciidoc(formatter.render(:bibliography, id: cites.first.key).join)
+      elsif Formatters::TeX::MACROS.keys.include? macro
+        bibliographer.citation_formatter.render(self)
+      end
     end
 
-    def render(bibliographer)
-      bibliographer.citation_formatter.render(self)
+    def uuid
+      ":#{@uuid}:"
     end
 
     def keys

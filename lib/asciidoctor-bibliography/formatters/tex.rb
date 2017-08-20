@@ -16,8 +16,7 @@ module AsciidoctorBibliography
         'citeauthor'  => { type: :authors_only,  bracketed: false, authors: :abbreviated },
         'citeauthor*' => { type: :authors_only,  bracketed: false, authors: :full },
         'citeyear'    => { type: :years_only,    bracketed: false },
-        'citeyearpar' => { type: :years_only,    bracketed: true },
-        'fullcite'    => { type: :full }
+        'citeyearpar' => { type: :years_only,    bracketed: true }
       }
 
       attr_accessor :opening_bracket,
@@ -33,7 +32,7 @@ module AsciidoctorBibliography
         elsif format == 'authoryear'
           bibpunct = '{(}{)}{;}{a}{,}{,}'
         else
-          raise "Unknown TeX citation format: #{format}"
+          raise StandardError, "Unknown TeX citation format: #{format}"
         end
         @opening_bracket,
         @closing_bracket,
@@ -103,7 +102,7 @@ module AsciidoctorBibliography
           output = output.join(@cites_separator + ' ')
           output = bracket(output) if macro_options[:bracketed]
         else
-          raise "Unknown TeX citation macro type: #{macro_options[:type]}"
+          raise StandardError, "Unknown TeX citation macro type: #{macro_options[:type]}"
         end
 
         output
@@ -139,7 +138,7 @@ module AsciidoctorBibliography
         when :abbreviated
           authors_abbreviated(cite)
         else
-          raise "Unknown TeX citation authors mode: #{mode}"
+          raise StandardError, "Unknown TeX citation authors mode: #{mode}"
         end
       end
 
