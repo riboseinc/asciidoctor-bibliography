@@ -2,7 +2,8 @@ require 'asciidoctor/attribute_list'
 
 module AsciidoctorBibliography
   class Citation
-    REGEXP = /\\?(cite):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
+    TEX_MACROS_NAMES = Formatters::TeX::MACROS.keys.map { |s| Regexp.escape s }.join('|')
+    REGEXP = /\\?(#{TEX_MACROS_NAMES}):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
 
     attr_reader :macro, :cites
 
@@ -27,7 +28,8 @@ module AsciidoctorBibliography
     end
 
     def render(formatter)
-      keys.map { |key| render_xref(formatter, key) }.join(', ')
+      formatter.render(self)
+      # keys.map { |key| render_xref(formatter, key) }.join(', ')
     end
 
     def keys

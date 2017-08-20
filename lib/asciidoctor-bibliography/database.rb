@@ -1,4 +1,4 @@
-require_relative 'database_adapters/bibtex'
+require_relative 'databases/bibtex'
 
 module AsciidoctorBibliography
   class Database < Array
@@ -10,7 +10,7 @@ module AsciidoctorBibliography
 
     def load(filename)
       if ['.bib', '.bibtex'].include? File.extname(filename)
-        DatabaseAdapters::BibTeX.load(filename)
+        Databases::BibTeX.load(filename)
       else
         raise StandardError, "Unknown bibliographic database format."
       end

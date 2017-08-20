@@ -9,7 +9,7 @@ require 'latex/decode/symbols'
 require 'latex/decode/greek'
 
 module AsciidoctorBibliography
-  module DatabaseAdapters
+  module Databases
     module BibTeX
       def self.load(filename)
         ::BibTeX.open(filename, filter: [LatexFilter]).to_citeproc

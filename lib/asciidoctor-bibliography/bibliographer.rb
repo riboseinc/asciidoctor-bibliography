@@ -4,6 +4,7 @@ module AsciidoctorBibliography
     attr_accessor :indices
     attr_accessor :database
     attr_accessor :formatter
+    attr_accessor :simple_formatter
 
     # NOTE: while database and formatter are singular, they're meant for future generalization.
 
@@ -12,6 +13,7 @@ module AsciidoctorBibliography
       @indices = []
       @database = nil
       @formatter = nil
+      @simple_formatter = nil
     end
   end
 end

@@ -1,7 +1,8 @@
 require 'asciidoctor'
 
 require_relative '../helpers'
-require_relative '../formatter'
+require_relative '../formatters/tex'
+require_relative '../formatters/csl'
 require_relative '../database'
 require_relative '../citation'
 require_relative '../index'
@@ -22,15 +23,19 @@ module AsciidoctorBibliography
         # Here we handle only a single database/formatter pair.
         # The future extension will be straightforward.
         document.bibliographer.database = Database.new(document_attributes['bibliography-database'])
-        document.bibliographer.formatter = Formatter.new(document_attributes['bibliography-style'])
+        document.bibliographer.formatter = Formatters::CSL.new(document_attributes['bibliography-style'])
         document.bibliographer.formatter.import document.bibliographer.database
+
+        document.bibliographer.simple_formatter = Formatters::TeX.new
+        document.bibliographer.simple_formatter.import document.bibliographer.database
 
         # Find, store and format citations.
         processed_lines = reader.read_lines.map do |line|
           line.gsub(Citation::REGEXP) do
             citation = Citation.new(*Regexp.last_match.captures)
             document.bibliographer.citations << citation
-            citation.render document.bibliographer.formatter
+            # citation.render document.bibliographer.formatter
+            citation.render document.bibliographer.simple_formatter
           end
         end
         reader = ::Asciidoctor::Reader.new processed_lines
