@@ -31,6 +31,7 @@ DEPENDENCIES
   asciidoctor
   asciidoctor-bibliography!
   bibtex-ruby
+  bundler (~> 1.14)
   byebug
   citeproc-ruby
   csl-styles
