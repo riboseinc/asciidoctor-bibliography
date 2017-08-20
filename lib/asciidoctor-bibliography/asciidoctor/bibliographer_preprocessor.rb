@@ -49,7 +49,6 @@ module AsciidoctorBibliography
         end
         processed_lines = processed_lines.lines.map(&:chomp)
 
-        byebug
         reader = ::Asciidoctor::Reader.new processed_lines
 
         # Find and format indices.

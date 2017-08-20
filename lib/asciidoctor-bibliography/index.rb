@@ -17,7 +17,7 @@ module AsciidoctorBibliography
     def render(bibliographer)
       lines = []
       bibliographer.occurring_keys.each_with_index do |target, index|
-        line = ''
+        line = '{empty}'
         line << "[#{index + 1}] " if bibliographer.options['citation-style'] == 'numbers'
         line << render_entry(target, bibliographer.index_formatter)
         lines << line

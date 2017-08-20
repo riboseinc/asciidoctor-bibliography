@@ -37,7 +37,7 @@ module AsciidoctorBibliography
         formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
         formatter.import bibliographer.database
         # TODO: as is, cites other than the first are simply ignored.
-        Helpers.html_to_asciidoc(formatter.render(:bibliography, id: cites.first.key).join)
+        '{empty}' + Helpers.html_to_asciidoc(formatter.render(:bibliography, id: cites.first.key).join)
       elsif Formatters::TeX::MACROS.keys.include? macro
         bibliographer.citation_formatter.render(self)
       end
