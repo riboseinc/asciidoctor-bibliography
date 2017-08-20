@@ -1,93 +1,101 @@
-# Citations in AsciiDoc using asciidoctor-bibliography
+= Citations in AsciiDoc using asciidoctor-bibliography
 
-[![Build
-Status](https://travis-ci.org/riboseinc/asciidoctor-bibliography.svg?branch=master)](https://travis-ci.org/riboseinc/asciidoctor-bibliography)
-[![Code
-Climate](https://codeclimate.com/github/riboseinc/asciidoctor-bibliography/badges/gpa.svg)](https://codeclimate.com/github/riboseinc/asciidoctor-bibliography)
+image:https://img.shields.io/gem/v/asciidoctor-bibliography.svg["Gem Version", link="https://rubygems.org/gems/asciidoctor-bibliography"]
+image:https://img.shields.io/travis/riboseinc/asciidoctor-bibliography/master.svg["Build Status", link="https://travis-ci.org/riboseinc/asciidoctor-bibliography"]
+image:https://codeclimate.com/github/riboseinc/asciidoctor-bibliography/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/riboseinc/asciidoctor-bibliography"]
 
-Citations in AsciiDoc.
+Citations in AsciiDoc using the fantastic http://asciidoctor.org/[asciidoctor].
 
-## Installation
+== Introduction
 
-Add this line to your application's Gemfile:
+This gem allows you to add BibTex style Citations to AsciiDoc.
 
-```ruby
+== Installation
+
+Add this line to your Gemfile:
+
+[source,ruby]
+----
 gem "asciidoctor-bibliography"
-```
+----
 
 And then execute:
 
-```sh
+[source,sh]
+----
 $ bundle install
-```
+----
 
 Or install it yourself as:
 
-```sh
+[source,sh]
+----
 $ gem install asciidoctor-bibliography
-```
+----
 
-## Configure
-
-TODO
-
-## Usage
+== Configure
 
 TODO
 
-## Development
+== Usage
 
-We follow Sandi Metz's Rules for this gem, you can read the [description of the
-rules here][sandi-metz]. All new code should follow these rules. If you make
+TODO
+
+== Development
+
+We follow Sandi Metz's Rules for this gem, you can read the
+http://robots.thoughtbot.com/post/50655960596/sandi-metz-rules-for-developers[description of the rules here].
+All new code should follow these rules. If you make
 changes in a file that already violates these rules, you should fix the
 violations as part of your contribution.
 
-### Setup
+=== Setup
 
 Clone the repository.
 
-```sh
+[source,sh]
+----
 git clone https://github.com/riboseinc/asciidoctor-bibliography
-```
+----
 
 Setup your environment.
 
-```sh
+[source,sh]
+----
 bin/setup
-```
+----
 
 Run the test suite
 
-```sh
+[source,sh]
+----
 bin/rspec
-```
+----
 
-## Contributing
+== Contributing
 
 First, thank you for contributing! We love pull requests from everyone. By
-participating in this project, you hereby grant [Ribose Inc.][riboseinc] the
-right to grant or transfer an unlimited number of non exclusive licenses or
-sub-licenses to third parties, under the copyright covering the contribution
-to use the contribution by all means.
+participating in this project, you hereby grant
+https://www.ribose.com[Ribose Inc.] the right to grant or transfer an unlimited
+number of non exclusive licenses or sub-licenses to third parties, under the
+copyright covering the contribution to use the contribution by all means.
 
 Here are a few technical guidelines to follow:
 
-1. Open an [issue][issues] to discuss a new feature.
-1. Write tests to support your new feature.
-1. Make sure the entire test suite passes locally and on CI.
-1. Open a Pull Request.
-1. [Squash your commits][squash] after receiving feedback.
-1. Party!
+1. Open an https://github.com/riboseinc/asciidoctor-bibliography/issues[issues] to discuss a new feature.
+2. Write tests to support your new feature.
+3. Make sure the entire test suite passes locally and on CI.
+4. Open a Pull Request.
+5. https://github.com/thoughtbot/guides/tree/master/protocol/git=write-a-feature[Squash your commits] after receiving feedback.
+6. Party!
 
-## Credits
+== Credits
 
-This gem is developed, maintained and funded by [Ribose Inc.][riboseinc]
+This gem is developed, maintained and funded by
+https://www.ribose.com[Ribose Inc.]
 
-## License
+== License
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the
+http://opensource.org/licenses/MIT[MIT License].
 
-[riboseinc]: https://www.ribose.com
-[issues]: https://github.com/riboseinc/asciidoctor-bibliography/issues
-[squash]: https://github.com/thoughtbot/guides/tree/master/protocol/git#write-a-feature
-[sandi-metz]: http://robots.thoughtbot.com/post/50655960596/sandi-metz-rules-for-developers
