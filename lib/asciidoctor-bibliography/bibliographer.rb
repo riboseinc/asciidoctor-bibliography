@@ -3,8 +3,9 @@ module AsciidoctorBibliography
     attr_accessor :citations
     attr_accessor :indices
     attr_accessor :database
-    attr_accessor :formatter
-    attr_accessor :simple_formatter
+    attr_accessor :index_formatter
+    attr_accessor :citation_formatter
+    attr_reader :occurring_keys
 
     # NOTE: while database and formatter are singular, they're meant for future generalization.
 
@@ -12,8 +13,17 @@ module AsciidoctorBibliography
       @citations = []
       @indices = []
       @database = nil
-      @formatter = nil
-      @simple_formatter = nil
+      @index_formatter = nil
+      @citation_formatter = nil
+      @occurring_keys = []
+    end
+
+    def add_citation(citation)
+      citations << citation
+      @occurring_keys.concat(citation.keys).uniq!
+      citations.last.cites.each do |cite|
+        cite.occurrence_index = @occurring_keys.index(cite.key)
+      end
     end
   end
 end

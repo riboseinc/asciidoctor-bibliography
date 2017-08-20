@@ -14,10 +14,10 @@ module AsciidoctorBibliography
       @attributes = ::Asciidoctor::AttributeList.new(attributes).parse
     end
 
-    def render(targets, formatter)
+    def render(bibliographer)
       lines = []
-      targets.each do |target|
-        lines << render_entry(target, formatter)
+      bibliographer.occurring_keys.each_with_index do |target, index|
+        lines << render_entry(target, bibliographer.index_formatter)
       end
 
       # Intersperse the lines with empty ones.
@@ -25,7 +25,7 @@ module AsciidoctorBibliography
     end
 
     def render_entry_id(target)
-      [target, 'bibliography'].compact.join('-')
+      ['bibliography', target].compact.join('-')
     end
 
     def render_entry_label(target, formatter)

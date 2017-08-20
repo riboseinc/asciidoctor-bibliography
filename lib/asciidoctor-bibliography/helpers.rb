@@ -4,6 +4,10 @@ module AsciidoctorBibliography
       Hash[[array_of_keys, hash.values_at(*array_of_keys)].transpose]
     end
 
+    def self.join_nonempty(array, separator)
+      array.compact.map(&:to_s).reject(&:empty?).join(separator)
+    end
+
     def self.html_to_asciidoc(string)
       string
         .gsub(/<\/?i>/, '_')
