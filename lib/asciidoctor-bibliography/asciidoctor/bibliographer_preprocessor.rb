@@ -11,15 +11,7 @@ module AsciidoctorBibliography
   module Asciidoctor
     class BibliographerPreprocessor < ::Asciidoctor::Extensions::Preprocessor
       def process document, reader
-
-        # We peek at the document attributes we need, without perturbing the parsing flow.
-        # NOTE: we're in a preprocessor and they haven't been parsed yet; doing it manually.
-        document_attributes =
-          ::Asciidoctor::Parser
-            .parse(reader, ::Asciidoctor::Document.new, header_only: true)
-            .attributes
-        # We extract only the ones we recognize.
-        document.bibliographer.options = Hash[Helpers.slice(document_attributes, 'bibliography-citation-style', 'bibliography-order', 'bibliography-reference-style', 'bibliography-database').map {|k, v| [k.sub(/^bibliography-/, ''), v] }]
+        set__bibliographer_options(document, reader)
 
         # We're handling single database/formatters; generalization will be straightforward when needed.
         document.bibliographer.database = Database.new(document.bibliographer.options['database'])
@@ -62,6 +54,18 @@ module AsciidoctorBibliography
         end
         processed_lines.flatten!
         reader = ::Asciidoctor::Reader.new processed_lines
+      end
+
+      private
+
+      def set__bibliographer_options(document, reader)
+        # We peek at the document attributes we need, without perturbing the parsing flow.
+        # NOTE: we're in a preprocessor and they haven't been parsed yet; doing it manually.
+        document_attributes =
+          ::Asciidoctor::Parser
+            .parse(reader, ::Asciidoctor::Document.new, header_only: true)
+            .attributes
+        document.bibliographer.options = Hash[Helpers.slice(document_attributes, 'bibliography-citation-style', 'bibliography-order', 'bibliography-reference-style', 'bibliography-database').map {|k, v| [k.sub(/^bibliography-/, ''), v] }]
       end
     end
   end
