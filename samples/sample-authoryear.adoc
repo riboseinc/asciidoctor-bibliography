@@ -18,6 +18,8 @@ cite:[Anderson04, page=10, chapter=12]
 
 fullcite:[Anderson04] (fullcite, single)
 
+fullcite:[Anderson04, page=123] (fullcite, single)
+
 citet:[Anderson04] (citet, single)
 
 citet:[Lane12a]+[Lane12b] (citet, multiple)
