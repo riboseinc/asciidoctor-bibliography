@@ -14,6 +14,7 @@ module AsciidoctorBibliography
         .gsub(/<\/?b>/, '*')
         .gsub(/<\/?span.*?>/, '')
         .gsub(/\{|\}/, '')
+      # TODO: bracket dropping is inappropriate here.
     end
 
     # NOTE: mostly stolen from ActiveSupport.
