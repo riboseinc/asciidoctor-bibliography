@@ -11,7 +11,7 @@ module AsciidoctorBibliography
   module Asciidoctor
     class BibliographerPreprocessor < ::Asciidoctor::Extensions::Preprocessor
       def process document, reader
-        set__bibliographer_options(document, reader)
+        set_bibliographer_options(document, reader)
 
         # We're handling single database/formatters; generalization will be straightforward when needed.
         document.bibliographer.database = Database.new(document.bibliographer.options['database'])
@@ -58,7 +58,7 @@ module AsciidoctorBibliography
 
       private
 
-      def set__bibliographer_options(document, reader)
+      def set_bibliographer_options(document, reader)
         # We peek at the document attributes we need, without perturbing the parsing flow.
         # NOTE: we're in a preprocessor and they haven't been parsed yet; doing it manually.
         document_attributes =
