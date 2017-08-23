@@ -27,7 +27,6 @@ END
   spec.required_ruby_version = Gem::Requirement.new(">= 2.0.0")
 
   spec.add_dependency "asciidoctor"
-  spec.add_dependency "bibliography-ruby", "~> 4"
   spec.add_dependency "citeproc-ruby"
   spec.add_dependency "csl-styles", "~> 1"
   spec.add_dependency "latex-decode", "~> 0.2"
