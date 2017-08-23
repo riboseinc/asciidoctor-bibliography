@@ -21,25 +21,66 @@ gem "asciidoctor-bibliography"
 
 And then execute:
 
-[source,sh]
+[source,console]
 ----
 $ bundle install
 ----
 
 Or install it yourself as:
 
-[source,sh]
+[source,console]
 ----
 $ gem install asciidoctor-bibliography
 ----
 
 == Configure
 
-TODO
+In your document header, define the following below the title.
+
+----
+= Latex Macros In Bibtex Items
+:bibliography-database: first.bib
+:bibliography-database: second.bib
+:bibliography-reference-style: ieee
+----
 
 == Usage
 
-TODO
+Include asciidoctor-bibliography in your chain:
+
+[source,console]
+----
+$ asciidoctor -r asciidoctor-bibliography main.adoc
+----
+
+Add citation commands within your AsciiDoc:
+
+----
+Searching Function (see cite:guo2009[])
+----
+
+List out bibliography:
+
+----
+bibliography::[]
+----
+
+== Example
+
+----
+= Latex Macros In Bibtex Items
+:bibliography-database: reference.bib
+:bibliography-reference-style: ieee
+
+== Contents
+
+This is a paper "Validation and Verificaton of Computer Forensic Software
+tools -- Searching Function" (see cite:guo2009[]).
+
+== Bibliography
+
+bibliography::[]
+----
 
 == Development
 
