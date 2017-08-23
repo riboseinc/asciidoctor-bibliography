@@ -27,6 +27,10 @@ END
   spec.required_ruby_version = Gem::Requirement.new(">= 2.0.0")
 
   # TODO: add runtime dependencies.
+  # s.add_runtime_dependency('bibliography-ruby', "~> 4")
+  # s.add_runtime_dependency('citeproc-ruby')
+  # s.add_runtime_dependency('csl-styles', '~> 1')
+  # s.add_runtime_dependency('latex-decode', '~> 0.2')
 
   spec.add_development_dependency "bundler", "~> 1.14"
 
@@ -38,5 +42,6 @@ END
 
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "rspec"
+  spec.add_development_dependency "rake"
   spec.add_development_dependency "simplecov"
 end
