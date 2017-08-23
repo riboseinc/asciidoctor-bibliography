@@ -26,20 +26,14 @@ END
   spec.test_files    = `git ls-files -- {spec}/*`.split("\n")
   spec.required_ruby_version = Gem::Requirement.new(">= 2.0.0")
 
-  # TODO: add runtime dependencies.
-  # s.add_runtime_dependency('bibliography-ruby', "~> 4")
-  # s.add_runtime_dependency('citeproc-ruby')
-  # s.add_runtime_dependency('csl-styles', '~> 1')
-  # s.add_runtime_dependency('latex-decode', '~> 0.2')
+  spec.add_dependency "asciidoctor"
+  spec.add_dependency "bibliography-ruby", "~> 4"
+  spec.add_dependency "citeproc-ruby"
+  spec.add_dependency "csl-styles", "~> 1"
+  spec.add_dependency "latex-decode", "~> 0.2"
+  spec.add_dependency "bibtex-ruby"
 
   spec.add_development_dependency "bundler", "~> 1.14"
-
-  spec.add_development_dependency "asciidoctor"
-  spec.add_development_dependency "bibtex-ruby"
-  spec.add_development_dependency "citeproc-ruby"
-  spec.add_development_dependency "csl-styles"
-  spec.add_development_dependency "latex-decode"
-
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rake"
