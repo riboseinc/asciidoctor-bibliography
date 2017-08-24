@@ -142,12 +142,19 @@ module AsciidoctorBibliography
         na = cite.named_attributes
         extra = []
         return extra if na.nil?
-        # TODO: should this be configurable?
-        # RT: Yes, and i18n!
-        extra << "Chapter #{na['chapter']}" unless na['chapter'].nil?
-        extra << "Page #{na['page']}" unless na['page'].nil?
-        extra << "Section #{na['section']}" unless na['section'].nil?
+
+        Citation::REF_ATTRIBUTES.each do |sym|
+          next if na[sym.to_s].nil?
+          extra << ref_content(sym, na[sym.to_s])
+        end
+
         extra
+      end
+
+      # TODO: should this be configurable?
+      # TODO RT: Yes, and i18n!
+      def ref_content(sym, content)
+        "#{sym.to_s.capitalize} #{content}"
       end
 
       def authors(mode, cite)

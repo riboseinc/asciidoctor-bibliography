@@ -5,6 +5,7 @@ module AsciidoctorBibliography
   class Citation
     TEX_MACROS_NAMES = Formatters::TeX::MACROS.keys.map { |s| Regexp.escape s }.concat(['fullcite']).join('|')
     REGEXP = /\\?(#{TEX_MACROS_NAMES}):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
+    REF_ATTRIBUTES = %i[chapter page section clause]
 
     # No need for a fully fledged class right now.
     Cite = Struct.new(:key, :occurrence_index, :target, :positional_attributes, :named_attributes)
@@ -34,8 +35,14 @@ module AsciidoctorBibliography
     def render(bibliographer)
       if macro == 'fullcite'
         formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
+
         # NOTE: being able to overwrite a more general family of attributes would be neat.
-        mergeable_attributes = Helpers.slice(cites.first.named_attributes || {}, 'page', 'chapter', 'section').compact
+        mergeable_attributes = Helpers.slice(cites.first.named_attributes || {}, *(REF_ATTRIBUTES.map(&:to_s)))
+
+        # reject empty values
+        mergeable_attributes.reject! do |key, value|
+          value.nil? || value.empty?
+        end
         # TODO: as is, cites other than the first are simply ignored.
         database_entry = bibliographer.database.find { |e| e['id'] == cites.first.key }
         database_entry.merge!(mergeable_attributes)
