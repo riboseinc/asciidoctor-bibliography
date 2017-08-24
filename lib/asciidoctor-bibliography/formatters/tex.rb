@@ -114,11 +114,28 @@ module AsciidoctorBibliography
         [@opening_bracket, string, @closing_bracket].compact.join
       end
 
+      def find_entry(key)
+        entry = @database.find{ |h| h['id'] == key }
+        if entry.nil?
+          raise StandardError, "Can't find entry: #{key}"
+        end
+        entry
+      end
+
       def year(cite)
-        issued = @database.find{ |h| h['id'] == cite.key }['issued']['date-parts']
-        return "" if issued.nil?
-        return "" if issued.first.nil?
-        issued.first.first
+        entry = find_entry(cite.key)
+        issued = entry['issued']
+
+        if issued.nil?
+          puts "asciidoctor-bibliography: citation (#{cite.key}) has no 'issued' information"
+          return ""
+        end
+
+        date_parts = issued['date-parts']
+        return "" if date_parts.nil?
+
+        return "" if date_parts.first.nil?
+        date_parts.first.first
       end
 
       def extra(cite)
@@ -126,8 +143,10 @@ module AsciidoctorBibliography
         extra = []
         return extra if na.nil?
         # TODO: should this be configurable?
+        # RT: Yes, and i18n!
         extra << "Chapter #{na['chapter']}" unless na['chapter'].nil?
         extra << "Page #{na['page']}" unless na['page'].nil?
+        extra << "Section #{na['section']}" unless na['section'].nil?
         extra
       end
 
@@ -143,7 +162,8 @@ module AsciidoctorBibliography
       end
 
       def authors_list(cite)
-        authors = @database.find{ |h| h['id'] == cite.key }['author']
+        entry = find_entry(cite.key)
+        authors = entry['author']
         return [] if authors.nil?
         authors.map{ |h| h['family'] }.compact
       end
