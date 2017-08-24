@@ -35,7 +35,7 @@ module AsciidoctorBibliography
       if macro == 'fullcite'
         formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
         # NOTE: being able to overwrite a more general family of attributes would be neat.
-        mergeable_attributes = Helpers.slice(cites.first.named_attributes || {}, 'page', 'chapter').compact
+        mergeable_attributes = Helpers.slice(cites.first.named_attributes || {}, 'page', 'chapter', 'section').compact
         # TODO: as is, cites other than the first are simply ignored.
         database_entry = bibliographer.database.find { |e| e['id'] == cites.first.key }
         database_entry.merge!(mergeable_attributes)
