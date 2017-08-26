@@ -37,6 +37,7 @@ module AsciidoctorBibliography
         reader = ::Asciidoctor::Reader.new processed_lines
 
         # NOTE: retrieval and formatting are separated to allow sorting and numeric styles.
+        document.bibliographer.sort
 
         # Find and replace uuids with formatted citations.
         processed_lines = reader.lines.join("\n") # for quicker matching
