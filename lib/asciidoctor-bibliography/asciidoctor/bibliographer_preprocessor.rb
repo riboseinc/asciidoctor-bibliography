@@ -14,8 +14,13 @@ module AsciidoctorBibliography
         set_bibliographer_options(document, reader)
 
         # We're handling single database/formatters; generalization will be straightforward when needed.
+        if document.bibliographer.options['database'].nil?
+          warn "No bibliographic database was provided: all bibliographic macros will be ignored. You can set it using the 'bibliography-database' option in the document's preamble."
+          return reader
+        end
 
         document.bibliographer.database = Database.new(document.bibliographer.options['database'])
+
         document.bibliographer.index_formatter = Formatters::CSL.new(document.bibliographer.options['reference-style'])
         document.bibliographer.index_formatter.import document.bibliographer.database
         document.bibliographer.citation_formatter = Formatters::TeX.new(document.bibliographer.options['citation-style'])
@@ -74,7 +79,6 @@ module AsciidoctorBibliography
         user = Hash[Helpers.slice(document_attributes, 'bibliography-citation-style', 'bibliography-order', 'bibliography-reference-style', 'bibliography-database').map {|k, v| [k.sub(/^bibliography-/, ''), v] }]
         defaults.each { |k, v| user[k] ||= v }
         document.bibliographer.options = user
-        puts document.bibliographer.options
       end
     end
   end
