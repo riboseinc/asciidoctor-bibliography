@@ -14,6 +14,7 @@ module AsciidoctorBibliography
         set_bibliographer_options(document, reader)
 
         # We're handling single database/formatters; generalization will be straightforward when needed.
+
         document.bibliographer.database = Database.new(document.bibliographer.options['database'])
         document.bibliographer.index_formatter = Formatters::CSL.new(document.bibliographer.options['reference-style'])
         document.bibliographer.index_formatter.import document.bibliographer.database
@@ -65,7 +66,15 @@ module AsciidoctorBibliography
           ::Asciidoctor::Parser
             .parse(reader, ::Asciidoctor::Document.new, header_only: true)
             .attributes
-        document.bibliographer.options = Hash[Helpers.slice(document_attributes, 'bibliography-citation-style', 'bibliography-order', 'bibliography-reference-style', 'bibliography-database').map {|k, v| [k.sub(/^bibliography-/, ''), v] }]
+        defaults = {
+          'order' => 'alphabetical',
+          'reference-style' => 'chicago-author-date',
+          'citation-style' => 'authoryear'
+        }
+        user = Hash[Helpers.slice(document_attributes, 'bibliography-citation-style', 'bibliography-order', 'bibliography-reference-style', 'bibliography-database').map {|k, v| [k.sub(/^bibliography-/, ''), v] }]
+        defaults.each { |k, v| user[k] ||= v }
+        document.bibliographer.options = user
+        puts document.bibliographer.options
       end
     end
   end
