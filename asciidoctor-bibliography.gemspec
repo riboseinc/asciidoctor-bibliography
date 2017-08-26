@@ -24,7 +24,7 @@ END
   spec.require_paths = ["lib"]
   spec.files         = `git ls-files`.split("\n")
   spec.test_files    = `git ls-files -- {spec}/*`.split("\n")
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.0.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   spec.add_dependency "asciidoctor"
   spec.add_dependency "citeproc-ruby"
@@ -32,7 +32,7 @@ END
   spec.add_dependency "latex-decode", "~> 0.2"
   spec.add_dependency "bibtex-ruby"
 
-  spec.add_development_dependency "bundler", "~> 1.14"
+  spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "rspec"
   spec.add_development_dependency "rake"
