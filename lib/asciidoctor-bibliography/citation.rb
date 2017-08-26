@@ -8,7 +8,7 @@ module AsciidoctorBibliography
     REF_ATTRIBUTES = %i[chapter page section clause]
 
     # No need for a fully fledged class right now.
-    Cite = Struct.new(:key, :occurrence_index, :target, :positional_attributes, :named_attributes)
+    Cite = Struct.new(:key, :reference_index, :target, :positional_attributes, :named_attributes)
 
     attr_reader :macro, :cites
 

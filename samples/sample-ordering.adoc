@@ -1,0 +1,20 @@
+= Sample of using asciidoctor-bibtex
+:bibliography-database: biblio.bib
+:bibliography-order: alphabetical
+:bibliography-citation-style: numbers
+:bibliography-reference-style: ieee
+
+## Standard
+
+
+cite:[Lane12a]
+
+cite:[Lane12b]
+
+cite:[Anderson04]
+
+
+## Bibliography
+
+bibliography::[]
+

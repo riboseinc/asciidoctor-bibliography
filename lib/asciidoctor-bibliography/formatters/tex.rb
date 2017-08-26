@@ -56,7 +56,7 @@ module AsciidoctorBibliography
           citation.cites.each do |cite|
             authors = authors(macro_options[:authors], cite)
             if @style == 'n'
-              year = cite.occurrence_index + 1
+              year = cite.reference_index + 1
             else
               year = year(cite)
             end
@@ -70,7 +70,7 @@ module AsciidoctorBibliography
           citation.cites.each do |cite|
             if @style == 'n'
               authors = nil
-              year = cite.occurrence_index + 1
+              year = cite.reference_index + 1
             else
               authors = authors(macro_options[:authors], cite)
               year = year(cite)
