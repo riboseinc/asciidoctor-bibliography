@@ -24,8 +24,29 @@ module AsciidoctorBibliography
       citations << citation
       @occurring_keys.concat(citation.keys).uniq!
       citations.last.cites.each do |cite|
-        cite.occurrence_index = @occurring_keys.index(cite.key)
+        cite.reference_index = @occurring_keys.index(cite.key)
       end
+    end
+
+    def sort
+      if options['order'] == 'alphabetical'
+        @occurring_keys = @occurring_keys.sort_by do |target|
+          first_author_family_name(target)
+        end
+        citations.each do |citation|
+          citation.cites.each do |cite|
+            cite.reference_index = @occurring_keys.index(cite.key)
+          end
+        end
+      end
+    end
+
+    private
+
+    def first_author_family_name(key)
+      authors = database.find{ |h| h['id'] == key }['author']
+      return "" if authors.nil?
+      authors.map{ |h| h['family'] }.compact.first # TODO: is the first also alphabetically the first?
     end
   end
 end

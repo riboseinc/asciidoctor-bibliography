@@ -15,8 +15,6 @@ require 'asciidoctor/parser'
 # require_relative 'styles'
 # require_relative 'filehandlers'
 
-require 'byebug'
-
 module AsciidoctorBibliography
   module Asciidoctor
     class BibliographyBlockMacro < ::Asciidoctor::Extensions::BlockMacroProcessor
