@@ -1,4 +1,5 @@
 require 'asciidoctor/attribute_list'
+require_relative 'formatters/csl'
 
 require_relative 'helpers'
 
@@ -26,6 +27,7 @@ module AsciidoctorBibliography
 
       # NOTE: hackish. Force sorting w/ engine criteria on formatter data.
       #   Same sorting is done in engine to produce formatted bibliography references.
+      byebug
       tmp_formatter.engine.sort! tmp_formatter.data, tmp_formatter.engine.style.citation.sort_keys unless !tmp_formatter.engine.style.citation.sort?
 
       tmp_formatter.bibliography.each_with_index do |reference, index|
