@@ -4,13 +4,19 @@ require_relative 'formatters/csl'
 require_relative 'formatters/tex'
 
 module AsciidoctorBibliography
+  class Cite
+    attr_accessor :key, :appearance_index, :target, :positional_attributes, :named_attributes, :locators
+
+    def initialize(key, appearance_index, target, positional_attributes, named_attributes, locators)
+      @key, @appearance_index, @target, @positional_attributes, @named_attributes, @locators =
+        key, appearance_index, target, positional_attributes, named_attributes, locators
+    end
+  end
+
   class Citation
     TEX_MACROS_NAMES = Formatters::TeX::MACROS.keys.map { |s| Regexp.escape s }.concat(['fullcite']).join('|')
     REGEXP = /\\?(#{TEX_MACROS_NAMES}):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
     REF_ATTRIBUTES = %i[chapter page section clause].freeze
-
-    # No need for a fully fledged class right now.
-    Cite = Struct.new(:key, :appearance_index, :target, :positional_attributes, :named_attributes)
 
     attr_reader :macro, :cites
 
@@ -29,7 +35,8 @@ module AsciidoctorBibliography
           nil,
           target,
           positional_attributes,
-          named_attributes
+          named_attributes,
+          nil
         )
       end
     end
@@ -39,13 +46,15 @@ module AsciidoctorBibliography
         formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
 
         cites_with_local_attributes = cites.map do |cite|
-          mergeable_attributes =
+          cite.locators =
             Helpers
-            .slice(cite.named_attributes || {}, *REF_ATTRIBUTES.map(&:to_s))
-            .reject! { |_key, value| value.nil? || value.empty? }
+              .slice(cite.named_attributes || {}, *CiteProc::CitationItem.labels.map(&:to_s))
+              .reject! { |_, value| value.nil? || value.empty? }
+
           bibliographer.database.find { |e| e['id'] == cite.key }
-                       .merge(mergeable_attributes)
                        .merge('citation-number': cite.appearance_index)
+                       .merge('citation-label': cite.key) # TODO: smart label generators
+                       .merge('locator': cite.locators.any? ? ' ' : nil)
         end
         formatter.import cites_with_local_attributes
 
@@ -53,9 +62,10 @@ module AsciidoctorBibliography
 
         items = formatter.data.map(&:cite)
         items.each do |item|
-          item.prefix = "xref:#{render_id(item.id)}{{{"
-          item.suffix = '}}}'
-          # TODO: locator
+          item.prefix = "xref:#{render_id(item.id)}{{{" + item.prefix.to_s
+          item.suffix = item.suffix.to_s + '}}}'
+          first_locator = cites.find { |cite| cite.key == item.id }.locators.first
+          item.label, item.locator = first_locator unless first_locator.nil?
         end
 
         formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
@@ -92,7 +102,7 @@ module AsciidoctorBibliography
     end
 
     def keys
-      @cites.map { |h| h[:key] }
+      @cites.map { |h| h.key }
     end
 
     def xref(key, label)

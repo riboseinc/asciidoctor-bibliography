@@ -4,7 +4,6 @@ AllCops:
     - deprecated/**/*.rb
     - spec/**/*.rb
 
-
 Metrics/LineLength:
   Max: 120
 
