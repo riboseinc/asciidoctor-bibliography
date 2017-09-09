@@ -1,5 +1,7 @@
 require 'securerandom'
 require 'asciidoctor/attribute_list'
+require_relative 'formatters/csl'
+require_relative 'formatters/tex'
 
 module AsciidoctorBibliography
   class Citation
