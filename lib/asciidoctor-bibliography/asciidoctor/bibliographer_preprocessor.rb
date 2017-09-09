@@ -1,8 +1,6 @@
 require 'asciidoctor'
 
 require_relative '../helpers'
-require_relative '../formatters/csl'
-require_relative '../formatters/tex'
 require_relative '../database'
 require_relative '../citation'
 require_relative '../index'
@@ -13,12 +11,12 @@ module AsciidoctorBibliography
       def process document, reader
         set_bibliographer_options(document, reader)
 
-        # We're handling single database/formatters; generalization will be straightforward when needed.
         if document.bibliographer.options['database'].nil?
           warn "No bibliographic database was provided: all bibliographic macros will be ignored. You can set it using the 'bibliography-database' option in the document's preamble."
           return reader
         end
 
+        # Load database(s).
         document.bibliographer.database = Database.new(document.bibliographer.options['database'])
 
         # Find, store and replace citations with uuids.
@@ -32,7 +30,7 @@ module AsciidoctorBibliography
         reader = ::Asciidoctor::Reader.new processed_lines
 
         # NOTE: retrieval and formatting are separated to allow sorting and numeric styles.
-        document.bibliographer.sort
+        # document.bibliographer.sort
 
         # Find and replace uuids with formatted citations.
         processed_lines = reader.lines.join("\n") # for quicker matching
@@ -42,7 +40,6 @@ module AsciidoctorBibliography
           end
         end
         processed_lines = processed_lines.lines.map(&:chomp)
-
         reader = ::Asciidoctor::Reader.new processed_lines
 
         # Find and format indices.
