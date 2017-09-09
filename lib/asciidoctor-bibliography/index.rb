@@ -16,10 +16,22 @@ module AsciidoctorBibliography
 
     def render(bibliographer)
       lines = []
-      bibliographer.occurring_keys.each_with_index do |target, index|
+
+      # NOTE: no real need for manual sorting, given it's decided by style
+      # NOTE: pretty rough filtering
+      filtered_db = bibliographer.occurring_keys.map { |id| bibliographer.database.find { |h| h['id'] == id } }
+      tmp_formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
+      tmp_formatter.import filtered_db
+
+
+      # NOTE: hackish. Force sorting w/ engine criteria on formatter data.
+      #   Same sorting is done in engine to produce formatted bibliography references.
+      tmp_formatter.engine.sort! tmp_formatter.data, tmp_formatter.engine.style.citation.sort_keys unless !tmp_formatter.engine.style.citation.sort?
+
+      tmp_formatter.bibliography.each_with_index do |reference, index|
         line = '{empty}'
-        line << "[#{index + 1}] " if bibliographer.options['citation-style'] == 'numbers'
-        line << render_entry(target, bibliographer.index_formatter)
+        line << "anchor:#{render_entry_id(tmp_formatter.data[index].id)}[]"
+        line << Helpers.html_to_asciidoc(reference)
         lines << line
       end
 
@@ -32,6 +44,7 @@ module AsciidoctorBibliography
     end
 
     def render_entry_label(target, formatter)
+      # byebug
       Helpers.html_to_asciidoc formatter.render(:bibliography, id: target).join
     end
 

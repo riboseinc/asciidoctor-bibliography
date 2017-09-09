@@ -1,0 +1,73 @@
+= Sample of using asciidoctor-bibtex
+:bibliography-database: biblio.bib
+
+## Standard
+
+cite:[Anderson04]
+
+cite:[Anderson04, page=10]
+
+cite:[Anderson04, chapter=10]
+
+cite:[Anderson04, page=10, chapter=12]
+
+cite:[Lane12a]+[Lane12b]
+
+## TeX-compatible
+
+fullcite:[Anderson04] (fullcite, single)
+
+fullcite:[Anderson04, page=123] (fullcite, single)
+
+citet:[Anderson04] (citet, single)
+
+citet:[Lane12a]+[Lane12b] (citet, multiple)
+
+citet*:[Anderson04] (citet*, single)
+
+citet*:[Lane12a]+[Lane12b] (citet*, multiple)
+
+citealt:[Anderson04] (citealt, single)
+
+citealt:[Lane12a]+[Lane12b] (citealt, multiple)
+
+citealt*:[Anderson04] (citealt*, single)
+
+citealt*:[Lane12a]+[Lane12b] (citealt*, multiple)
+
+citep:[Anderson04] (citep, single)
+
+citep:[Lane12a]+[Lane12b] (citep, multiple)
+
+citep*:[Anderson04] (citep*, single)
+
+citep*:[Lane12a]+[Lane12b] (citep*, multiple)
+
+citealp:[Anderson04] (citealp, single)
+
+citealp:[Lane12a]+[Lane12b] (citealp, multiple)
+
+citealp*:[Anderson04] (citealp*, single)
+
+citealp*:[Lane12a]+[Lane12b] (citealp*, multiple)
+
+citeauthor:[Anderson04] (citeauthor, single)
+
+citeauthor:[Lane12a]+[Lane12b] (citeauthor, multiple)
+
+citeauthor*:[Anderson04] (citeauthor*, single)
+
+citeauthor*:[Lane12a]+[Lane12b] (citeauthor*, multiple)
+
+citeyear:[Anderson04] (citeyear, single)
+
+citeyear:[Lane12a]+[Lane12b] (citeyear, multiple)
+
+citeyearpar:[Anderson04] (citeyearpar, single)
+       
+citeyearpar:[Lane12a]+[Lane12b] (citeyearpar, multiple)
+
+## Bibliography
+
+bibliography::[]
+

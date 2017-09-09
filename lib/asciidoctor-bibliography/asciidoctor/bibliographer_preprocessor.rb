@@ -21,11 +21,6 @@ module AsciidoctorBibliography
 
         document.bibliographer.database = Database.new(document.bibliographer.options['database'])
 
-        document.bibliographer.index_formatter = Formatters::CSL.new(document.bibliographer.options['reference-style'])
-        document.bibliographer.index_formatter.import document.bibliographer.database
-        document.bibliographer.citation_formatter = Formatters::TeX.new(document.bibliographer.options['citation-style'])
-        document.bibliographer.citation_formatter.import document.bibliographer.database
-
         # Find, store and replace citations with uuids.
         processed_lines = reader.read_lines.map do |line|
           line.gsub(Citation::REGEXP) do

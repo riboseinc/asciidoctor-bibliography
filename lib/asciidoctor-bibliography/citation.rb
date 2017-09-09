@@ -8,7 +8,7 @@ module AsciidoctorBibliography
     REF_ATTRIBUTES = %i[chapter page section clause]
 
     # No need for a fully fledged class right now.
-    Cite = Struct.new(:key, :reference_index, :target, :positional_attributes, :named_attributes)
+    Cite = Struct.new(:key, :appearance_index, :target, :positional_attributes, :named_attributes)
 
     attr_reader :macro, :cites
 
@@ -33,7 +33,34 @@ module AsciidoctorBibliography
     end
 
     def render(bibliographer)
-      if macro == 'fullcite'
+      if macro == 'cite'
+        formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
+
+        cites_with_local_attributes = cites.map do |cite|
+          mergeable_attributes =
+            Helpers
+              .slice(cite.named_attributes || {}, *(REF_ATTRIBUTES.map(&:to_s)))
+              .reject! { |key, value| value.nil? || value.empty? }
+          bibliographer.database.find { |e| e['id'] == cite.key }
+            .merge(mergeable_attributes)
+            .merge({'citation-number': cite.appearance_index})
+        end
+
+        formatter.import cites_with_local_attributes
+        items = formatter.data.map(&:cite)
+        items.each do |item|
+          item.prefix = "xref:#{render_id(item.id)}{{{"
+          item.suffix = "}}}"
+          # TODO: locator
+        end
+
+        formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
+        # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
+        "{empty}" + formatted_citation.gsub(/{{{(?<xref_label>.*?)}}}/) do
+          # We escape closing square brackets inside the xref label.
+          ['[', Regexp.last_match[:xref_label].gsub(']', '\]'), ']'].join
+        end
+      elsif macro == 'fullcite'
         formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
 
         # NOTE: being able to overwrite a more general family of attributes would be neat.
@@ -48,8 +75,11 @@ module AsciidoctorBibliography
         database_entry.merge!(mergeable_attributes)
         formatter.import([database_entry])
         '{empty}' + Helpers.html_to_asciidoc(formatter.render(:bibliography, id: cites.first.key).join)
+        # '{empty}' + Helpers.html_to_asciidoc(formatter.render(:citation, id: cites.first.key))
       elsif Formatters::TeX::MACROS.keys.include? macro
-        bibliographer.citation_formatter.render(self)
+        formatter = Formatters::TeX.new(bibliographer.options['citation-style'])
+        formatter.import bibliographer.database
+        formatter.render(self)
       end
     end
 
