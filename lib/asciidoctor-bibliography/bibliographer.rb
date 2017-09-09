@@ -38,9 +38,9 @@ module AsciidoctorBibliography
     private
 
     def first_author_family_name(key)
-      authors = database.find{ |h| h['id'] == key }['author']
-      return "" if authors.nil?
-      authors.map{ |h| h['family'] }.compact.first # TODO: is the first also alphabetically the first?
+      authors = database.find { |h| h['id'] == key }['author']
+      return '' if authors.nil?
+      authors.map { |h| h['family'] }.compact.first # TODO: is the first also alphabetically the first?
     end
   end
 end

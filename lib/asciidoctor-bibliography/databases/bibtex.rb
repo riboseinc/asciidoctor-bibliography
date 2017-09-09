@@ -11,7 +11,7 @@ require 'latex/decode/greek'
 module AsciidoctorBibliography
   module Databases
     module BibTeX
-      EXTENSIONS = %w[.bib .bibtex]
+      EXTENSIONS = %w[.bib .bibtex].freeze
 
       def self.load(filename)
         ::BibTeX.open(filename, filter: [LatexFilter]).to_citeproc
@@ -32,9 +32,9 @@ module AsciidoctorBibliography
           LaTeX::Decode::Punctuation.decode!(text)
           LaTeX::Decode::Symbols.decode!(text)
           LaTeX::Decode::Greek.decode!(text)
-          text.gsub!(/\\url\{(.+?)\}/, " \\1 ")
-          text.gsub!(/\\\w+(?=\s+\w)/, "")
-          text.gsub!(/\\\w+(?:\[.+?\])?\s*\{(.+?)\}/, "\\1")
+          text.gsub!(/\\url\{(.+?)\}/, ' \\1 ')
+          text.gsub!(/\\\w+(?=\s+\w)/, '')
+          text.gsub!(/\\\w+(?:\[.+?\])?\s*\{(.+?)\}/, '\\1')
           LaTeX::Decode::Base.strip_braces(text)
           LaTeX.normalize_C(text)
         end
@@ -42,4 +42,3 @@ module AsciidoctorBibliography
     end
   end
 end
-
