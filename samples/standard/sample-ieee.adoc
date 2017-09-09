@@ -14,6 +14,8 @@ cite:[Anderson04, page=10, chapter=12]
 
 cite:[Lane12a]+[Lane12b]
 
+cite:[Lane12a, page=42]+[Lane12b, opus=12]
+
 ## Bibliography
 
 bibliography::[]
