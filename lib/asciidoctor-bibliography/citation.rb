@@ -15,10 +15,10 @@ module AsciidoctorBibliography
       @uuid = SecureRandom.uuid
       @macro = macro
       @citation_items = []
-      target_and_attributes_list_pairs.compact.each_slice(2).each do |target, attribute_list|
+      target_and_attributes_list_pairs.compact.each_slice(2).each do |_target, attribute_list|
         @citation_items << CitationItem.new do |cite|
           # NOTE: we're not doing anything with targets right now.
-          # cite.target = target
+          # cite.target = _target
           cite.parse_attribute_list attribute_list
         end
       end
