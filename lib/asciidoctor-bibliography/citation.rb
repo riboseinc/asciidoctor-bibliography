@@ -16,6 +16,16 @@ module AsciidoctorBibliography
         .slice(named_attributes || {}, *CiteProc::CitationItem.labels.map(&:to_s))
         .reject! { |_, value| value.nil? || value.empty? } # equivalent to Hash#compact
     end
+
+    def parse_attributes(attributes)
+      parsed_attributes =
+        ::Asciidoctor::AttributeList.new(attributes).parse
+                                    .group_by { |hash_key, _| hash_key.is_a? Integer }
+                                    .values.map { |a| Hash[a] }
+      self.positional_attributes = parsed_attributes.first.values
+      self.named_attributes = parsed_attributes.last
+      self.key = positional_attributes.first
+    end
   end
 
   class Citation
@@ -30,21 +40,11 @@ module AsciidoctorBibliography
       @macro = macro
       @cites = []
       targets_and_attributes_list.compact.each_slice(2).each do |target, attributes|
-        positional_attributes, named_attributes = parse_attributes attributes
-        positional_attributes = positional_attributes.values
         @cites << Cite.new do |cite|
-          cite.key = positional_attributes.first
           cite.target = target
-          cite.positional_attributes = positional_attributes
-          cite.named_attributes = named_attributes
+          cite.parse_attributes attributes
         end
       end
-    end
-
-    def parse_attributes(attributes)
-      ::Asciidoctor::AttributeList.new(attributes).parse
-                                  .group_by { |hash_key, _| hash_key.is_a? Integer }
-                                  .values.map { |a| Hash[a] }
     end
 
     def render(bibliographer)
@@ -78,7 +78,7 @@ module AsciidoctorBibliography
 
     def prepare_cite_metadata(bibliographer, cite)
       bibliographer.database.find { |e| e['id'] == cite.key }
-                   .merge('citation-number': cite.appearance_index)
+                   .merge('citation-number': bibliographer.appearance_index_of(cite.key))
                    .merge('citation-label': cite.key) # TODO: smart label generators
                    .merge('locator': cite.locators.any? ? ' ' : nil)
       # TODO: why is 'locator' necessary to display locators? (and not just in the item, later)

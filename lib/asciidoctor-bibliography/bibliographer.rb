@@ -18,8 +18,12 @@ module AsciidoctorBibliography
       citations << citation
       @occurring_keys.concat(citation.keys).uniq!
       citations.last.cites.each do |cite|
-        cite.appearance_index = @occurring_keys.index(cite.key) + 1
+        cite.appearance_index = appearance_index_of(cite.key)
       end
+    end
+
+    def appearance_index_of(id)
+      @occurring_keys.index(id) + 1
     end
 
     def sort
