@@ -19,10 +19,7 @@ module AsciidoctorBibliography
       formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
       filtered_db = bibliographer.occurring_keys.map { |id| bibliographer.database.find { |h| h['id'] == id } }
       formatter.import filtered_db
-
-      # Force sorting w/ engine criteria on formatter data.
-      #   Same sorting is done in engine to produce formatted bibliography references.
-      formatter.engine.sort! formatter.data, formatter.engine.style.bibliography.sort_keys if formatter.engine.style.citation.sort?
+      formatter.sort(mode: :bibliography)
 
       lines = []
       formatter.bibliography.each_with_index do |reference, index|
