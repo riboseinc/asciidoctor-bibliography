@@ -9,7 +9,8 @@ module AsciidoctorBibliography
     end
 
     def load(filename)
-      if ['.bib', '.bibtex'].include? File.extname(filename)
+      case File.extname(filename)
+      when *Databases::BibTeX::EXTENSIONS
         Databases::BibTeX.load(filename)
       else
         raise StandardError, "Unknown bibliographic database format."

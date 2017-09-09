@@ -47,8 +47,10 @@ module AsciidoctorBibliography
             .merge(mergeable_attributes)
             .merge({'citation-number': cite.appearance_index})
         end
-
         formatter.import cites_with_local_attributes
+
+        formatter.engine.sort! formatter.data, formatter.engine.style.citation.sort_keys if formatter.engine.style.citation.sort?
+
         items = formatter.data.map(&:cite)
         items.each do |item|
           item.prefix = "xref:#{render_id(item.id)}{{{"
