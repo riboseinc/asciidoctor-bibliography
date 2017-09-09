@@ -53,7 +53,7 @@ module AsciidoctorBibliography
         when :full
         # NOTE: deliberately repetitive to improve redability.
         when :textual
-          citation.cites.each do |cite|
+          citation.citation_items.each do |cite|
             authors = authors(macro_options[:authors], cite)
             year = if @style == 'n'
                      bibliographer.appearance_index_of(cite.key)
@@ -67,7 +67,7 @@ module AsciidoctorBibliography
           end
           output = output.join(@cites_separator + ' ')
         when :parenthetical
-          citation.cites.each do |cite|
+          citation.citation_items.each do |cite|
             if @style == 'n'
               authors = nil
               year = bibliographer.appearance_index_of(cite.key)
@@ -82,7 +82,7 @@ module AsciidoctorBibliography
           output = output.join(@cites_separator + ' ')
           output = bracket(output) if macro_options[:bracketed]
         when :authors_only
-          citation.cites.each do |cite|
+          citation.citation_items.each do |cite|
             authors = authors(macro_options[:authors], cite)
             year = nil
             cetera = Helpers.join_nonempty([year].concat(extra(cite)), @years_separator + ' ')
@@ -92,7 +92,7 @@ module AsciidoctorBibliography
           output = output.join(@cites_separator + ' ')
           output = bracket(output) if macro_options[:bracketed]
         when :years_only
-          citation.cites.each do |cite|
+          citation.citation_items.each do |cite|
             authors = nil
             year = year(cite)
             cetera = Helpers.join_nonempty([year].concat(extra(cite)), @years_separator + ' ')

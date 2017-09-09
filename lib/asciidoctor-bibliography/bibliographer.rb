@@ -16,7 +16,7 @@ module AsciidoctorBibliography
 
     def add_citation(citation)
       citations << citation
-      @occurring_keys.concat(citation.keys).uniq!
+      @occurring_keys.concat(citation.citation_items.map(&:key)).uniq!
     end
 
     def appearance_index_of(id)
