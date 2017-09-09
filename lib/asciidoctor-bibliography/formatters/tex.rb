@@ -17,7 +17,7 @@ module AsciidoctorBibliography
         'citeauthor*' => { type: :authors_only,  bracketed: false, authors: :full },
         'citeyear'    => { type: :years_only,    bracketed: false },
         'citeyearpar' => { type: :years_only,    bracketed: true }
-      }
+      }.freeze
 
       attr_accessor :opening_bracket,
                     :closing_bracket,
@@ -55,11 +55,11 @@ module AsciidoctorBibliography
         when :textual
           citation.cites.each do |cite|
             authors = authors(macro_options[:authors], cite)
-            if @style == 'n'
-              year = cite.appearance_index + 1
-            else
-              year = year(cite)
-            end
+            year = if @style == 'n'
+                     cite.appearance_index + 1
+                   else
+                     year(cite)
+                   end
             cetera = Helpers.join_nonempty([year].concat(extra(cite)), @years_separator + ' ')
             cetera = bracket(cetera) if macro_options[:bracketed]
             label = Helpers.join_nonempty([authors, cetera], ' ')
@@ -115,10 +115,8 @@ module AsciidoctorBibliography
       end
 
       def find_entry(key)
-        entry = @database.find{ |h| h['id'] == key }
-        if entry.nil?
-          raise StandardError, "Can't find entry: #{key}"
-        end
+        entry = @database.find { |h| h['id'] == key }
+        raise StandardError, "Can't find entry: #{key}" if entry.nil?
         entry
       end
 
@@ -128,13 +126,13 @@ module AsciidoctorBibliography
 
         if issued.nil?
           puts "asciidoctor-bibliography: citation (#{cite.key}) has no 'issued' information"
-          return ""
+          return ''
         end
 
         date_parts = issued['date-parts']
-        return "" if date_parts.nil?
+        return '' if date_parts.nil?
 
-        return "" if date_parts.first.nil?
+        return '' if date_parts.first.nil?
         date_parts.first.first
       end
 
@@ -172,18 +170,18 @@ module AsciidoctorBibliography
         entry = find_entry(cite.key)
         authors = entry['author']
         return [] if authors.nil?
-        authors.map{ |h| h['family'] }.compact
+        authors.map { |h| h['family'] }.compact
       end
 
       def authors_abbreviated(cite)
         authors = authors_list(cite)
-        return "" if authors.empty?
+        return '' if authors.empty?
         authors.length > 1 ? "#{authors.first} et al." : authors.first
       end
 
       def authors_full(cite)
         authors = authors_list(cite)
-        return "" if authors.empty?
+        return '' if authors.empty?
         Helpers.to_sentence authors
       end
     end
