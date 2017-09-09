@@ -8,7 +8,7 @@ require_relative '../index'
 module AsciidoctorBibliography
   module Asciidoctor
     class BibliographerPreprocessor < ::Asciidoctor::Extensions::Preprocessor
-      def process document, reader
+      def process(document, reader)
         set_bibliographer_options(document, reader)
 
         if document.bibliographer.options['database'].nil?
@@ -62,14 +62,14 @@ module AsciidoctorBibliography
         # NOTE: we're in a preprocessor and they haven't been parsed yet; doing it manually.
         document_attributes =
           ::Asciidoctor::Parser
-            .parse(reader, ::Asciidoctor::Document.new, header_only: true)
-            .attributes
+          .parse(reader, ::Asciidoctor::Document.new, header_only: true)
+          .attributes
         defaults = {
           'order' => 'alphabetical',
           'reference-style' => 'chicago-author-date',
           'citation-style' => 'authoryear'
         }
-        user = Hash[Helpers.slice(document_attributes, 'bibliography-citation-style', 'bibliography-order', 'bibliography-reference-style', 'bibliography-database').map {|k, v| [k.sub(/^bibliography-/, ''), v] }]
+        user = Hash[Helpers.slice(document_attributes, 'bibliography-citation-style', 'bibliography-order', 'bibliography-reference-style', 'bibliography-database').map { |k, v| [k.sub(/^bibliography-/, ''), v] }]
         defaults.each { |k, v| user[k] ||= v }
         document.bibliographer.options = user
       end
