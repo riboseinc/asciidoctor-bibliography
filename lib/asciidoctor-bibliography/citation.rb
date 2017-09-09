@@ -1,48 +1,25 @@
 require 'securerandom'
-require 'asciidoctor/attribute_list'
 require_relative 'formatters/csl'
 require_relative 'formatters/tex'
+require_relative 'citation_item'
 
 module AsciidoctorBibliography
-  class Cite
-    attr_accessor :key, :target, :positional_attributes, :named_attributes, :locators
-
-    def initialize
-      yield self if block_given?
-    end
-
-    def locators
-      Helpers
-        .slice(named_attributes || {}, *CiteProc::CitationItem.labels.map(&:to_s))
-        .reject! { |_, value| value.nil? || value.empty? } # equivalent to Hash#compact
-    end
-
-    def parse_attributes(attributes)
-      parsed_attributes =
-        ::Asciidoctor::AttributeList.new(attributes).parse
-                                    .group_by { |hash_key, _| hash_key.is_a? Integer }
-                                    .values.map { |a| Hash[a] }
-      self.positional_attributes = parsed_attributes.first.values
-      self.named_attributes = parsed_attributes.last
-      self.key = positional_attributes.first
-    end
-  end
-
   class Citation
     TEX_MACROS_NAMES = Formatters::TeX::MACROS.keys.map { |s| Regexp.escape s }.concat(['fullcite']).join('|')
     REGEXP = /\\?(#{TEX_MACROS_NAMES}):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
     REF_ATTRIBUTES = %i[chapter page section clause].freeze
 
-    attr_reader :macro, :cites
+    attr_reader :macro, :citation_items
 
-    def initialize(macro, *targets_and_attributes_list)
+    def initialize(macro, *target_and_attributes_list_pairs)
       @uuid = SecureRandom.uuid
       @macro = macro
-      @cites = []
-      targets_and_attributes_list.compact.each_slice(2).each do |target, attributes|
-        @cites << Cite.new do |cite|
-          cite.target = target
-          cite.parse_attributes attributes
+      @citation_items = []
+      target_and_attributes_list_pairs.compact.each_slice(2).each do |target, attribute_list|
+        @citation_items << CitationItem.new do |cite|
+          # NOTE: we're not doing anything with targets right now.
+          # cite.target = target
+          cite.parse_attribute_list attribute_list
         end
       end
     end
@@ -62,7 +39,7 @@ module AsciidoctorBibliography
     def render_citation_with_csl(bibliographer)
       formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
 
-      cites_with_local_attributes = cites.map { |cite| prepare_cite_metadata bibliographer, cite }
+      cites_with_local_attributes = citation_items.map { |cite| prepare_cite_metadata bibliographer, cite }
       formatter.import cites_with_local_attributes
       formatter.sort(mode: :citation)
       items = formatter.data.map(&:cite)
@@ -86,10 +63,10 @@ module AsciidoctorBibliography
 
     def prepare_citation_item(item)
       # Wrap into hyperlink
-      item.prefix = "xref:#{render_xref_id(item.id)}{{{" + item.prefix.to_s
+      item.prefix = "xref:#{xref_id(item.id)}{{{" + item.prefix.to_s
       item.suffix = item.suffix.to_s + '}}}'
       # Assign locator
-      locator = cites.find { |cite| cite.key == item.id }.locators.first
+      locator = citation_items.find { |cite| cite.key == item.id }.locators.first
       item.label, item.locator = locator unless locator.nil?
       # TODO: suppress_author and only_author options?
     end
@@ -98,44 +75,30 @@ module AsciidoctorBibliography
       formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
 
       # NOTE: being able to overwrite a more general family of attributes would be neat.
-      mergeable_attributes = Helpers.slice(cites.first.named_attributes || {}, *REF_ATTRIBUTES.map(&:to_s))
+      mergeable_attributes = Helpers.slice(citation_items.first.named_attributes || {}, *REF_ATTRIBUTES.map(&:to_s))
 
       # reject empty values
       mergeable_attributes.reject! do |_key, value|
         value.nil? || value.empty?
       end
-      # TODO: as is, cites other than the first are simply ignored.
-      database_entry = bibliographer.database.find { |e| e['id'] == cites.first.key }
+      # TODO: as is, citation items other than the first are simply ignored.
+      database_entry = bibliographer.database.find { |e| e['id'] == citation_items.first.key }
       database_entry.merge!(mergeable_attributes)
       formatter.import([database_entry])
-      '{empty}' + Helpers.html_to_asciidoc(formatter.render(:bibliography, id: cites.first.key).join)
-      # '{empty}' + Helpers.html_to_asciidoc(formatter.render(:citation, id: cites.first.key))
+      '{empty}' + Helpers.html_to_asciidoc(formatter.render(:bibliography, id: citation_items.first.key).join)
+      # '{empty}' + Helpers.html_to_asciidoc(formatter.render(:citation, id: citation_items.first.key))
     end
 
     def uuid
       ":#{@uuid}:"
     end
 
-    def keys
-      @cites.map(&:key)
-    end
-
-    def xref(key, label)
-      "xref:#{render_xref_id(key)}[#{label.gsub(']', '\]')}]"
-    end
-
-    def render_xref_id(key)
+    def xref_id(key)
       ['bibliography', key].compact.join('-')
     end
 
-    private
-
-    def render_label(formatter, key)
-      formatter.render(:citation, id: key)
-    end
-
-    def render_xref(formatter, key)
-      "xref:#{render_xref_id(key)}[#{render_label(formatter, key)}]"
+    def xref(key, label)
+      "xref:#{xref_id(key)}[#{label.gsub(']', '\]')}]"
     end
   end
 end
