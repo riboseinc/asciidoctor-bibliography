@@ -10,9 +10,9 @@ module AsciidoctorBibliography
 
     def self.html_to_asciidoc(string)
       string
-        .gsub(/<\/?i>/, '_')
-        .gsub(/<\/?b>/, '*')
-        .gsub(/<\/?span.*?>/, '')
+        .gsub(%r{<\/?i>}, '_')
+        .gsub(%r{<\/?b>}, '*')
+        .gsub(%r{<\/?span.*?>}, '')
         .gsub(/\{|\}/, '')
       # TODO: bracket dropping is inappropriate here.
     end

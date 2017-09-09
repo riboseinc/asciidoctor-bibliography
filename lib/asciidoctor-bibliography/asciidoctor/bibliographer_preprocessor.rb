@@ -52,7 +52,7 @@ module AsciidoctorBibliography
           end
         end
         processed_lines.flatten!
-        reader = ::Asciidoctor::Reader.new processed_lines
+        ::Asciidoctor::Reader.new processed_lines
       end
 
       private
