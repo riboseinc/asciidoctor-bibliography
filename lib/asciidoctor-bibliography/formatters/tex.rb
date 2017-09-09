@@ -46,7 +46,7 @@ module AsciidoctorBibliography
         @database = database
       end
 
-      def render(citation)
+      def render(bibliographer, citation)
         macro_options = MACROS[citation.macro]
         output = []
         case macro_options[:type]
@@ -56,7 +56,7 @@ module AsciidoctorBibliography
           citation.cites.each do |cite|
             authors = authors(macro_options[:authors], cite)
             year = if @style == 'n'
-                     cite.appearance_index + 1
+                     bibliographer.appearance_index_of(cite.key)
                    else
                      year(cite)
                    end
@@ -70,7 +70,7 @@ module AsciidoctorBibliography
           citation.cites.each do |cite|
             if @style == 'n'
               authors = nil
-              year = cite.appearance_index + 1
+              year = bibliographer.appearance_index_of(cite.key)
             else
               authors = authors(macro_options[:authors], cite)
               year = year(cite)

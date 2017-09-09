@@ -5,7 +5,7 @@ require_relative 'formatters/tex'
 
 module AsciidoctorBibliography
   class Cite
-    attr_accessor :key, :appearance_index, :target, :positional_attributes, :named_attributes, :locators
+    attr_accessor :key, :target, :positional_attributes, :named_attributes, :locators
 
     def initialize
       yield self if block_given?
@@ -55,7 +55,7 @@ module AsciidoctorBibliography
       elsif Formatters::TeX::MACROS.keys.include? macro
         formatter = Formatters::TeX.new(bibliographer.options['citation-style'])
         formatter.import bibliographer.database
-        formatter.render(self)
+        formatter.render(bibliographer, self)
       end
     end
 
