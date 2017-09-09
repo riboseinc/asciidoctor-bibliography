@@ -17,14 +17,16 @@ module AsciidoctorBibliography
 
     def render(bibliographer)
       formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
-      filtered_db = bibliographer.occurring_keys.map { |id| bibliographer.database.find { |h| h['id'] == id } }
+      filtered_db = bibliographer.occurring_keys
+                      .map { |id| bibliographer.database.find { |h| h['id'] == id } }
+                      .map { |entry| prepare_entry_metadata bibliographer, entry }
       formatter.import filtered_db
       formatter.sort(mode: :bibliography)
 
       lines = []
       formatter.bibliography.each_with_index do |reference, index|
         line = '{empty}'
-        line << "anchor:#{render_entry_id(formatter.data[index].id)}[]"
+        line << "anchor:#{anchor_id(formatter.data[index].id)}[]"
         line << Helpers.html_to_asciidoc(reference)
         lines << line
       end
@@ -33,17 +35,22 @@ module AsciidoctorBibliography
       lines.join("\n\n").lines.map(&:strip)
     end
 
-    def render_entry_id(target)
+    def prepare_entry_metadata(bibliographer, entry)
+      entry
+        .merge('citation-number': bibliographer.appearance_index_of(entry['id']))
+        .merge('citation-label': entry['id']) # TODO: smart label generators
+    end
+
+    def anchor_id(target)
       ['bibliography', target].compact.join('-')
     end
 
     def render_entry_label(target, formatter)
-      # byebug
       Helpers.html_to_asciidoc formatter.render(:bibliography, id: target).join
     end
 
     def render_entry(target, formatter)
-      "anchor:#{render_entry_id(target)}[]#{render_entry_label(target, formatter)}"
+      "anchor:#{anchor_id(target)}[]#{render_entry_label(target, formatter)}"
     end
   end
 end
