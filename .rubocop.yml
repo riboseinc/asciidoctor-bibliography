@@ -1,0 +1,18 @@
+AllCops:
+  TargetRubyVersion: 2.3
+  Excludes:
+    - deprecated/**/*.rb
+    - spec/**/*.rb
+
+
+Metrics/LineLength:
+  Max: 120
+
+FrozenStringLiteralComment:
+  Enabled: false
+
+Style/FileName:
+  Enabled: false
+
+Documentation:
+  Enabled: false
