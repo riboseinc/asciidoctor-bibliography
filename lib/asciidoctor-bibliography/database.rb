@@ -5,7 +5,7 @@ module AsciidoctorBibliography
     # This is an array of citeproc entries.
 
     def initialize(filename)
-      self.concat self.load(filename)
+      concat load(filename)
     end
 
     def load(filename)
@@ -13,9 +13,8 @@ module AsciidoctorBibliography
       when *Databases::BibTeX::EXTENSIONS
         Databases::BibTeX.load(filename)
       else
-        raise StandardError, "Unknown bibliographic database format."
+        raise StandardError, 'Unknown bibliographic database format.'
       end
     end
   end
 end
-

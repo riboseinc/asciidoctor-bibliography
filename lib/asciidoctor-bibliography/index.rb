@@ -22,7 +22,7 @@ module AsciidoctorBibliography
 
       # Force sorting w/ engine criteria on formatter data.
       #   Same sorting is done in engine to produce formatted bibliography references.
-      formatter.engine.sort! formatter.data, formatter.engine.style.bibliography.sort_keys unless !formatter.engine.style.citation.sort?
+      formatter.engine.sort! formatter.data, formatter.engine.style.bibliography.sort_keys if formatter.engine.style.citation.sort?
 
       lines = []
       formatter.bibliography.each_with_index do |reference, index|
@@ -50,4 +50,3 @@ module AsciidoctorBibliography
     end
   end
 end
-
