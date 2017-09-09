@@ -16,23 +16,18 @@ module AsciidoctorBibliography
     end
 
     def render(bibliographer)
-      lines = []
-
-      # NOTE: no real need for manual sorting, given it's decided by style
-      # NOTE: pretty rough filtering
+      formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
       filtered_db = bibliographer.occurring_keys.map { |id| bibliographer.database.find { |h| h['id'] == id } }
-      tmp_formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
-      tmp_formatter.import filtered_db
+      formatter.import filtered_db
 
-
-      # NOTE: hackish. Force sorting w/ engine criteria on formatter data.
+      # Force sorting w/ engine criteria on formatter data.
       #   Same sorting is done in engine to produce formatted bibliography references.
-      byebug
-      tmp_formatter.engine.sort! tmp_formatter.data, tmp_formatter.engine.style.citation.sort_keys unless !tmp_formatter.engine.style.citation.sort?
+      formatter.engine.sort! formatter.data, formatter.engine.style.bibliography.sort_keys unless !formatter.engine.style.citation.sort?
 
-      tmp_formatter.bibliography.each_with_index do |reference, index|
+      lines = []
+      formatter.bibliography.each_with_index do |reference, index|
         line = '{empty}'
-        line << "anchor:#{render_entry_id(tmp_formatter.data[index].id)}[]"
+        line << "anchor:#{render_entry_id(formatter.data[index].id)}[]"
         line << Helpers.html_to_asciidoc(reference)
         lines << line
       end

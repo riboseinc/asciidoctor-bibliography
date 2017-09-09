@@ -11,6 +11,8 @@ require 'latex/decode/greek'
 module AsciidoctorBibliography
   module Databases
     module BibTeX
+      EXTENSIONS = %w[.bib .bibtex]
+
       def self.load(filename)
         ::BibTeX.open(filename, filter: [LatexFilter]).to_citeproc
       end
