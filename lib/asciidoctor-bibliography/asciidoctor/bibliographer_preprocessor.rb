@@ -57,7 +57,7 @@ module AsciidoctorBibliography
 
       private
 
-      OPTIONS_PREFIX = "bibliography-"
+      OPTIONS_PREFIX = 'bibliography-'.freeze
 
       OPTIONS_DEFAULTS = {
         'order' => 'alphabetical',
@@ -65,7 +65,7 @@ module AsciidoctorBibliography
         'citation-style' => 'authoryear',
         'hyperlinks' => 'true',
         'database' => nil
-      }
+      }.freeze
 
       def set_bibliographer_options(document, reader)
         # We peek at the document attributes we need, without perturbing the parsing flow.
