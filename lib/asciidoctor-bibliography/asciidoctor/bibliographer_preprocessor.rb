@@ -57,21 +57,35 @@ module AsciidoctorBibliography
 
       private
 
+      OPTIONS_PREFIX = "bibliography-"
+
+      OPTIONS_DEFAULTS = {
+        'order' => 'alphabetical',
+        'reference-style' => 'apa',
+        'citation-style' => 'authoryear',
+        'hyperlinks' => 'true',
+        'database' => nil
+      }
+
       def set_bibliographer_options(document, reader)
         # We peek at the document attributes we need, without perturbing the parsing flow.
         # NOTE: we're in a preprocessor and they haven't been parsed yet; doing it manually.
-        document_attributes =
-          ::Asciidoctor::Parser
+        header_attributes = extract_header_attributes reader
+        user_options = filter_bibliography_attributes header_attributes
+        document.bibliographer.options = OPTIONS_DEFAULTS.merge user_options
+      end
+
+      def extract_header_attributes(reader)
+        ::Asciidoctor::Parser
           .parse(reader, ::Asciidoctor::Document.new, header_only: true)
           .attributes
-        defaults = {
-          'order' => 'alphabetical',
-          'reference-style' => 'chicago-author-date',
-          'citation-style' => 'authoryear'
-        }
-        user = Hash[Helpers.slice(document_attributes, 'bibliography-citation-style', 'bibliography-order', 'bibliography-reference-style', 'bibliography-database').map { |k, v| [k.sub(/^bibliography-/, ''), v] }]
-        defaults.each { |k, v| user[k] ||= v }
-        document.bibliographer.options = user
+      end
+
+      def filter_bibliography_attributes(hash)
+        Helpers
+          .slice(hash, *OPTIONS_DEFAULTS.keys.map { |k| "#{OPTIONS_PREFIX}#{k}" })
+          .map { |k, v| [k[OPTIONS_PREFIX.length..-1], v] }.to_h
+          .reject { |_, value| value.nil? || value.empty? }.to_h
       end
     end
   end
