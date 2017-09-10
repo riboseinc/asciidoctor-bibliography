@@ -1,5 +1,6 @@
 = Sample of using asciidoctor-bibtex
 :bibliography-database: biblio.bib
+:bibliography-hyperlinks: false
 
 ## Standard
 
