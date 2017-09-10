@@ -1,19 +1,26 @@
 require_relative 'databases/bibtex'
+require_relative 'exceptions'
 
 module AsciidoctorBibliography
+  # This is an array of citeproc entries.
   class Database < Array
-    # This is an array of citeproc entries.
-
-    def initialize(filename)
-      concat load(filename)
+    def initialize(*filenames)
+      filenames.each do |filename|
+        append filename
+      end
     end
 
-    def load(filename)
+    def append(filename)
+      concat Database.load(filename)
+    end
+
+    def self.load(filename)
       case File.extname(filename)
       when *Databases::BibTeX::EXTENSIONS
         Databases::BibTeX.load(filename)
       else
-        raise StandardError, 'Unknown bibliographic database format.'
+        raise Exceptions::DatabaseFormatNotSupported,
+              'Bibliographic database format not supported.'
       end
     end
   end
