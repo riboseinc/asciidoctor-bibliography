@@ -43,7 +43,7 @@ module AsciidoctorBibliography
       formatter.import cites_with_local_attributes
       formatter.sort(mode: :citation)
       items = formatter.data.map(&:cite)
-      items.each { |item| prepare_citation_item item }
+      items.each { |item| prepare_citation_item item, hyperlink: bibliographer.options['hyperlinks'] == 'true' }
 
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
       # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
@@ -61,10 +61,12 @@ module AsciidoctorBibliography
       # TODO: why is 'locator' necessary to display locators? (and not just in the item, later)
     end
 
-    def prepare_citation_item(item)
+    def prepare_citation_item(item, hyperlink:)
       # Wrap into hyperlink
-      item.prefix = "xref:#{xref_id(item.id)}{{{" + item.prefix.to_s
-      item.suffix = item.suffix.to_s + '}}}'
+      if hyperlink
+        item.prefix = "xref:#{xref_id(item.id)}{{{" + item.prefix.to_s
+        item.suffix = item.suffix.to_s + '}}}'
+      end
       # Assign locator
       locator = citation_items.find { |cite| cite.key == item.id }.locators.first
       item.label, item.locator = locator unless locator.nil?
