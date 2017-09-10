@@ -18,8 +18,8 @@ module AsciidoctorBibliography
     def render(bibliographer)
       formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
       filtered_db = bibliographer.occurring_keys
-                      .map { |id| bibliographer.database.find { |h| h['id'] == id } }
-                      .map { |entry| prepare_entry_metadata bibliographer, entry }
+                                 .map { |id| bibliographer.database.find { |h| h['id'] == id } }
+                                 .map { |entry| prepare_entry_metadata bibliographer, entry }
       formatter.import filtered_db
       formatter.sort(mode: :bibliography)
 
