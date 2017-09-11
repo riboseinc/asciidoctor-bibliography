@@ -1,4 +1,5 @@
 require 'asciidoctor'
+require 'pp'
 
 require_relative '../helpers'
 require_relative '../database'
@@ -70,14 +71,21 @@ module AsciidoctorBibliography
       def set_bibliographer_options(document, reader)
         # We peek at the document attributes we need, without perturbing the parsing flow.
         # NOTE: we're in a preprocessor and they haven't been parsed yet; doing it manually.
+        # pp reader
         header_attributes = extract_header_attributes reader
         user_options = filter_bibliography_attributes header_attributes
         document.bibliographer.options = OPTIONS_DEFAULTS.merge user_options
       end
 
       def extract_header_attributes(reader)
+        tdoc = ::Asciidoctor::Document.new
+        treader = ::Asciidoctor::PreprocessorReader.new(
+          tdoc,
+          reader.source_lines
+        )
+
         ::Asciidoctor::Parser
-          .parse(reader, ::Asciidoctor::Document.new, header_only: true)
+          .parse(treader, tdoc, header_only: true)
           .attributes
       end
 

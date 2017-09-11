@@ -1,17 +1,11 @@
 require 'asciidoctor/extensions'
 
 require_relative 'asciidoctor/bibliographer_preprocessor'
+require_relative 'asciidoctor/document_ext'
 require_relative 'bibliographer'
+
+Asciidoctor::Document.include AsciidoctorBibliography::Asciidoctor::DocumentExt
 
 Asciidoctor::Extensions.register do
   preprocessor AsciidoctorBibliography::Asciidoctor::BibliographerPreprocessor
-end
-
-module Asciidoctor
-  class Document
-    # All our document-level permanence passes through this attribute accessor.
-    def bibliographer
-      @bibliographer ||= AsciidoctorBibliography::Bibliographer.new
-    end
-  end
 end
