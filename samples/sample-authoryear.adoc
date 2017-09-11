@@ -1,8 +1,5 @@
 = Sample of using asciidoctor-bibtex
 :bibliography-database: biblio.bib
-:bibliography-order: alphabetical
-:bibliography-citation-style: authoryear
-:bibliography-reference-style: chicago-author-date
 
 ## Standard
 
