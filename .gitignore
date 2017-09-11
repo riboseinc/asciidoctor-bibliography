@@ -50,3 +50,4 @@ Gemfile.lock
 .rvmrc
 
 **/.byebug
+.byebug_history
