@@ -10,13 +10,20 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Ribose Inc.']
   spec.email         = ['open.source@ribose.com']
 
-  spec.summary       = 'Bibliographic references for asciidoc'
+  spec.summary       = 'Citations and bibliography the "asciidoctor-way"'
   spec.description   = <<~END
-    asciidoctor-bibliography adds bibliography support for asciidoc documents by introducing
-    two new macros: `cite:[KEY]` and `bibliography::[]`. Citations are parsed and
-    replaced with formatted inline texts, and reference lists are automatically
-    generated and inserted into where `bibliography::[]` is placed.  The
-    references are formatted using styles provided by CSL.
+    asciidoctor-bibliography lets you handle citations and bibliography the "asciidoctor-way"!
+
+    Its syntax is designed to be native-asciidoctor:
+    * single cite `cite:[key]`;
+    * contextual cite `cite[key, page=3]`;
+    * multiple cites `cite:[key1]+[key2]`;
+    * full cite `fullcite:[key]`; and
+    * TeX-compatible macros including `citep:[key]`, `citet:[]key` and friends.
+
+    Citation output styles are fully bridged to the CSL library, supporting formats such as IEEE, APA, Chicago, DIN and ISO 690.
+
+    The `bibliography:[]` command generates a full reference list that adheres to your configured citation style.
 END
   spec.homepage      = 'https://github.com/riboseinc/asciidoctor-bibliography'
   spec.license       = 'MIT'
