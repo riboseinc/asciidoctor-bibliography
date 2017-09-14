@@ -1,6 +1,6 @@
 = Sample of using asciidoctor-bibtex
 :bibliography-database: biblio.bib
-:bibliography-reference-style: din-1505-2-alphanumeric
+:bibliography-style: din-1505-2-alphanumeric
 
 ## Standard
 

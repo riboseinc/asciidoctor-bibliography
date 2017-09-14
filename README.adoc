@@ -41,7 +41,7 @@ In your document header, define the following below the title.
 = Latex Macros In Bibtex Items
 :bibliography-database: first.bib
 :bibliography-database: second.bib
-:bibliography-reference-style: ieee
+:bibliography-style: ieee
 ----
 
 == Usage
@@ -70,7 +70,7 @@ bibliography::[]
 ----
 = Latex Macros In Bibtex Items
 :bibliography-database: reference.bib
-:bibliography-reference-style: ieee
+:bibliography-style: ieee
 
 == Contents
 

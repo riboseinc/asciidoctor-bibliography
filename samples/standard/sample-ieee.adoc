@@ -1,6 +1,6 @@
 = Sample of using asciidoctor-bibtex
 :bibliography-database: biblio.bib
-:bibliography-reference-style: ieee
+:bibliography-style: ieee
 
 ## Standard
 
