@@ -1,11 +1,20 @@
 require 'citeproc'
 require 'csl/styles'
+require 'yaml'
 
 module AsciidoctorBibliography
   module Formatters
     class CSL < ::CiteProc::Processor
       def initialize(style)
         super style: style, format: :html
+      end
+
+      def replace_bibliography_sort_with_yaml_string(yaml)
+        new_sort_keys = YAML.safe_load("[#{yaml}]").flatten(1)
+                            .map(&::CSL::Style::Sort::Key.method(:new))
+        sort = engine.style > 'bibliography' > 'sort'
+        sort.delete_children sort.children
+        sort.add_children(*new_sort_keys)
       end
 
       def sort(mode:)

@@ -1,6 +1,7 @@
 = Sample usage of asciidoctor-bibliography
 :bibliography-database: biblio.bib
 :bibliography-hyperlinks: false
+:bibliography-bibliography-sort: { macro: author, sort: descending }
 
 ## Standard
 
