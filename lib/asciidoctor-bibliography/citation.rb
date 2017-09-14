@@ -37,7 +37,7 @@ module AsciidoctorBibliography
     end
 
     def render_citation_with_csl(bibliographer)
-      formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
+      formatter = Formatters::CSL.new(bibliographer.options['style'])
 
       cites_with_local_attributes = citation_items.map { |cite| prepare_cite_metadata bibliographer, cite }
       formatter.import cites_with_local_attributes
@@ -74,7 +74,7 @@ module AsciidoctorBibliography
     end
 
     def render_fullcite_with_csl(bibliographer)
-      formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
+      formatter = Formatters::CSL.new(bibliographer.options['style'])
 
       # NOTE: being able to overwrite a more general family of attributes would be neat.
       mergeable_attributes = Helpers.slice(citation_items.first.named_attributes || {}, *REF_ATTRIBUTES.map(&:to_s))

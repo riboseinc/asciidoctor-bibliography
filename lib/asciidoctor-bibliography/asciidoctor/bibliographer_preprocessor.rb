@@ -62,10 +62,11 @@ module AsciidoctorBibliography
 
       OPTIONS_DEFAULTS = {
         'order' => 'alphabetical',
-        'reference-style' => 'apa',
+        'style' => 'apa',
         'citation-style' => 'authoryear',
         'hyperlinks' => 'true',
-        'database' => nil
+        'database' => nil,
+        'bibliography-sort' => nil
       }.freeze
 
       def set_bibliographer_options(document, reader)

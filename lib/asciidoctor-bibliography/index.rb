@@ -16,7 +16,9 @@ module AsciidoctorBibliography
     end
 
     def render(bibliographer)
-      formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
+      formatter = Formatters::CSL.new(bibliographer.options['style'])
+      formatter.replace_bibliography_sort_with_yaml_string(bibliographer.options['bibliography-sort'])
+
       filtered_db = bibliographer.occurring_keys
                                  .map { |id| bibliographer.database.find { |h| h['id'] == id } }
                                  .map { |entry| prepare_entry_metadata bibliographer, entry }
