@@ -1,4 +1,5 @@
 require 'asciidoctor'
+require 'pp'
 
 require_relative '../helpers'
 require_relative '../database'
@@ -77,8 +78,14 @@ module AsciidoctorBibliography
       end
 
       def extract_header_attributes(reader)
+        tdoc = ::Asciidoctor::Document.new
+        treader = ::Asciidoctor::PreprocessorReader.new(
+          tdoc,
+          reader.source_lines
+        )
+
         ::Asciidoctor::Parser
-          .parse(reader, ::Asciidoctor::Document.new, header_only: true)
+          .parse(treader, tdoc, header_only: true)
           .attributes
       end
 

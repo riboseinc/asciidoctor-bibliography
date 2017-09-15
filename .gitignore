@@ -50,3 +50,7 @@ Gemfile.lock
 .rvmrc
 
 **/.byebug
+**/.byebug_history
+
+# omit compiled samples
+samples/**/*.html
