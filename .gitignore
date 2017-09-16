@@ -50,4 +50,8 @@ Gemfile.lock
 .rvmrc
 
 **/.byebug
-.byebug_history
+**/.byebug_history
+
+# omit compiled documents
+samples/**/*.html
+README.html

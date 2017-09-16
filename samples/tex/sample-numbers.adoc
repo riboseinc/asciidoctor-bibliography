@@ -2,7 +2,7 @@
 :bibliography-database: biblio.bib
 :bibliography-order: appearance
 :bibliography-citation-style: numbers
-:bibliography-reference-style: ieee
+:bibliography-style: ieee
 
 ## Standard
 

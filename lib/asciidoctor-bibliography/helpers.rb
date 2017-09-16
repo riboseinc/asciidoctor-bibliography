@@ -20,9 +20,9 @@ module AsciidoctorBibliography
     # NOTE: mostly stolen from ActiveSupport.
     def self.to_sentence(array, options = {})
       default_connectors = {
-        :words_connector     => ', ',
-        :two_words_connector => ' and ',
-        :last_word_connector => ', and '
+        words_connector: ', ',
+        two_words_connector: ' and ',
+        last_word_connector: ', and '
       }
       options = default_connectors.merge!(options)
 

@@ -37,13 +37,13 @@ module AsciidoctorBibliography
     end
 
     def render_citation_with_csl(bibliographer)
-      formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
+      formatter = Formatters::CSL.new(bibliographer.options.style)
 
       cites_with_local_attributes = citation_items.map { |cite| prepare_cite_metadata bibliographer, cite }
       formatter.import cites_with_local_attributes
       formatter.sort(mode: :citation)
       items = formatter.data.map(&:cite)
-      items.each { |item| prepare_citation_item item, hyperlink: bibliographer.options['hyperlinks'] == 'true' }
+      items.each { |item| prepare_citation_item item, hyperlink: bibliographer.options.hyperlinks? }
 
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
       # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
@@ -74,7 +74,7 @@ module AsciidoctorBibliography
     end
 
     def render_fullcite_with_csl(bibliographer)
-      formatter = Formatters::CSL.new(bibliographer.options['reference-style'])
+      formatter = Formatters::CSL.new(bibliographer.options.style)
 
       # NOTE: being able to overwrite a more general family of attributes would be neat.
       mergeable_attributes = Helpers.slice(citation_items.first.named_attributes || {}, *REF_ATTRIBUTES.map(&:to_s))

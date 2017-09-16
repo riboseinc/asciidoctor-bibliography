@@ -50,7 +50,6 @@ module AsciidoctorBibliography
         macro_options = MACROS[citation.macro]
         output = []
         case macro_options[:type]
-        when :full
         # NOTE: deliberately repetitive to improve redability.
         when :textual
           citation.citation_items.each do |cite|

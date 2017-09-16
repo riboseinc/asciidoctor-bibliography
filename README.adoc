@@ -4,11 +4,14 @@ image:https://img.shields.io/gem/v/asciidoctor-bibliography.svg["Gem Version", l
 image:https://img.shields.io/travis/riboseinc/asciidoctor-bibliography/master.svg["Build Status", link="https://travis-ci.org/riboseinc/asciidoctor-bibliography"]
 image:https://codeclimate.com/github/riboseinc/asciidoctor-bibliography/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/riboseinc/asciidoctor-bibliography"]
 
-Citations in AsciiDoc using the fantastic http://asciidoctor.org/[asciidoctor].
-
 == Introduction
 
-This gem allows you to add BibTex style Citations to AsciiDoc.
+This gem allows you to add citations and bibliographies to AsciiDoc using http://asciidoctor.org/[asciidoctor].
+
+Styling leverages the popular http://citationstyles.org/[CSL] language so you have immediate access to thousands of crowdsourced styles.
+
+On top of that you also have a formatter derived from the `Bib(La)TeX` world, in that all the macros you are familiar with are recognized.
+
 
 == Installation
 
@@ -33,54 +36,164 @@ Or install it yourself as:
 $ gem install asciidoctor-bibliography
 ----
 
-== Configure
+== Quick start
 
-In your document header, define the following below the title.
+In your document header, choose the filename of a `BibTeX` database and a style (e.g. `apa`, `ieee`, `nature` and http://editor.citationstyles.org/searchByName/[others]).
 
+[source,asciidoc]
 ----
-= Latex Macros In Bibtex Items
-:bibliography-database: first.bib
-:bibliography-database: second.bib
-:bibliography-reference-style: ieee
+= My first document using asciidoctor-bibliography
+:bibliography-database: my_database.bib
+:bibliography-style: apa
 ----
 
-== Usage
+In your document body, cite your resources using their keys:
 
-Include asciidoctor-bibliography in your chain:
+[source,asciidoc]
+----
+This will end with a citation cite:[Aa2017].
+----
+
+Then list out the resources you cited:
+
+[source,asciidoc]
+----
+bibliography::[]
+----
+
+When compiling, include `asciidoctor-bibliography` in your chain:
 
 [source,console]
 ----
-$ asciidoctor -r asciidoctor-bibliography main.adoc
+$ asciidoctor -r asciidoctor-bibliography my_first_document.adoc
 ----
 
-Add citation commands within your AsciiDoc:
+That's it!
 
+== Usage
+
+`asciidoctor-bibliography` allows for more customizations and macros.
+Let's examine all its features in full detail.
+
+=== Citations
+
+To cite a resource you provide its unique database key to an inline macro:
+
+[source,asciidoc]
 ----
-Searching Function (see cite:guo2009[])
+Here comes a citation cite:[Aa2017] and it's gone.
 ----
 
-List out bibliography:
+Referring to a specific location inside a resource can be done providing an extra named attribute:
 
+[source,asciidoc]
+----
+cite:[Aa2017, page=42]
+----
+
+Allowed locators are `book`, `chapter`, `column`, `figure`, `folio`, `issue`, `line`, `note`, `opus`, `page`, `paragraph`, `part`, `section`, `sub-verbo`, `verse` and `volume`. The support depends upon which ones your style implement, though.
+
+To cite multiple resources you concatenate them as follows:
+
+[source,asciidoc]
+----
+cite:[Aa2017]+[Bb2017]+[Cc2017]
+----
+
+You can apply a different locator to each one.
+
+=== Bibliographies
+
+To render the bibliography you simply use the following block macro:
+
+[source,asciidoc]
 ----
 bibliography::[]
 ----
 
-== Example
+=== Databases
 
+Specifying a database file is mandatory and it can be done in the header with its filename:
+
+[source,asciidoc]
 ----
-= Latex Macros In Bibtex Items
-:bibliography-database: reference.bib
-:bibliography-reference-style: ieee
-
-== Contents
-
-This is a paper "Validation and Verificaton of Computer Forensic Software
-tools -- Searching Function" (see cite:guo2009[]).
-
-== Bibliography
-
-bibliography::[]
+:bibliography-database: my_database.bib
 ----
+
+Currently only the `BibTeX` format is supported; more will come soon.
+
+=== Styling
+
+The default style for citations and bibliographies is `apa`. 
+You can change that in the header:
+
+[source,asciidoc]
+----
+:bibliography-style: apa
+----
+
+Valid style names can be found directly in the
+https://github.com/citation-style-language/styles[official repository]
+or searching through the friendly http://editor.citationstyles.org/[style editor].
+
+You can also simply use the filename of a CSL file on your machine if you need more customization.
+
+=== Hyperlinks
+
+By default, citations include hyperlinks to their entry in the bibliography.
+You can disable them in the header:
+
+[source,asciidoc]
+----
+:bibliography-hyperlinks: false
+----
+
+=== Sorting
+
+You can override the sorting specified by the CSL style you have chosen, if you desire to do so.
+The relevant option is `bibliography-sort` and it accepts a YAML string specifying a list of keys to sort the entries with.
+Let's explore some of the possibilities.
+
+The simplest option is *no sorting*; an empty list will cause the entries to be in appearance order.
+
+[source,asciidoc]
+----
+:bibliography-sort: []
+----
+
+To sort in a single key - say, the rendered author name - it's as simple as
+
+[source,asciidoc]
+----
+:bibliography-sort: macro: author
+----
+
+However you might want to reverse the order:
+
+[source,asciidoc]
+----
+:bibliography-sort: { macro: author, sort: descending }
+----
+
+It is possible to use any number of sorting keys putting them in an array.
+E.g. to sort by issuing date:
+
+[source,asciidoc]
+----
+:bibliography-sort: [{ macro: author, sort: descending }, { variable: issued }]
+----
+
+You might be asking: what is the difference between `variable` s and `macro` s?
+The former are metadata fields fixed by the http://docs.citationstyles.org/en/stable/specification.html#appendix-iv-variables[CSL specification].
+The latter are combinations of variables defined by your chosen style
+To use them effectively you'll need to know its implementation.
+This task is not daunting at all, as the http://editor.citationstyles.org/[style editor] allows you to quickly list them and understand their role.
+
+As for the `sort` option, the valid values are `ascending` (default) and `descending` as you'd exect.
+
+=== TeX-mode
+
+NOTE: TODO
 
 == Development
 

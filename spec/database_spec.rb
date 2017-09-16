@@ -26,9 +26,14 @@ describe AsciidoctorBibliography::Database do
   end
 
   describe '.load' do
+    it 'raises error if given non existing file' do
+      expect { described_class.load 'spec/fixtures/database.xxx' }
+        .to raise_exception AsciidoctorBibliography::Errors::Database::FileNotFound
+    end
+
     it 'raises error if given unknown format' do
       expect { described_class.load 'spec/fixtures/database.unk' }
-        .to raise_exception AsciidoctorBibliography::Exceptions::DatabaseFormatNotSupported
+        .to raise_exception AsciidoctorBibliography::Errors::Database::UnsupportedFormat
     end
 
     it 'recognizes Bib(La)Tex databases' do
