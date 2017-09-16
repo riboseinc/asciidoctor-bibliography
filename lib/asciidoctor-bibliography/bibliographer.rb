@@ -24,10 +24,9 @@ module AsciidoctorBibliography
     end
 
     def sort
-      if options['order'] == 'alphabetical'
-        @occurring_keys = @occurring_keys.sort_by do |target|
-          first_author_family_name(target)
-        end
+      return unless options['order'] == 'alphabetical'
+      @occurring_keys = @occurring_keys.sort_by do |target|
+        first_author_family_name(target)
       end
     end
 
