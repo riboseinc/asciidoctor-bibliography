@@ -9,11 +9,14 @@ module AsciidoctorBibliography
         super style: style, format: :html
       end
 
-      def replace_bibliography_sort(hash)
-        new_sort_keys = hash.map(&::CSL::Style::Sort::Key.method(:new))
-        sort = engine.style > 'bibliography' > 'sort' # rubocop:disable Lint/MultipleCompare
-        sort.delete_children sort.children
-        sort.add_children(*new_sort_keys)
+      def replace_bibliography_sort(array)
+        new_keys = array.map(&::CSL::Style::Sort::Key.method(:new))
+        new_sort = ::CSL::Style::Sort.new.add_children(*new_keys)
+
+        bibliography = engine.style.find_child('bibliography')
+        bibliography.find_child('sort')&.unlink
+
+        bibliography.add_child new_sort
       end
 
       def sort(mode:)
