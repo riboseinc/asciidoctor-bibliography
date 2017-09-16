@@ -11,15 +11,10 @@ module AsciidoctorBibliography
     class BibliographerPreprocessor < ::Asciidoctor::Extensions::Preprocessor
       def process(document, reader)
         document.bibliographer.options =
-          ::AsciidoctorBibliography::Options.get reader
-
-        if document.bibliographer.options['database'].nil?
-          warn "No bibliographic database was provided: all bibliographic macros will be ignored. You can set it using the 'bibliography-database' option in the document's preamble."
-          return reader
-        end
+          ::AsciidoctorBibliography::Options.new_from_reader reader
 
         # Load database(s).
-        document.bibliographer.database = Database.new(document.bibliographer.options['database'])
+        document.bibliographer.database = Database.new(document.bibliographer.options.database)
 
         # Find, store and replace citations with uuids.
         processed_lines = reader.read_lines.map do |line|
@@ -30,9 +25,6 @@ module AsciidoctorBibliography
           end
         end
         reader = ::Asciidoctor::Reader.new processed_lines
-
-        # NOTE: retrieval and formatting are separated to allow sorting and numeric styles.
-        # document.bibliographer.sort
 
         # Find and replace uuids with formatted citations.
         processed_lines = reader.lines.join("\n") # for quicker matching

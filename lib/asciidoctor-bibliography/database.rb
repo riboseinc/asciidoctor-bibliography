@@ -1,5 +1,5 @@
 require_relative 'databases/bibtex'
-require_relative 'exceptions'
+require_relative 'errors'
 
 module AsciidoctorBibliography
   # This is an array of citeproc entries.
@@ -15,12 +15,15 @@ module AsciidoctorBibliography
     end
 
     def self.load(filename)
-      case File.extname(filename)
+      filepath = File.expand_path filename
+      raise Errors::Database::FileNotFound, filepath unless File.exist?(filepath)
+
+      fileext = File.extname filepath
+      case fileext
       when *Databases::BibTeX::EXTENSIONS
-        Databases::BibTeX.load(filename)
+        Databases::BibTeX.load filepath
       else
-        raise Exceptions::DatabaseFormatNotSupported,
-              'Bibliographic database format not supported.'
+        raise Errors::Database::UnsupportedFormat, fileext
       end
     end
   end

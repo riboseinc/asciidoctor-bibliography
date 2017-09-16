@@ -9,9 +9,8 @@ module AsciidoctorBibliography
         super style: style, format: :html
       end
 
-      def replace_bibliography_sort_with_yaml_string(yaml)
-        new_sort_keys = YAML.safe_load("[#{yaml}]").flatten(1)
-                            .map(&::CSL::Style::Sort::Key.method(:new))
+      def replace_bibliography_sort(hash)
+        new_sort_keys = hash.map(&::CSL::Style::Sort::Key.method(:new))
         sort = engine.style > 'bibliography' > 'sort'
         sort.delete_children sort.children
         sort.add_children(*new_sort_keys)
