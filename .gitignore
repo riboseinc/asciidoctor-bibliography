@@ -52,5 +52,6 @@ Gemfile.lock
 **/.byebug
 **/.byebug_history
 
-# omit compiled samples
+# omit compiled documents
 samples/**/*.html
+README.html
