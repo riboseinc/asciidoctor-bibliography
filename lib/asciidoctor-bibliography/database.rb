@@ -1,5 +1,5 @@
-require_relative 'databases/bibtex'
-require_relative 'errors'
+require_relative "databases/bibtex"
+require_relative "errors"
 
 module AsciidoctorBibliography
   # This is an array of citeproc entries.

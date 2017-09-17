@@ -24,7 +24,7 @@ module AsciidoctorBibliography
     end
 
     def sort
-      return unless options['order'] == 'alphabetical'
+      return unless options["order"] == "alphabetical"
       @occurring_keys = @occurring_keys.sort_by do |target|
         first_author_family_name(target)
       end
@@ -33,9 +33,9 @@ module AsciidoctorBibliography
     private
 
     def first_author_family_name(key)
-      authors = database.find { |h| h['id'] == key }['author']
-      return '' if authors.nil?
-      authors.map { |h| h['family'] }.compact.first # TODO: is the first also alphabetically the first?
+      authors = database.detect { |h| h["id"] == key }["author"]
+      return "" if authors.nil?
+      authors.map { |h| h["family"] }.compact.first # TODO: is the first also alphabetically the first?
     end
   end
 end

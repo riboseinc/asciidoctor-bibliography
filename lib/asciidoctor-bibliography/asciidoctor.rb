@@ -1,8 +1,8 @@
-require 'asciidoctor/extensions'
+require "asciidoctor/extensions"
 
-require_relative 'asciidoctor/bibliographer_preprocessor'
-require_relative 'asciidoctor/document_ext'
-require_relative 'bibliographer'
+require_relative "asciidoctor/bibliographer_preprocessor"
+require_relative "asciidoctor/document_ext"
+require_relative "bibliographer"
 
 Asciidoctor::Document.include AsciidoctorBibliography::Asciidoctor::DocumentExt
 

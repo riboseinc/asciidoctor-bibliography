@@ -9,26 +9,26 @@ module AsciidoctorBibliography
     end
 
     def self.html_to_asciidoc(string)
-      string
-        .gsub(%r{<\/?i>}, '_')
-        .gsub(%r{<\/?b>}, '*')
-        .gsub(%r{<\/?span.*?>}, '')
-        .gsub(/\{|\}/, '')
+      string.
+        gsub(%r{<\/?i>}, "_").
+        gsub(%r{<\/?b>}, "*").
+        gsub(%r{<\/?span.*?>}, "").
+        gsub(/\{|\}/, "")
       # TODO: bracket dropping is inappropriate here.
     end
 
     # NOTE: mostly stolen from ActiveSupport.
     def self.to_sentence(array, options = {})
       default_connectors = {
-        :words_connector     => ', ',
-        :two_words_connector => ' and ',
-        :last_word_connector => ', and '
+        words_connector: ", ",
+        two_words_connector: " and ",
+        last_word_connector: ", and ",
       }
       options = default_connectors.merge!(options)
 
       case array.length
       when 0
-        ''
+        ""
       when 1
         array[0].to_s.dup
       when 2
