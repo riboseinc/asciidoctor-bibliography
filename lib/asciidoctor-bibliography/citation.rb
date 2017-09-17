@@ -38,24 +38,42 @@ module AsciidoctorBibliography
       end
     end
 
+    def render_fullcite_with_csl(bibliographer)
+      formatter = Formatters::CSL.new(bibliographer.options.style)
+      prepare_fullcite_item bibliographer, formatter
+      formatted_citation = formatter.render(:bibliography, id: citation_items.first.key).join
+      formatted_citation = Helpers.html_to_asciidoc formatted_citation
+      # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
+      "{empty}" + formatted_citation
+    end
+
+    def prepare_fullcite_item(bibliographer, formatter)
+      formatter.import([bibliographer.database.find_entry_by_id(citation_items.first.key)])
+    end
+
     def render_citation_with_csl(bibliographer)
       formatter = Formatters::CSL.new(bibliographer.options.style)
-
-      cites_with_local_attributes = citation_items.map { |cite| prepare_cite_metadata bibliographer, cite }
-      formatter.import cites_with_local_attributes
-      formatter.sort(mode: :citation)
-      items = formatter.data.map(&:cite)
-      items.each { |item| prepare_citation_item bibliographer.options, item }
-
+      items = prepare_items bibliographer, formatter
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
+      escape_brackets_inside_xref! formatted_citation
       # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
-      "{empty}" + formatted_citation.gsub(/{{{(?<xref_label>.*?)}}}/) do
-        # We escape closing square brackets inside the xref label.
+      "{empty}" + formatted_citation
+    end
+
+    def escape_brackets_inside_xref!(string)
+      string.gsub!(/{{{(?<xref_label>.*?)}}}/) do
         ["[", Regexp.last_match[:xref_label].gsub("]", '\]'), "]"].join
       end
     end
 
-    def prepare_cite_metadata(bibliographer, cite)
+    def prepare_items(bibliographer, formatter)
+      cites_with_local_attributes = citation_items.map { |cite| prepare_metadata bibliographer, cite }
+      formatter.import cites_with_local_attributes
+      formatter.sort(mode: :citation)
+      formatter.data.map(&:cite).each { |item| prepare_item bibliographer.options, item }
+    end
+
+    def prepare_metadata(bibliographer, cite)
       bibliographer.database.find_entry_by_id(cite.key).
         merge('citation-number': bibliographer.appearance_index_of(cite.key)).
         merge('citation-label': cite.key). # TODO: smart label generators
@@ -63,36 +81,17 @@ module AsciidoctorBibliography
       # TODO: why is a non blank 'locator' necessary to display locators set at a later stage?
     end
 
-    def prepare_citation_item(options, item)
+    def prepare_item(options, item)
       # TODO: hyperlink, suppress_author and only_author options
-
       ci = citation_items.detect { |c| c.key == item.id }
-      # Add prefix and suffix
-      item.prefix = ci.prefix.to_s + item.prefix.to_s
-      item.suffix = item.suffix.to_s + ci.suffix.to_s
-      # Wrap into hyperlink
-      if options.hyperlinks?
-        item.prefix = "xref:#{xref_id(item.id)}{{{" + item.prefix.to_s
-        item.suffix = item.suffix.to_s + "}}}"
-      end
-      # Assign locator.
+      wrap_item item, ci.prefix, ci.suffix
+      wrap_item item, "xref:#{xref_id(item.id)}{{{", "}}}" if options.hyperlinks?
       item.label, item.locator = ci.locator
     end
 
-    def render_fullcite_with_csl(bibliographer)
-      formatter = Formatters::CSL.new(bibliographer.options.style)
-
-      # NOTE: being able to overwrite a more general family of attributes would be neat.
-      # mergeable_attributes = Helpers.slice(citation_items.first.named_attributes || {}, *REF_ATTRIBUTES.map(&:to_s))
-      # reject empty values
-      # mergeable_attributes.reject! do |_key, value|
-      #   value.blank?
-      # end
-      database_entry = bibliographer.database.find_entry_by_id(citation_items.first.key)
-      # database_entry.merge!(mergeable_attributes)
-      formatter.import([database_entry])
-
-      "{empty}" + Helpers.html_to_asciidoc(formatter.render(:bibliography, id: citation_items.first.key).join)
+    def wrap_item(item, prefix, suffix)
+      item.prefix = prefix.to_s + item.prefix.to_s
+      item.suffix = item.suffix.to_s + suffix.to_s
     end
 
     def uuid
