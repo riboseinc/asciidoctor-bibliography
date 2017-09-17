@@ -5,8 +5,9 @@ require_relative 'citation_item'
 
 module AsciidoctorBibliography
   class Citation
-    TEX_MACROS_NAMES = Formatters::TeX::MACROS.keys.map { |s| Regexp.escape s }.concat(['fullcite']).join('|')
-    REGEXP = /\\?(#{TEX_MACROS_NAMES}):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
+    MACRO_NAME_REGEXP = Formatters::TeX::MACROS.keys.concat(%w[cite fullcite])
+                                               .map { |s| Regexp.escape s }.join('|').freeze
+    REGEXP = /\\?(#{MACRO_NAME_REGEXP}):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
     REF_ATTRIBUTES = %i[chapter page section clause].freeze
 
     attr_reader :macro, :citation_items
