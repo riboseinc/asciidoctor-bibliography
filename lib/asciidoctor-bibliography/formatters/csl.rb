@@ -1,6 +1,6 @@
-require 'citeproc'
-require 'csl/styles'
-require 'yaml'
+require "citeproc"
+require "csl/styles"
+require "yaml"
 
 module AsciidoctorBibliography
   module Formatters
@@ -13,8 +13,8 @@ module AsciidoctorBibliography
         new_keys = array.map(&::CSL::Style::Sort::Key.method(:new))
         new_sort = ::CSL::Style::Sort.new.add_children(*new_keys)
 
-        bibliography = engine.style.find_child('bibliography')
-        bibliography.find_child('sort')&.unlink
+        bibliography = engine.style.find_child("bibliography")
+        bibliography.find_child("sort")&.unlink
 
         bibliography.add_child new_sort
       end

@@ -1,8 +1,8 @@
-require 'asciidoctor/attribute_list'
+require "asciidoctor/attribute_list"
 
 module AsciidoctorBibliography
   class CitationItem
-    LOCATORS = CiteProc::CitationItem.labels.map(&:to_s).push('locator').freeze
+    LOCATORS = CiteProc::CitationItem.labels.map(&:to_s).push("locator").freeze
 
     attr_accessor :key, :target, :positional_attributes, :named_attributes, :locators
 
@@ -11,11 +11,11 @@ module AsciidoctorBibliography
     end
 
     def prefix
-      named_attributes['prefix']
+      named_attributes["prefix"]
     end
 
     def suffix
-      named_attributes['suffix']
+      named_attributes["suffix"]
     end
 
     def locators

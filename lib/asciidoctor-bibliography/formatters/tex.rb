@@ -4,18 +4,18 @@ module AsciidoctorBibliography
     class TeX
       MACROS = {
         # NOTE: \citet is equivalent to \cite, so we reserve the latter for CSL styling.
-        'citet'       => { type: :textual,       bracketed: true,  authors: :abbreviated },
-        'citet*'      => { type: :textual,       bracketed: true,  authors: :full },
-        'citealt'     => { type: :textual,       bracketed: false, authors: :abbreviated },
-        'citealt*'    => { type: :textual,       bracketed: false, authors: :full },
-        'citep'       => { type: :parenthetical, bracketed: true,  authors: :abbreviated },
-        'citep*'      => { type: :parenthetical, bracketed: true,  authors: :full },
-        'citealp'     => { type: :parenthetical, bracketed: false, authors: :abbreviated },
-        'citealp*'    => { type: :parenthetical, bracketed: false, authors: :full },
-        'citeauthor'  => { type: :authors_only,  bracketed: false, authors: :abbreviated },
-        'citeauthor*' => { type: :authors_only,  bracketed: false, authors: :full },
-        'citeyear'    => { type: :years_only,    bracketed: false },
-        'citeyearpar' => { type: :years_only,    bracketed: true }
+        "citet"       => { type: :textual,       bracketed: true,  authors: :abbreviated },
+        "citet*"      => { type: :textual,       bracketed: true,  authors: :full },
+        "citealt"     => { type: :textual,       bracketed: false, authors: :abbreviated },
+        "citealt*"    => { type: :textual,       bracketed: false, authors: :full },
+        "citep"       => { type: :parenthetical, bracketed: true,  authors: :abbreviated },
+        "citep*"      => { type: :parenthetical, bracketed: true,  authors: :full },
+        "citealp"     => { type: :parenthetical, bracketed: false, authors: :abbreviated },
+        "citealp*"    => { type: :parenthetical, bracketed: false, authors: :full },
+        "citeauthor"  => { type: :authors_only,  bracketed: false, authors: :abbreviated },
+        "citeauthor*" => { type: :authors_only,  bracketed: false, authors: :full },
+        "citeyear"    => { type: :years_only,    bracketed: false },
+        "citeyearpar" => { type: :years_only,    bracketed: true },
       }.freeze
 
       attr_accessor :opening_bracket,
@@ -26,10 +26,10 @@ module AsciidoctorBibliography
                     :years_separator
 
       def initialize(format)
-        if format == 'numbers'
-          bibpunct = '{[}{]}{,}{n}{,}{,}'
-        elsif format == 'authoryear'
-          bibpunct = '{(}{)}{;}{a}{,}{,}'
+        if format == "numbers"
+          bibpunct = "{[}{]}{,}{n}{,}{,}"
+        elsif format == "authoryear"
+          bibpunct = "{(}{)}{;}{a}{,}{,}"
         else
           raise StandardError, "Unknown TeX citation format: #{format}"
         end
@@ -53,51 +53,51 @@ module AsciidoctorBibliography
         when :textual
           citation.citation_items.each do |cite|
             authors = authors(macro_options[:authors], cite)
-            year = if @style == 'n'
+            year = if @style == "n"
                      bibliographer.appearance_index_of(cite.key)
                    else
                      year(cite)
                    end
-            cetera = Helpers.join_nonempty([year].concat(extra(cite)), @years_separator + ' ')
+            cetera = Helpers.join_nonempty([year].concat(extra(cite)), @years_separator + " ")
             cetera = bracket(cetera) if macro_options[:bracketed]
-            label = Helpers.join_nonempty([authors, cetera], ' ')
+            label = Helpers.join_nonempty([authors, cetera], " ")
             output << citation.xref(cite.key, label)
           end
-          output = output.join(@cites_separator + ' ')
+          output = output.join(@cites_separator + " ")
         when :parenthetical
           citation.citation_items.each do |cite|
-            if @style == 'n'
+            if @style == "n"
               authors = nil
               year = bibliographer.appearance_index_of(cite.key)
             else
               authors = authors(macro_options[:authors], cite)
               year = year(cite)
             end
-            cetera = Helpers.join_nonempty([year].concat(extra(cite)), @years_separator + ' ')
-            label = Helpers.join_nonempty([authors, cetera], @author_year_separator + ' ')
+            cetera = Helpers.join_nonempty([year].concat(extra(cite)), @years_separator + " ")
+            label = Helpers.join_nonempty([authors, cetera], @author_year_separator + " ")
             output << citation.xref(cite.key, label)
           end
-          output = output.join(@cites_separator + ' ')
+          output = output.join(@cites_separator + " ")
           output = bracket(output) if macro_options[:bracketed]
         when :authors_only
           citation.citation_items.each do |cite|
             authors = authors(macro_options[:authors], cite)
             year = nil
-            cetera = Helpers.join_nonempty([year].concat(extra(cite)), @years_separator + ' ')
-            label = Helpers.join_nonempty([authors, cetera], @author_year_separator + ' ')
+            cetera = Helpers.join_nonempty([year].concat(extra(cite)), @years_separator + " ")
+            label = Helpers.join_nonempty([authors, cetera], @author_year_separator + " ")
             output << citation.xref(cite.key, label)
           end
-          output = output.join(@cites_separator + ' ')
+          output = output.join(@cites_separator + " ")
           output = bracket(output) if macro_options[:bracketed]
         when :years_only
           citation.citation_items.each do |cite|
             authors = nil
             year = year(cite)
-            cetera = Helpers.join_nonempty([year].concat(extra(cite)), @years_separator + ' ')
-            label = Helpers.join_nonempty([authors, cetera], @author_year_separator + ' ')
+            cetera = Helpers.join_nonempty([year].concat(extra(cite)), @years_separator + " ")
+            label = Helpers.join_nonempty([authors, cetera], @author_year_separator + " ")
             output << citation.xref(cite.key, label)
           end
-          output = output.join(@cites_separator + ' ')
+          output = output.join(@cites_separator + " ")
           output = bracket(output) if macro_options[:bracketed]
         else
           raise StandardError, "Unknown TeX citation macro type: #{macro_options[:type]}"
@@ -113,24 +113,24 @@ module AsciidoctorBibliography
       end
 
       def find_entry(key)
-        entry = @database.find { |h| h['id'] == key }
+        entry = @database.detect { |h| h["id"] == key }
         raise StandardError, "Can't find entry: #{key}" if entry.nil?
         entry
       end
 
       def year(cite)
         entry = find_entry(cite.key)
-        issued = entry['issued']
+        issued = entry["issued"]
 
         if issued.nil?
           puts "asciidoctor-bibliography: citation (#{cite.key}) has no 'issued' information"
-          return ''
+          return ""
         end
 
-        date_parts = issued['date-parts']
-        return '' if date_parts.nil?
+        date_parts = issued["date-parts"]
+        return "" if date_parts.nil?
 
-        return '' if date_parts.first.nil?
+        return "" if date_parts.first.nil?
         date_parts.first.first
       end
 
@@ -166,20 +166,20 @@ module AsciidoctorBibliography
 
       def authors_list(cite)
         entry = find_entry(cite.key)
-        authors = entry['author']
+        authors = entry["author"]
         return [] if authors.nil?
-        authors.map { |h| h['family'] }.compact
+        authors.map { |h| h["family"] }.compact
       end
 
       def authors_abbreviated(cite)
         authors = authors_list(cite)
-        return '' if authors.empty?
+        return "" if authors.empty?
         authors.length > 1 ? "#{authors.first} et al." : authors.first
       end
 
       def authors_full(cite)
         authors = authors_list(cite)
-        return '' if authors.empty?
+        return "" if authors.empty?
         Helpers.to_sentence authors
       end
     end

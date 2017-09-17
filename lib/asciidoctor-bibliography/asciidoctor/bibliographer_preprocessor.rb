@@ -1,10 +1,10 @@
-require 'asciidoctor'
+require "asciidoctor"
 
-require_relative '../helpers'
-require_relative '../database'
-require_relative '../citation'
-require_relative '../index'
-require_relative '../options'
+require_relative "../helpers"
+require_relative "../database"
+require_relative "../citation"
+require_relative "../index"
+require_relative "../options"
 
 module AsciidoctorBibliography
   module Asciidoctor

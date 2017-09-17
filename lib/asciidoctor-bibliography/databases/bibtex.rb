@@ -1,12 +1,12 @@
-require 'bibtex'
-require 'bibtex/filters'
-require 'latex/decode/base'
-require 'latex/decode/maths'
-require 'latex/decode/accents'
-require 'latex/decode/diacritics'
-require 'latex/decode/punctuation'
-require 'latex/decode/symbols'
-require 'latex/decode/greek'
+require "bibtex"
+require "bibtex/filters"
+require "latex/decode/base"
+require "latex/decode/maths"
+require "latex/decode/accents"
+require "latex/decode/diacritics"
+require "latex/decode/punctuation"
+require "latex/decode/symbols"
+require "latex/decode/greek"
 
 module AsciidoctorBibliography
   module Databases
@@ -33,7 +33,7 @@ module AsciidoctorBibliography
           LaTeX::Decode::Symbols.decode!(text)
           LaTeX::Decode::Greek.decode!(text)
           text.gsub!(/\\url\{(.+?)\}/, ' \\1 ')
-          text.gsub!(/\\\w+(?=\s+\w)/, '')
+          text.gsub!(/\\\w+(?=\s+\w)/, "")
           text.gsub!(/\\\w+(?:\[.+?\])?\s*\{(.+?)\}/, '\\1')
           LaTeX::Decode::Base.strip_braces(text)
           LaTeX.normalize_C(text)
