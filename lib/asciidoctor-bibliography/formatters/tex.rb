@@ -3,8 +3,7 @@ module AsciidoctorBibliography
     # This formatter emulates the behaviour of traditional Bib(La)TeX/NatBib citations.
     class TeX
       MACROS = {
-        # NOTE: cite = citet
-        'cite'        => { type: :textual,       bracketed: true,  authors: :abbreviated },
+        # NOTE: \citet is equivalent to \cite, so we reserve the latter for CSL styling.
         'citet'       => { type: :textual,       bracketed: true,  authors: :abbreviated },
         'citet*'      => { type: :textual,       bracketed: true,  authors: :full },
         'citealt'     => { type: :textual,       bracketed: false, authors: :abbreviated },
