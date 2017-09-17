@@ -1,7 +1,7 @@
 = Sample usage of asciidoctor-bibliography
 :bibliography-database: biblio.bib
 :bibliography-hyperlinks: true
-:bibliography-sort: { macro: author, sort: descending }
+:bibliography-style: ieee
 
 ## Standard
 

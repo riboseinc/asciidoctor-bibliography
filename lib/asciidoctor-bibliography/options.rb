@@ -10,9 +10,8 @@ module AsciidoctorBibliography
       "bibliography-database" => nil,
       "bibliography-style" => "apa",
       "bibliography-hyperlinks" => "true",
-      "bibliography-tex-mode" => "false", # TODO: implement
       "bibliography-order" => "alphabetical", # TODO: deprecate
-      "bibliography-citation-style" => "authoryear", # TODO: deprecate
+      "bibliography-tex-style" => "authoryear",
       "bibliography-sort" => nil,
     }.freeze
 
@@ -56,6 +55,10 @@ module AsciidoctorBibliography
       value = self.class.validate_parsed_sort_type! value
       value = self.class.validate_parsed_sort_contents! value unless value.nil?
       value
+    end
+
+    def tex_style
+      self["bibliography-tex-style"] || DEFAULTS["bibliography-tex-style"]
     end
 
     def self.validate_parsed_sort_type!(value)

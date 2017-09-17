@@ -1,10 +1,11 @@
 = Sample usage of asciidoctor-bibliography
 :bibliography-database: biblio.bib
-:bibliography-order: alphabetical
-:bibliography-citation-style: numbers
+:bibliography-tex-style: numbers
 :bibliography-style: ieee
+:bibliography-sort: { macro: author, sort: descending }
 
-## Standard
+
+## Citations
 
 
 cite:[Lane12a]
@@ -15,6 +16,7 @@ cite:[Anderson04]
 
 
 ## Bibliography
+
 
 bibliography::[]
 
