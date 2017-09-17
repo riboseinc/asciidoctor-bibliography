@@ -1,7 +1,6 @@
 = Sample usage of asciidoctor-bibliography
 :bibliography-database: biblio.bib
 :bibliography-hyperlinks: true
-:bibliography-style: ieee
 
 ## Standard
 
