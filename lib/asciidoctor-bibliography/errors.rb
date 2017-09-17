@@ -10,6 +10,7 @@ module AsciidoctorBibliography
     module Database
       class UnsupportedFormat < Error; end
       class FileNotFound < Error; end
+      class IdNotFound < Error; end
     end
   end
 end
