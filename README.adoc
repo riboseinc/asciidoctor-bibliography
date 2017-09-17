@@ -91,7 +91,24 @@ Referring to a specific location inside a resource can be done providing an extr
 cite:[Aa2017, page=42]
 ----
 
-Allowed locators are `book`, `chapter`, `column`, `figure`, `folio`, `issue`, `line`, `note`, `opus`, `page`, `paragraph`, `part`, `section`, `sub-verbo`, `verse` and `volume`. The support depends upon which ones your style implement, though.
+Allowed locators are `book`, `chapter`, `column`, `figure`, `folio`, `issue`, `line`, `note`, `opus`, `page`, `paragraph`, `part`, `section`, `sub-verbo`, `verse` and `volume`. Their support depends upon which ones your style implements.
+
+An extra `locator` attribute with no custom rendering exists.
+It appears where the ordinary locators would, but you can fully customize it:
+
+[source,asciidoc]
+----
+cite:[Aa2017, locator=" halfway through"]
+----
+
+Note that all locators except the first one will be ignored.
+
+To `prefix` and `suffix` citations with arbitrary strings you can use the relative attributes:
+
+[source,asciidoc]
+----
+cite:[Aa2017, prefix="see ", suffix=" if you will"]
+----
 
 To cite multiple resources you concatenate them as follows:
 
