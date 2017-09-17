@@ -52,7 +52,7 @@ describe AsciidoctorBibliography::CitationItem do
 
     it "recognizes non standard locator" do
       subject.parse_attribute_list "foo, locator=' somewhere'"
-      expect(subject.locators).to eq({'locator' => ' somewhere'})
+      expect(subject.locators).to eq("locator" => " somewhere")
     end
   end
 
