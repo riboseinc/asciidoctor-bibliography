@@ -8,7 +8,7 @@ module AsciidoctorBibliography
     MACRO_NAME_REGEXP = Formatters::TeX::MACROS.keys.concat(%w[cite fullcite]).
       map { |s| Regexp.escape s }.join("|").freeze
     REGEXP = /\\?(#{MACRO_NAME_REGEXP}):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
-    REF_ATTRIBUTES = %i[chapter page section clause].freeze
+    # REF_ATTRIBUTES = %i[chapter page section clause].freeze
 
     attr_reader :macro, :citation_items
 
@@ -82,18 +82,16 @@ module AsciidoctorBibliography
       formatter = Formatters::CSL.new(bibliographer.options.style)
 
       # NOTE: being able to overwrite a more general family of attributes would be neat.
-      mergeable_attributes = Helpers.slice(citation_items.first.named_attributes || {}, *REF_ATTRIBUTES.map(&:to_s))
-
+      # mergeable_attributes = Helpers.slice(citation_items.first.named_attributes || {}, *REF_ATTRIBUTES.map(&:to_s))
       # reject empty values
-      mergeable_attributes.reject! do |_key, value|
-        value.blank?
-      end
-      # TODO: as is, citation items other than the first are simply ignored.
+      # mergeable_attributes.reject! do |_key, value|
+      #   value.blank?
+      # end
       database_entry = bibliographer.database.detect { |e| e["id"] == citation_items.first.key }
-      database_entry.merge!(mergeable_attributes)
+      # database_entry.merge!(mergeable_attributes)
       formatter.import([database_entry])
+
       "{empty}" + Helpers.html_to_asciidoc(formatter.render(:bibliography, id: citation_items.first.key).join)
-      # '{empty}' + Helpers.html_to_asciidoc(formatter.render(:citation, id: citation_items.first.key))
     end
 
     def uuid
