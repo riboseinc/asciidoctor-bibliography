@@ -43,7 +43,7 @@ module AsciidoctorBibliography
       formatter.import cites_with_local_attributes
       formatter.sort(mode: :citation)
       items = formatter.data.map(&:cite)
-      items.each { |item| prepare_citation_item item, hyperlink: bibliographer.options.hyperlinks? }
+      items.each { |item| prepare_citation_item bibliographer.options, item }
 
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
       # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
@@ -61,20 +61,20 @@ module AsciidoctorBibliography
       # TODO: why is a non blank 'locator' necessary to display locators set at a later stage?
     end
 
-    def prepare_citation_item(item, hyperlink:)
+    def prepare_citation_item(options, item)
+      # TODO: hyperlink, suppress_author and only_author options
+
       ci = citation_items.find { |c| c.key == item.id }
       # Add prefix and suffix
-      item.prefix = ci.prefix.to_s + item.prefix.to_s unless ci.prefix.nil?
-      item.suffix = item.suffix.to_s + ci.suffix.to_s unless ci.suffix.nil?
+      item.prefix = ci.prefix.to_s + item.prefix.to_s
+      item.suffix = item.suffix.to_s + ci.suffix.to_s
       # Wrap into hyperlink
-      if hyperlink
+      if options.hyperlinks?
         item.prefix = "xref:#{xref_id(item.id)}{{{" + item.prefix.to_s
         item.suffix = item.suffix.to_s + '}}}'
       end
       # Assign locator.
-      item.label, item.locator = ci.locator unless ci.locator.nil?
-
-      # TODO: suppress_author and only_author options?
+      item.label, item.locator = ci.locator
     end
 
     def render_fullcite_with_csl(bibliographer)
