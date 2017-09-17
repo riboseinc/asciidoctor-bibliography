@@ -35,9 +35,9 @@ describe AsciidoctorBibliography::CitationItem do
   describe "#locators" do
     subject { described_class.new }
 
-    it "returns no locators if none are present" do
-      subject.parse_attribute_list "foo, lol=bar, baz, qux, zod=13"
-      expect(subject.locators).to eq ({})
+    it "returns no locator if none are present" do
+      subject.parse_attribute_list "foo, lol=bar, baz, qux, zod=42"
+      expect(subject.locator).to be_nil
     end
 
     it "recognizes all CSL locators" do
@@ -48,6 +48,53 @@ describe AsciidoctorBibliography::CitationItem do
 
       subject.parse_attribute_list "foo, #{locators_string}"
       expect(subject.locators).to eq locators_hash
+    end
+
+    it "recognizes non standard locator" do
+      subject.parse_attribute_list "foo, locator=' somewhere'"
+      expect(subject.locators).to eq({'locator' => ' somewhere'})
+    end
+  end
+
+  describe "#locator" do
+    subject { described_class.new }
+
+    it "returns the first locator if existing" do
+      subject.parse_attribute_list("foo, page=42, locator=bar, chapter=24")
+      expect(subject.locator).to eq(%w[page 42])
+    end
+
+    it "returns nil if no loctor exist" do
+      subject.parse_attribute_list("foo, bar, zod=quz")
+      expect(subject.locator).to be_nil
+    end
+  end
+
+  describe "#prefix" do
+    subject { described_class.new }
+
+    it "returns the prefix if it exist" do
+      subject.parse_attribute_list("foo, prefix=bar")
+      expect(subject.prefix).to eq("bar")
+    end
+
+    it "returns nil if no prefix exists" do
+      subject.parse_attribute_list("foo, bar, zod=quz")
+      expect(subject.prefix).to be_nil
+    end
+  end
+
+  describe "#suffix" do
+    subject { described_class.new }
+
+    it "returns the suffix if it exist" do
+      subject.parse_attribute_list("foo, suffix=bar")
+      expect(subject.suffix).to eq("bar")
+    end
+
+    it "returns nil if no suffix exists" do
+      subject.parse_attribute_list("foo, bar, zod=quz")
+      expect(subject.suffix).to be_nil
     end
   end
 end
