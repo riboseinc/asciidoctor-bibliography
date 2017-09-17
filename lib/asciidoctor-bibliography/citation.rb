@@ -57,19 +57,23 @@ module AsciidoctorBibliography
       bibliographer.database.find { |e| e['id'] == cite.key }
                    .merge('citation-number': bibliographer.appearance_index_of(cite.key))
                    .merge('citation-label': cite.key) # TODO: smart label generators
-                   .merge('locator': cite.locators.any? ? ' ' : nil)
-      # TODO: why is 'locator' necessary to display locators? (and not just in the item, later)
+                   .merge('locator': cite.locator.nil? ? nil : ' ')
+      # TODO: why is a non blank 'locator' necessary to display locators set at a later stage?
     end
 
     def prepare_citation_item(item, hyperlink:)
+      ci = citation_items.find { |c| c.key == item.id }
+      # Add prefix and suffix
+      item.prefix = ci.prefix.to_s + item.prefix.to_s unless ci.prefix.nil?
+      item.suffix = item.suffix.to_s + ci.suffix.to_s unless ci.suffix.nil?
       # Wrap into hyperlink
       if hyperlink
         item.prefix = "xref:#{xref_id(item.id)}{{{" + item.prefix.to_s
         item.suffix = item.suffix.to_s + '}}}'
       end
-      # Assign locator
-      locator = citation_items.find { |cite| cite.key == item.id }.locators.first
-      item.label, item.locator = locator unless locator.nil?
+      # Assign locator.
+      item.label, item.locator = ci.locator unless ci.locator.nil?
+
       # TODO: suppress_author and only_author options?
     end
 
