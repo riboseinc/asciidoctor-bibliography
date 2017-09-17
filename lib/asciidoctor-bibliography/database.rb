@@ -14,6 +14,15 @@ module AsciidoctorBibliography
       concat Database.load(filename)
     end
 
+    def find_entry_by_id(id)
+      result = detect { |entry| entry["id"] == id }
+      if result.nil?
+        message = "No entry with id '#{id}' was found in the bibliographic database."
+        raise Errors::Database::IdNotFound, message
+      end
+      result
+    end
+
     def self.load(filename)
       filepath = File.expand_path filename
       raise Errors::Database::FileNotFound, filepath unless File.exist?(filepath)

@@ -55,7 +55,7 @@ module AsciidoctorBibliography
     end
 
     def prepare_cite_metadata(bibliographer, cite)
-      bibliographer.database.detect { |e| e["id"] == cite.key }.
+      bibliographer.database.find_entry_by_id(cite.key)
         merge('citation-number': bibliographer.appearance_index_of(cite.key)).
         merge('citation-label': cite.key). # TODO: smart label generators
         merge('locator': cite.locator.nil? ? nil : " ")
@@ -87,7 +87,7 @@ module AsciidoctorBibliography
       # mergeable_attributes.reject! do |_key, value|
       #   value.blank?
       # end
-      database_entry = bibliographer.database.detect { |e| e["id"] == citation_items.first.key }
+      database_entry = bibliographer.database.find_entry_by_id(citation_items.first.key)
       # database_entry.merge!(mergeable_attributes)
       formatter.import([database_entry])
 

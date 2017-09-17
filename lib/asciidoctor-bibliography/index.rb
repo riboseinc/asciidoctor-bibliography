@@ -23,7 +23,7 @@ module AsciidoctorBibliography
       end
 
       filtered_db = bibliographer.occurring_keys.
-        map { |id| bibliographer.database.detect { |h| h["id"] == id } }.
+        map { |id| bibliographer.database.find_entry_by_id(id) }.
         map { |entry| prepare_entry_metadata bibliographer, entry }
       formatter.import filtered_db
       formatter.sort(mode: :bibliography)
