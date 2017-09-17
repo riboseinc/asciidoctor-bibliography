@@ -210,7 +210,18 @@ As for the `sort` option, the valid values are `ascending` (default) and `descen
 
 === TeX-mode
 
-NOTE: TODO
+While the `cite` macro is reserved for CSL styling, all traditional Bib(La)TeX macros are accessible through the same syntax with their usual names: `citet`, `citet*`, `citealt`, `citealt*`, `citep`, `citep*`, `citealp`, `citealp*`, `citeauthor`, `citeauthor*`, `citeyear` and `citeyearpar`. Note that none is missing, since `\cite` is equivalent to `\citet`.
+
+To cite multiple items you can concatenate them just like with `cite`.
+
+You can set their style in the header:
+
+[source,asciidoc]
+----
+:bibliography-tex-style: authoryear
+----
+
+Accepted values are `authoryear` (default) and `numeric`.
 
 == Development
 
