@@ -3,8 +3,6 @@ inherit_from:
 
 AllCops:
   TargetRubyVersion: 2.3
-  Excludes:
-    - spec/**/*.rb
 
 Metrics/LineLength:
   Max: 120
