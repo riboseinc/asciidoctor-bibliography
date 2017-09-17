@@ -1,23 +1,9 @@
 = Sample usage of asciidoctor-bibliography
 :bibliography-database: biblio.bib
+:bibliography-tex-style: authoryear
+:bibliography-style: apa
 
-## Standard
-
-cite:[Lane12a]+[Lane12b]
-
-cite:[Anderson04]
-
-cite:[Anderson04, page=10]
-
-cite:[Anderson04, chapter=10]
-
-cite:[Anderson04, page=10, chapter=12]
-
-## TeX-compatible
-
-fullcite:[Anderson04] (fullcite, single)
-
-fullcite:[Anderson04, page=123] (fullcite, single)
+## Citations
 
 citet:[Anderson04] (citet, single)
 
@@ -67,7 +53,11 @@ citeyearpar:[Anderson04] (citeyearpar, single)
        
 citeyearpar:[Lane12a]+[Lane12b] (citeyearpar, multiple)
 
+fullcite:[Anderson04] (fullcite)
+
+
 ## Bibliography
+
 
 bibliography::[]
 

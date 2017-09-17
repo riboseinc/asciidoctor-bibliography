@@ -8,7 +8,7 @@ module AsciidoctorBibliography
     MACRO_NAME_REGEXP = Formatters::TeX::MACROS.keys.concat(%w[cite fullcite]).
       map { |s| Regexp.escape s }.join("|").freeze
     REGEXP = /\\?(#{MACRO_NAME_REGEXP}):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
-    # REF_ATTRIBUTES = %i[chapter page section clause].freeze
+    REF_ATTRIBUTES = %i[chapter page section clause].freeze
 
     attr_reader :macro, :citation_items
 
@@ -26,14 +26,15 @@ module AsciidoctorBibliography
     end
 
     def render(bibliographer)
-      if macro == "cite"
+      case macro
+      when "cite"
         render_citation_with_csl(bibliographer)
-      elsif macro == "fullcite"
+      when "fullcite"
         render_fullcite_with_csl(bibliographer)
-      elsif Formatters::TeX::MACROS.keys.include? macro
-        formatter = Formatters::TeX.new(bibliographer.options["citation-style"])
+      when *Formatters::TeX::MACROS.keys
+        formatter = Formatters::TeX.new(bibliographer.options.tex_style)
         formatter.import bibliographer.database
-        formatter.render(bibliographer, self)
+        formatter.render bibliographer, self
       end
     end
 
