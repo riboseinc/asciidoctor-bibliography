@@ -123,7 +123,7 @@ module AsciidoctorBibliography
         issued = entry["issued"]
 
         if issued.nil?
-          puts "asciidoctor-bibliography: citation (#{cite.key}) has no 'issued' information"
+          warn "asciidoctor-bibliography: citation (#{cite.key}) has no 'issued' information"
           return ""
         end
 
