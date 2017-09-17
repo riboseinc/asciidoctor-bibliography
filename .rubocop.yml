@@ -1,7 +1,9 @@
+inherit_from:
+  - https://raw.githubusercontent.com/riboseinc/oss-guides/master/style/.rubocop.yml
+
 AllCops:
   TargetRubyVersion: 2.3
   Excludes:
-    - deprecated/**/*.rb
     - spec/**/*.rb
 
 Metrics/LineLength:

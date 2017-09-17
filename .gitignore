@@ -54,3 +54,6 @@ Gemfile.lock
 # omit compiled documents
 samples/**/*.html
 README.html
+
+# omit cache of remote shared rubocop config
+.rubocop-https---raw-githubusercontent-com-riboseinc-oss-guides-master-style--rubocop-yml
