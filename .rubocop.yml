@@ -1,17 +1,11 @@
-inherit_from:
-  - https://raw.githubusercontent.com/riboseinc/oss-guides/master/style/.rubocop.yml
+inherit_from: .oss-guides.rubocop.yml
 
 AllCops:
   TargetRubyVersion: 2.3
 
+# TODO: shorten all lines to 80, as per oss-guides.
 Metrics/LineLength:
   Max: 120
 
-FrozenStringLiteralComment:
-  Enabled: false
-
-Style/FileName:
-  Enabled: false
-
-Documentation:
+Rails:
   Enabled: false
