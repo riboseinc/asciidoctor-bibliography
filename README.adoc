@@ -1,16 +1,34 @@
-= Citations in AsciiDoc using asciidoctor-bibliography
+= Citations and Bibliography the "asciidoctor-way"
+
+asciidoctor-bibliography lets you handle citations and bibliography the
+"http://asciidoctor.org/[asciidoctor]-way"!
 
 image:https://img.shields.io/gem/v/asciidoctor-bibliography.svg["Gem Version", link="https://rubygems.org/gems/asciidoctor-bibliography"]
 image:https://img.shields.io/travis/riboseinc/asciidoctor-bibliography/master.svg["Build Status", link="https://travis-ci.org/riboseinc/asciidoctor-bibliography"]
 image:https://codeclimate.com/github/riboseinc/asciidoctor-bibliography/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/riboseinc/asciidoctor-bibliography"]
 
+
 == Introduction
 
-This gem allows you to add citations and bibliographies to AsciiDoc using http://asciidoctor.org/[asciidoctor].
+This gem allows you to add citations to AsciiDoc imported from BibTex files.
 
-Styling leverages the popular http://citationstyles.org/[CSL] language so you have immediate access to thousands of crowdsourced styles.
+Citation styling leverages the popular http://citationstyles.org/[CSL] language
+so you have direct access to thousands of crowdsourced styles including IEEE,
+APA, Chicago, DIN and ISO 690.
 
-On top of that you also have a formatter derived from the `Bib(La)TeX` world, in that all the macros you are familiar with are recognized.
+The `bibliography:[]` command generates a full reference list that adheres to
+your configured citation style.
+
+On top of that you also have a formatter derived from the `Bib(La)TeX` world,
+so all the macros you are familiar with are recognized.
+
+Its syntax is designed to be "`native-asciidoctor`":
+
+* single cite `cite:[key]`;
+* contextual cite `cite[key, page=3]`;
+* multiple cites `cite:[key1]+[key2]`;
+* full cite `fullcite:[key]`; and
+* TeX-compatible macros including `citep:[key]`, `citet:[]key` and friends.
 
 
 == Installation
@@ -35,6 +53,7 @@ Or install it yourself as:
 ----
 $ gem install asciidoctor-bibliography
 ----
+
 
 == Quick start
 
@@ -70,10 +89,12 @@ $ asciidoctor -r asciidoctor-bibliography my_first_document.adoc
 
 That's it!
 
+
 == Usage
 
 `asciidoctor-bibliography` allows for more customizations and macros.
 Let's examine all its features in full detail.
+
 
 === Citations
 
@@ -119,6 +140,7 @@ cite:[Aa2017]+[Bb2017]+[Cc2017]
 
 You can apply a different locator to each one.
 
+
 === Bibliographies
 
 To render the bibliography you simply use the following block macro:
@@ -127,6 +149,7 @@ To render the bibliography you simply use the following block macro:
 ----
 bibliography::[]
 ----
+
 
 === Databases
 
@@ -139,9 +162,10 @@ Specifying a database file is mandatory and it can be done in the header with it
 
 Currently only the `BibTeX` format is supported; more will come soon.
 
+
 === Styling
 
-The default style for citations and bibliographies is `apa`. 
+The default style for citations and bibliographies is `apa`.
 You can change that in the header:
 
 [source,asciidoc]
@@ -155,6 +179,7 @@ or searching through the friendly http://editor.citationstyles.org/[style editor
 
 You can also simply use the filename of a CSL file on your machine if you need more customization.
 
+
 === Hyperlinks
 
 By default, citations include hyperlinks to their entry in the bibliography.
@@ -165,11 +190,17 @@ You can disable them in the header:
 :bibliography-hyperlinks: false
 ----
 
+
 === Sorting
 
 You can override the sorting specified by the CSL style you have chosen, if you desire to do so.
+
 The relevant option is `bibliography-sort` and it accepts a YAML string specifying a list of keys to sort the entries with.
+
 Let's explore some of the possibilities.
+
+
+==== No Sort
 
 The simplest option is *no sorting*; an empty list will cause the entries to be in appearance order.
 
@@ -178,6 +209,9 @@ The simplest option is *no sorting*; an empty list will cause the entries to be 
 :bibliography-sort: []
 ----
 
+
+==== Sort By Single Key
+
 To sort in a single key - say, the rendered author name - it's as simple as
 
 [source,asciidoc]
@@ -185,12 +219,18 @@ To sort in a single key - say, the rendered author name - it's as simple as
 :bibliography-sort: macro: author
 ----
 
+
+==== Reverse Sort
+
 However you might want to reverse the order:
 
 [source,asciidoc]
 ----
 :bibliography-sort: { macro: author, sort: descending }
 ----
+
+
+==== Sort By Multiple Keys
 
 It is possible to use any number of sorting keys putting them in an array.
 E.g. to sort by issuing date:
@@ -201,16 +241,35 @@ E.g. to sort by issuing date:
 ----
 
 You might be asking: what is the difference between `variable` s and `macro` s?
+
 The former are metadata fields fixed by the http://docs.citationstyles.org/en/stable/specification.html#appendix-iv-variables[CSL specification].
-The latter are combinations of variables defined by your chosen style
+
+The latter are combinations of variables defined by your chosen style.
+
 To use them effectively you'll need to know its implementation.
+
 This task is not daunting at all, as the http://editor.citationstyles.org/[style editor] allows you to quickly list them and understand their role.
 
 As for the `sort` option, the valid values are `ascending` (default) and `descending` as you'd exect.
 
+
 === TeX-mode
 
-While the `cite` macro is reserved for CSL styling, all traditional Bib(La)TeX macros are accessible through the same syntax with their usual names: `citet`, `citet*`, `citealt`, `citealt*`, `citep`, `citep*`, `citealp`, `citealp*`, `citeauthor`, `citeauthor*`, `citeyear` and `citeyearpar`. Note that none is missing, since `\cite` is equivalent to `\citet`.
+While the `cite` macro is reserved for CSL styling, all traditional Bib(La)TeX macros are accessible through the same syntax with their usual names:
+
+* `citet`
+* `citet*`
+* `citealt`
+* `citealt*`
+* `citep`
+* `citep*`
+* `citealp`
+* `citealp*`
+* `citeauthor`
+* `citeauthor*`
+* `citeyear` and `citeyearpar`.
+
+NOTE: no macros are missing since `\cite` is equivalent to `\citet`!
 
 To cite multiple items you can concatenate them just like with `cite`.
 
