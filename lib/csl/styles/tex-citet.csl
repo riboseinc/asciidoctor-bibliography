@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="never">
   <info>
-    <title>American Psychological Association 6th edition</title>
-    <id>http://www.zotero.org/styles/apa</id>
+    <title>TeX style for macro citet</title>
+    <id>tex-citet</id>
   </info>
   <locale xml:lang="en"/>
   <macro name="author-long">
@@ -14,73 +14,6 @@
     <names variable="author">
       <name form="short" and="text" et-al-min="2" et-al-use-first="1" et-al-subsequent-min="2" et-al-subsequent-use-first="1"/>
     </names>
-  </macro>
-  <macro name="access">
-    <choose>
-      <if type="thesis report" match="any">
-        <choose>
-          <if variable="DOI" match="any">
-            <text variable="DOI" prefix="https://doi.org/"/>
-          </if>
-          <else-if variable="URL" match="any">
-            <group>
-              <text term="retrieved" text-case="capitalize-first" suffix=" "/>
-              <text term="from" suffix=" "/>
-              <text variable="URL"/>
-            </group>
-          </else-if>
-          <else-if variable="archive" match="any">
-            <group>
-              <text term="retrieved" text-case="capitalize-first" suffix=" "/>
-              <text term="from" suffix=" "/>
-              <text variable="archive" suffix="."/>
-              <text variable="archive_location" prefix=" (" suffix=")"/>
-            </group>
-          </else-if>
-        </choose>
-      </if>
-      <else>
-        <choose>
-          <if variable="DOI">
-            <text variable="DOI" prefix="https://doi.org/"/>
-          </if>
-          <else>
-            <choose>
-              <if type="post post-weblog webpage" match="any">
-                <group delimiter=" ">
-                  <text term="retrieved" text-case="capitalize-first" suffix=" "/>
-                  <group>
-                    <date variable="accessed" form="text" suffix=", "/>
-                  </group>
-                  <text term="from"/>
-                  <text variable="URL"/>
-                </group>
-              </if>
-              <else>
-                <group>
-                  <text term="retrieved" text-case="capitalize-first" suffix=" "/>
-                  <text term="from" suffix=" "/>
-                  <text variable="URL"/>
-                </group>
-              </else>
-            </choose>
-          </else>
-        </choose>
-      </else>
-    </choose>
-  </macro>
-  <macro name="edition">
-    <choose>
-      <if is-numeric="edition">
-        <group delimiter=" ">
-          <number variable="edition" form="ordinal"/>
-          <text term="edition" form="short"/>
-        </group>
-      </if>
-      <else>
-        <text variable="edition"/>
-      </else>
-    </choose>
   </macro>
   <macro name="locators">
     <choose>
@@ -168,7 +101,7 @@
       <text variable="locator" prefix=" "/>
     </group>
   </macro>
-  <citation et-al-min="6" et-al-use-first="1" et-al-subsequent-min="3" et-al-subsequent-use-first="1" disambiguate-add-year-suffix="true" disambiguate-add-names="true" disambiguate-add-givenname="true" collapse="year" givenname-disambiguation-rule="primary-name">
+  <citation>
     <layout delimiter="; ">
       <group>
         <text macro="author-short" suffix=" "/>
@@ -183,5 +116,5 @@
       </group>
     </layout>
   </citation>
-  <bibliography hanging-indent="true" et-al-min="8" et-al-use-first="6" et-al-use-last="true" entry-spacing="0" line-spacing="2"/>
+  <bibliography/>
 </style>
