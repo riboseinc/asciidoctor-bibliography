@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="never">
   <info>
-    <title>TeX style for macro citep</title>
-    <id>tex-citep</id>
+    <title>TeX style for macro citealp</title>
+    <id>tex-citealp</id>
   </info>
   <locale xml:lang="en"/>
   <macro name="author-long">
@@ -102,7 +102,7 @@
     </group>
   </macro>
   <citation>
-    <layout delimiter="; " prefix="(" suffix=")">
+    <layout delimiter="; ">
       <group>
         <text variable="prefix" suffix=" "/>
         <group delimiter=", ">
