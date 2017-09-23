@@ -31,10 +31,9 @@ module AsciidoctorBibliography
         render_citation_with_csl(bibliographer)
       when "fullcite"
         render_fullcite_with_csl(bibliographer)
-      when "citet"
-        render_citation_with_csl(bibliographer, style: "lib/csl/styles/tex-citet", tex: true)
-      when "citet*"
-        render_citation_with_csl(bibliographer, style: "lib/csl/styles/tex-citets", tex: true)
+      when *%w[citet citet* citep citep*]
+        filename = "lib/csl/styles/tex-" + macro.tr('*', 's')
+        render_citation_with_csl(bibliographer, style: filename, tex: true)
       when *Formatters::TeX::MACROS.keys
         formatter = Formatters::TeX.new(bibliographer.options.tex_style)
         formatter.import bibliographer.database
