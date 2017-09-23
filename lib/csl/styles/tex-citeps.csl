@@ -105,8 +105,8 @@
     <layout delimiter="; " prefix="(" suffix=")">
       <group>
         <text variable="prefix" suffix=" "/>
-        <text macro="author-long" suffix=" "/>
         <group delimiter=", ">
+          <text macro="author-long"/>
           <date date-parts="year" form="numeric" variable="issued"/>
           <text macro="citation-locator"/>
         </group>
