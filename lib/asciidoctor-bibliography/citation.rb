@@ -31,7 +31,7 @@ module AsciidoctorBibliography
         render_citation_with_csl(bibliographer)
       when "fullcite"
         render_fullcite_with_csl(bibliographer)
-      when *%w[citet citet* citep citep*]
+      when *%w[citet citet* citep citep* citealt citealt* citealp citealp*]
         filename = File.join AsciidoctorBibliography.root, "lib/csl/styles/tex-" + macro.tr('*', 's')
         render_citation_with_csl(bibliographer, style: filename, tex: true)
       when *Formatters::TeX::MACROS.keys
