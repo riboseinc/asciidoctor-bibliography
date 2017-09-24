@@ -16,15 +16,7 @@ module AsciidoctorBibliography
     end
 
     def render(bibliographer)
-      formatter = Formatter.new(bibliographer.options.style, locale: bibliographer.options.locale)
-
-      unless bibliographer.options.sort.nil?
-        formatter.replace_bibliography_sort bibliographer.options.sort
-      end
-
-      filtered_db = prepare_filtered_db bibliographer
-      formatter.import filtered_db
-      formatter.sort(mode: :bibliography)
+      formatter = setup_formatter bibliographer
 
       lines = []
       formatter.bibliography.each_with_index do |reference, index|
@@ -36,6 +28,20 @@ module AsciidoctorBibliography
 
       # Intersperse the lines with empty ones to render as paragraphs.
       lines.join("\n\n").lines.map(&:strip)
+    end
+
+    private
+
+    def setup_formatter(bibliographer)
+      formatter = Formatter.new(bibliographer.options.style, locale: bibliographer.options.locale)
+
+      formatter.replace_bibliography_sort bibliographer.options.sort unless bibliographer.options.sort.nil?
+
+      filtered_db = prepare_filtered_db bibliographer
+      formatter.import filtered_db
+      formatter.sort(mode: :bibliography)
+
+      formatter
     end
 
     def prepare_filtered_db(bibliographer)
