@@ -1,3 +1,5 @@
+# coding: utf-8
+
 describe AsciidoctorBibliography::Database do
   describe ".new" do
     it "is by default an empty array" do
@@ -10,6 +12,25 @@ describe AsciidoctorBibliography::Database do
 
     it "can be initialized with a list of databases" do
       expect(described_class.new("spec/fixtures/database.bib", "spec/fixtures/database.bibtex")).to_not eq([])
+    end
+  end
+
+  describe "#find_entry_by_id" do
+    subject { described_class.new("spec/fixtures/database.bib") }
+
+    it "finds an existing id" do
+      expect { subject.find_entry_by_id("foo") }.
+        to raise_exception AsciidoctorBibliography::Errors::Database::IdNotFound
+    end
+
+    it "raises error if asked to retrieve unexisting id" do
+      expect(subject.find_entry_by_id("Lane12a")).
+        to eq("author" => [{ "family" => "Lane", "given" => "P." }],
+              "title" => "Book title",
+              "publisher" => "Publisher",
+              "id" => "Lane12a",
+              "issued" => { "date-parts" => [[2000]] },
+              "type" => "book")
     end
   end
 
