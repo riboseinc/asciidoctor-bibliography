@@ -19,11 +19,11 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
     * contextual cite `cite[key, page=3]`;
     * multiple cites `cite:[key1]+[key2]`;
     * full cite `fullcite:[key]`; and
-    * TeX-compatible macros including `citep:[key]`, `citet:[]key` and friends.
+    * TeX-compatible macros including `citep:[key]`, `citet:[key]` and friends.
 
     Citation output styles are fully bridged to the CSL library, supporting formats such as IEEE, APA, Chicago, DIN and ISO 690.
 
-    The `bibliography:[]` command generates a full reference list that adheres to your configured citation style.
+    The `bibliography::[]` command generates a full reference list that adheres to your configured citation style.
 END
   spec.homepage      = "https://github.com/riboseinc/asciidoctor-bibliography"
   spec.license       = "MIT"
