@@ -4,7 +4,6 @@
     <title>TeX style for macro citealp*</title>
     <id>tex-citealps</id>
   </info>
-  <locale xml:lang="en"/>
   <macro name="author-long">
     <names variable="author">
       <name form="short" and="text" initialize="false" sort-separator=""/>

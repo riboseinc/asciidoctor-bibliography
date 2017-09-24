@@ -3,6 +3,8 @@ require_relative "formatters/csl"
 require_relative "formatters/tex"
 require_relative "citation_item"
 
+require "csl/styles"
+
 module AsciidoctorBibliography
   class Citation
     MACRO_NAME_REGEXP = Formatters::TeX::MACROS.keys.concat(%w[cite fullcite]).
@@ -42,7 +44,7 @@ module AsciidoctorBibliography
     end
 
     def render_fullcite_with_csl(bibliographer)
-      formatter = Formatters::CSL.new(bibliographer.options.style)
+      formatter = Formatters::CSL.new(bibliographer.options.style, locale: bibliographer.options.locale)
       prepare_fullcite_item bibliographer, formatter
       formatted_citation = formatter.render(:bibliography, id: citation_items.first.key).join
       formatted_citation = Helpers.html_to_asciidoc formatted_citation
@@ -55,7 +57,7 @@ module AsciidoctorBibliography
     end
 
     def render_citation_with_csl(bibliographer, style: bibliographer.options.style, tex: false)
-      formatter = Formatters::CSL.new(style)
+      formatter = Formatters::CSL.new(style, locale: bibliographer.options.locale)
       items = prepare_items bibliographer, formatter, tex: tex
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
       escape_brackets_inside_xref! formatted_citation

@@ -5,8 +5,8 @@ require "yaml"
 module AsciidoctorBibliography
   module Formatters
     class CSL < ::CiteProc::Processor
-      def initialize(style)
-        super style: style, format: :html
+      def initialize(style, locale: 'en-US')
+        super style: style, format: :html, locale: locale
       end
 
       def replace_bibliography_sort(array)

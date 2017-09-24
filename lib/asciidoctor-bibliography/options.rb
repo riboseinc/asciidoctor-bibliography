@@ -8,6 +8,7 @@ module AsciidoctorBibliography
 
     DEFAULTS = {
       "bibliography-database" => nil,
+      "bibliography-locale" => 'en-US',
       "bibliography-style" => "apa",
       "bibliography-hyperlinks" => "true",
       "bibliography-order" => "alphabetical", # TODO: deprecate
@@ -22,6 +23,16 @@ module AsciidoctorBibliography
     def style
       # Error throwing delegated to CSL library. Seems to have nice messages.
       self["bibliography-style"] || DEFAULTS["bibliography-style"]
+    end
+
+    def locale
+      value = self["bibliography-locale"] || DEFAULTS["bibliography-locale"]
+      unless CSL::Locale.list.include? value
+        message = "Option :bibliography-locale: has an invalid value (#{value}). Allowed values are #{CSL::Locale.list.inspect}."
+        raise Errors::Options::Invalid, message
+      end
+
+      value
     end
 
     def hyperlinks?
