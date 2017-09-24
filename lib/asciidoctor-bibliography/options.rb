@@ -28,8 +28,10 @@ module AsciidoctorBibliography
     def locale
       value = self["bibliography-locale"] || DEFAULTS["bibliography-locale"]
       unless CSL::Locale.list.include? value
-        message = "Option :bibliography-locale: has an invalid value (#{value}). Allowed values are #{CSL::Locale.list.inspect}."
-        raise Errors::Options::Invalid, message
+        raise Errors::Options::Invalid, <<~MESSAGE
+          Option :bibliography-locale: has an invalid value (#{value}).
+          Allowed values are #{CSL::Locale.list.inspect}.
+        MESSAGE
       end
 
       value
@@ -38,8 +40,10 @@ module AsciidoctorBibliography
     def hyperlinks?
       value = self["bibliography-hyperlinks"] || DEFAULTS["bibliography-hyperlinks"]
       unless %w[true false].include? value
-        message = "Option :bibliography-hyperlinks: has an invalid value (#{value}). Allowed values are 'true' and 'false'."
-        raise Errors::Options::Invalid, message
+        raise Errors::Options::Invalid, <<~MESSAGE
+          Option :bibliography-hyperlinks: has an invalid value (#{value}).
+          Allowed values are 'true' and 'false'.
+        MESSAGE
       end
 
       value == "true"
@@ -48,8 +52,10 @@ module AsciidoctorBibliography
     def database
       value = self["bibliography-database"] || DEFAULTS["bibliography-database"]
       if value.nil?
-        message = "Option :bibliography-database: is mandatory. A bibliographic database is required."
-        raise Errors::Options::Missing, message
+        raise Errors::Options::Missing, <<~MESSAGE
+          Option :bibliography-database: is mandatory.
+          A bibliographic database is required.
+        MESSAGE
       end
 
       value
@@ -59,8 +65,9 @@ module AsciidoctorBibliography
       begin
         value = YAML.safe_load self["bibliography-sort"].to_s
       rescue Psych::SyntaxError => psych_error
-        message = "Option :bibliography-sort: is not a valid YAML string: \"#{psych_error}\"."
-        raise Errors::Options::Invalid, message
+        raise Errors::Options::Invalid, <<~MESSAGE
+          Option :bibliography-sort: is not a valid YAML string: \"#{psych_error}\".
+        MESSAGE
       end
 
       value = self.class.validate_parsed_sort_type! value
@@ -71,8 +78,10 @@ module AsciidoctorBibliography
     def tex_style
       value = self["bibliography-tex-style"] || DEFAULTS["bibliography-tex-style"]
       unless %w[authoryear numeric].include? value
-        message = "Option :bibliography-tex-style: has an invalid value (#{value}). Allowed values are 'authoryear' (default) and 'numeric'."
-        raise Errors::Options::Invalid, message
+        raise Errors::Options::Invalid, <<~MESSAGE
+          Option :bibliography-tex-style: has an invalid value (#{value}).
+          Allowed values are 'authoryear' (default) and 'numeric'.
+        MESSAGE
       end
 
       value
@@ -82,16 +91,21 @@ module AsciidoctorBibliography
       return value if value.nil?
       return value if value.is_a?(Array) && value.all? { |v| v.is_a? Hash }
       return [value] if value.is_a? Hash
-      message = "Option :bibliography-sort: has an invalid value (#{value}). Please refer to manual for more info."
-      raise Errors::Options::Invalid, message
+      raise Errors::Options::Invalid, <<~MESSAGE
+        Option :bibliography-sort: has an invalid value (#{value}).
+        Please refer to manual for more info.
+      MESSAGE
     end
 
     def self.validate_parsed_sort_contents!(array)
       # TODO: should we restrict these? Double check the CSL spec.
       allowed_keys = %w[variable macro sort names-min names-use-first names-use-last]
       return array unless array.any? { |hash| (hash.keys - allowed_keys).any? }
-      message = "Option :bibliography-sort: has a value containing invalid keys (#{array}). Allowed keys are #{allowed_keys.inspect}. Please refer to manual for more info."
-      raise Errors::Options::Invalid, message
+      raise Errors::Options::Invalid, <<~MESSAGE
+        Option :bibliography-sort: has a value containing invalid keys (#{array}).
+        Allowed keys are #{allowed_keys.inspect}.
+        Please refer to manual for more info.
+      MESSAGE
     end
 
     def self.new_from_reader(reader)
