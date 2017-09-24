@@ -1,6 +1,6 @@
 = Sample usage of asciidoctor-bibliography
 :bibliography-database: biblio.bib
-:bibliography-tex-style: numbers
+:bibliography-tex-style: numeric
 :bibliography-style: ieee
 :bibliography-sort: { macro: author, sort: descending }
 
