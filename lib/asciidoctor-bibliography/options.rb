@@ -69,7 +69,13 @@ module AsciidoctorBibliography
     end
 
     def tex_style
-      self["bibliography-tex-style"] || DEFAULTS["bibliography-tex-style"]
+      value = self["bibliography-tex-style"] || DEFAULTS["bibliography-tex-style"]
+      unless %w[authoryear numeric].include? value
+        message = "Option :bibliography-tex-style: has an invalid value (#{value}). Allowed values are 'authoryear' (default) and 'numeric'."
+        raise Errors::Options::Invalid, message
+      end
+
+      value
     end
 
     def self.validate_parsed_sort_type!(value)
