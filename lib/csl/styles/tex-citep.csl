@@ -4,7 +4,6 @@
     <title>TeX style for macro citep</title>
     <id>tex-citep</id>
   </info>
-  <locale xml:lang="en"/>
   <macro name="author-long">
     <names variable="author">
       <name form="short" and="text" initialize="false" sort-separator=""/>
