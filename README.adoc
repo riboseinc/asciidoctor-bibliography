@@ -16,7 +16,7 @@ Citation styling leverages the popular http://citationstyles.org/[CSL] language
 so you have direct access to thousands of crowdsourced styles including IEEE,
 APA, Chicago, DIN and ISO 690.
 
-The `bibliography:[]` command generates a full reference list that adheres to
+The `bibliography::[]` command generates a full reference list that adheres to
 your configured citation style.
 
 On top of that you also have a formatter derived from the `Bib(La)TeX` world,
@@ -28,7 +28,7 @@ Its syntax is designed to be "`native-asciidoctor`":
 * contextual cite `cite[key, page=3]`;
 * multiple cites `cite:[key1]+[key2]`;
 * full cite `fullcite:[key]`; and
-* TeX-compatible macros including `citep:[key]`, `citet:[]key` and friends.
+* TeX-compatible macros including `citep:[key]`, `citet:[key]` and friends.
 
 
 == Installation
@@ -180,6 +180,18 @@ or searching through the friendly http://editor.citationstyles.org/[style editor
 You can also simply use the filename of a CSL file on your machine if you need more customization.
 
 
+=== Localization
+
+Citation styles can be localized using the following option:
+
+[source,asciidoc]
+----
+:bibliography-locale: en-US
+----
+
+The default is `en-US`. Here is an exhaustive list of recognized locales: `af-ZA`, `ar`, `bg-BG`, `ca-AD`, `cs-CZ`, `cy-GB`, `da-DK`, `de-AT`, `de-CH`, `de-DE`, `el-GR`, `en-GB`, `en-US`, `es-CL`, `es-ES`, `es-MX`, `et-EE`, `eu`, `fa-IR`, `fi-FI`, `fr-CA`, `fr-FR`, `he-IL`, `hr-HR`, `hu-HU`, `id-ID`, `is-IS`, `it-IT`, `ja-JP`, `km-KH`, `ko-KR`, `lt-LT`, `lv-LV`, `mn-MN`, `nb-NO`, `nl-NL`, `nn-NO`, `pl-PL`, `pt-BR`, `pt-PT`, `ro-RO`, `ru-RU`, `sk-SK`, `sl-SI`, `sr-RS`, `sv-SE`, `th-TH`, `tr-TR`, `uk-UA`, `vi-VN`, `zh-CN` and `zh-TW`.
+
+
 === Hyperlinks
 
 By default, citations include hyperlinks to their entry in the bibliography.
@@ -250,7 +262,7 @@ To use them effectively you'll need to know its implementation.
 
 This task is not daunting at all, as the http://editor.citationstyles.org/[style editor] allows you to quickly list them and understand their role.
 
-As for the `sort` option, the valid values are `ascending` (default) and `descending` as you'd exect.
+As for the `sort` option, the valid values are `ascending` (default) and `descending` as you'd expect.
 
 
 === TeX-mode
@@ -272,6 +284,10 @@ While the `cite` macro is reserved for CSL styling, all traditional Bib(La)TeX m
 NOTE: no macros are missing since `\cite` is equivalent to `\citet`!
 
 To cite multiple items you can concatenate them just like with `cite`.
+
+All macros accept standard locators, `locator`, `suffix` and `prefix`.
+The behaviour of these parameters is designed to reproduce the one expected
+from the traditional `TeX` citation macros `\cite...[prefix][suffix]{key}`.
 
 You can set their style in the header:
 
