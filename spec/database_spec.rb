@@ -1,5 +1,3 @@
-require "asciidoctor-bibliography/helpers"
-
 describe AsciidoctorBibliography::Database do
   describe ".new" do
     it "is by default an empty array" do

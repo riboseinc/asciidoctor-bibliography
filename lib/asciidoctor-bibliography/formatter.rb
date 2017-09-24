@@ -2,10 +2,12 @@ require "citeproc"
 require "csl/styles"
 require "yaml"
 
+require_relative "../citeproc/ruby/formats/adoc"
+
 module AsciidoctorBibliography
   class Formatter < ::CiteProc::Processor
     def initialize(style, locale: "en-US")
-      super style: style, format: :html, locale: locale
+      super style: style, format: :adoc, locale: locale
     end
 
     def replace_bibliography_sort(array)

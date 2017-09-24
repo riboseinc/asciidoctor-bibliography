@@ -1,5 +1,3 @@
-require "asciidoctor-bibliography/helpers"
-
 describe AsciidoctorBibliography::Options do
   describe "#database" do
     it "has no default" do
