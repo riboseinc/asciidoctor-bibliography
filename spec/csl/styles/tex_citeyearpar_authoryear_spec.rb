@@ -3,7 +3,7 @@
 require_relative "styles_helper"
 
 describe "citeyearpar macro with authoryear style" do
-  let(:options) {{ 'bibliography-tex-style' => 'authoryear'}}
+  let(:options) { { "bibliography-tex-style" => "authoryear" } }
 
   it "formats a single citation" do
     expect(formatted_citation("citeyearpar:[Erdos65]", options: options)).

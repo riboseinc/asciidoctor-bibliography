@@ -4,7 +4,7 @@ require "yaml"
 
 module AsciidoctorBibliography
   class Formatter < ::CiteProc::Processor
-    def initialize(style, locale: 'en-US')
+    def initialize(style, locale: "en-US")
       super style: style, format: :html, locale: locale
     end
 
