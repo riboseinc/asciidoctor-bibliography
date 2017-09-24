@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="never">
   <info>
-    <title>TeX style for macro citealp</title>
-    <id>tex-citealp</id>
+    <title>TeX style for macro citealp with authoryear style</title>
+    <id>tex-citealp-authoryear</id>
   </info>
   <macro name="author-long">
     <names variable="author">

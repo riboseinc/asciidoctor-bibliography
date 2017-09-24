@@ -2,7 +2,7 @@
 
 require_relative "styles_helper"
 
-describe "citealp* macro" do
+describe "citealp* macro with numeric style" do
   let(:options) {{ 'bibliography-tex-style' => 'numeric'}}
 
   it "formats a single citation" do
