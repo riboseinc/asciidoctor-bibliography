@@ -20,6 +20,23 @@ module AsciidoctorBibliography
       merge DEFAULTS
     end
 
+    def self.new_from_reader(reader)
+      header_attributes = get_header_attributes_hash reader
+      header_attributes.select! { |key, _| DEFAULTS.keys.include? key }
+      new.merge header_attributes
+    end
+
+    def self.get_header_attributes_hash(reader)
+      # We peek at the document attributes we need, without perturbing the parsing flow.
+      # NOTE: we'll use this in a preprocessor and they haven't been parsed yet, there.
+      tmp_document = ::Asciidoctor::Document.new
+      tmp_reader = ::Asciidoctor::PreprocessorReader.new(tmp_document, reader.source_lines)
+
+      ::Asciidoctor::Parser.
+        parse(tmp_reader, tmp_document, header_only: true).
+        attributes
+    end
+
     def style
       # Error throwing delegated to CSL library. Seems to have nice messages.
       self["bibliography-style"] || DEFAULTS["bibliography-style"]
@@ -70,8 +87,8 @@ module AsciidoctorBibliography
         MESSAGE
       end
 
-      value = self.class.validate_parsed_sort_type! value
-      value = self.class.validate_parsed_sort_contents! value unless value.nil?
+      value = validate_parsed_sort_type! value
+      value = validate_parsed_sort_contents! value unless value.nil?
       value
     end
 
@@ -87,7 +104,9 @@ module AsciidoctorBibliography
       value
     end
 
-    def self.validate_parsed_sort_type!(value)
+    private
+
+    def validate_parsed_sort_type!(value)
       return value if value.nil?
       return value if value.is_a?(Array) && value.all? { |v| v.is_a? Hash }
       return [value] if value.is_a? Hash
@@ -97,7 +116,7 @@ module AsciidoctorBibliography
       MESSAGE
     end
 
-    def self.validate_parsed_sort_contents!(array)
+    def validate_parsed_sort_contents!(array)
       # TODO: should we restrict these? Double check the CSL spec.
       allowed_keys = %w[variable macro sort names-min names-use-first names-use-last]
       return array unless array.any? { |hash| (hash.keys - allowed_keys).any? }
@@ -106,23 +125,6 @@ module AsciidoctorBibliography
         Allowed keys are #{allowed_keys.inspect}.
         Please refer to manual for more info.
       MESSAGE
-    end
-
-    def self.new_from_reader(reader)
-      header_attributes = get_header_attributes_hash reader
-      header_attributes.select! { |key, _| DEFAULTS.keys.include? key }
-      new.merge header_attributes
-    end
-
-    def self.get_header_attributes_hash(reader)
-      # We peek at the document attributes we need, without perturbing the parsing flow.
-      # NOTE: we'll use this in a preprocessor and they haven't been parsed yet, there.
-      tmp_document = ::Asciidoctor::Document.new
-      tmp_reader = ::Asciidoctor::PreprocessorReader.new(tmp_document, reader.source_lines)
-
-      ::Asciidoctor::Parser.
-        parse(tmp_reader, tmp_document, header_only: true).
-        attributes
     end
   end
 end
