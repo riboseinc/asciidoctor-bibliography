@@ -4,7 +4,7 @@ lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "asciidoctor-bibliography/version"
 
-Gem::Specification.new do |spec|
+Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.name          = "asciidoctor-bibliography"
   spec.version       = AsciidoctorBibliography::VERSION
   spec.authors       = ["Ribose Inc."]
