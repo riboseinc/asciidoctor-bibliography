@@ -34,8 +34,9 @@ module AsciidoctorBibliography
       when "fullcite"
         render_fullcite_with_csl(bibliographer)
       when *%w[citet citet* citep citep* citealt citealt* citealp citealp*]
-        filename = File.join AsciidoctorBibliography.root, "lib/csl/styles/tex-" + macro.tr('*', 's')
-        render_citation_with_csl(bibliographer, style: filename, tex: true)
+        filename = ['tex', macro.tr('*', 's'), bibliographer.options.tex_style].join('-')
+        filepath = File.join AsciidoctorBibliography.root, "lib/csl/styles", filename
+        render_citation_with_csl(bibliographer, style: filepath, tex: true)
       when *Formatters::TeX::MACROS.keys
         formatter = Formatters::TeX.new(bibliographer.options.tex_style)
         formatter.import bibliographer.database

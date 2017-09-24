@@ -2,10 +2,10 @@
 
 require "asciidoctor-bibliography"
 
-def formatted_citation(macro, style: "ieee")
+def formatted_citation(macro, style: "ieee", options: {})
   bibliographer = AsciidoctorBibliography::Bibliographer.new
   bibliographer.options = AsciidoctorBibliography::Options.new.
-    merge("bibliography-hyperlinks" => "false")
+    merge({"bibliography-hyperlinks" => "false"}).merge(options)
   bibliographer.database = AsciidoctorBibliography::Database.new.concat ::BibTeX.parse(<<-BIBTEX).to_citeproc
     @article{Erdos65,
       title = {Some very hard sums},
