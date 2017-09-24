@@ -1,6 +1,6 @@
 # coding: utf-8
 
-require_relative "styles_helper"
+require_relative "../../citation_helper"
 
 describe "citealp macro with authoryear style" do
   let(:options) { { "bibliography-tex-style" => "authoryear" } }
