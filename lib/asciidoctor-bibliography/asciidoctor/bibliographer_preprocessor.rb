@@ -13,7 +13,8 @@ module AsciidoctorBibliography
         document.bibliographer.options =
           ::AsciidoctorBibliography::Options.new_from_reader reader
 
-        document.bibliographer.database = Database.new(document.bibliographer.options.database)
+        document.bibliographer.database =
+          ::AsciidoctorBibliography::Database.new document.bibliographer.options.database
 
         process_reader reader, document.bibliographer
       end
@@ -21,12 +22,13 @@ module AsciidoctorBibliography
       private
 
       def process_reader(reader, bibliographer)
+        # First we fetch citations and replace them with uuids,
         processed_lines = fetch_citations reader.lines, bibliographer
         reader = ::Asciidoctor::Reader.new processed_lines
-
+        # then we render them
         processed_lines = render_citations reader.lines, bibliographer
         reader = ::Asciidoctor::Reader.new processed_lines
-
+        # and finally we render indices.
         processed_lines = render_indices reader.lines, bibliographer
         ::Asciidoctor::Reader.new processed_lines
       end
