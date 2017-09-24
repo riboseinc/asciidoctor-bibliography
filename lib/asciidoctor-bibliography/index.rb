@@ -1,8 +1,6 @@
 require "asciidoctor/attribute_list"
 require_relative "formatter"
 
-require_relative "helpers"
-
 module AsciidoctorBibliography
   class Index
     REGEXP = /^(bibliography)::(\S+)?\[(|.*?[^\\])\]$/
@@ -22,7 +20,7 @@ module AsciidoctorBibliography
       formatter.bibliography.each_with_index do |reference, index|
         line = "{empty}"
         line << "anchor:#{anchor_id(formatter.data[index].id)}[]"
-        line << Helpers.html_to_asciidoc(reference)
+        line << reference
         lines << line
       end
 
@@ -61,7 +59,7 @@ module AsciidoctorBibliography
     end
 
     def render_entry_label(target, formatter)
-      Helpers.html_to_asciidoc formatter.render(:bibliography, id: target).join
+      formatter.render(:bibliography, id: target).join
     end
 
     def render_entry(target, formatter)

@@ -46,7 +46,6 @@ module AsciidoctorBibliography
       formatter = Formatter.new(bibliographer.options.style, locale: bibliographer.options.locale)
       prepare_fullcite_item bibliographer, formatter
       formatted_citation = formatter.render(:bibliography, id: citation_items.first.key).join
-      formatted_citation = Helpers.html_to_asciidoc formatted_citation
       # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
       "{empty}" + formatted_citation
     end

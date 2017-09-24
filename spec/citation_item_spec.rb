@@ -1,5 +1,3 @@
-require "asciidoctor-bibliography/helpers"
-
 describe AsciidoctorBibliography::CitationItem do
   describe ".new" do
     it "can be mutely initialized" do
