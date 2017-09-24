@@ -1,13 +1,15 @@
 require "securerandom"
-require_relative "formatters/csl"
-require_relative "formatters/tex"
+require_relative "formatter"
 require_relative "citation_item"
 
 require "csl/styles"
 
 module AsciidoctorBibliography
   class Citation
-    MACRO_NAME_REGEXP = Formatters::TeX::MACROS.keys.concat(%w[cite fullcite]).
+    TEX_MACROS = %w[citet citet* citealt citealt* citep citep* citealp citealp*
+                    citeauthor citeauthor* citeyear citeyearpar].freeze
+
+    MACRO_NAME_REGEXP = TEX_MACROS.dup.concat(%w[cite fullcite]).
       map { |s| Regexp.escape s }.join("|").freeze
     REGEXP = /\\?(#{MACRO_NAME_REGEXP}):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
     REF_ATTRIBUTES = %i[chapter page section clause].freeze
@@ -33,19 +35,15 @@ module AsciidoctorBibliography
         render_citation_with_csl(bibliographer)
       when "fullcite"
         render_fullcite_with_csl(bibliographer)
-      when *%w[citet citet* citep citep* citealt citealt* citealp citealp* citeyear citeyearpar]
+      when *TEX_MACROS
         filename = ['tex', macro.tr('*', 's'), bibliographer.options.tex_style].join('-')
         filepath = File.join AsciidoctorBibliography.root, "lib/csl/styles", filename
         render_citation_with_csl(bibliographer, style: filepath, tex: true)
-      when *Formatters::TeX::MACROS.keys
-        formatter = Formatters::TeX.new(bibliographer.options.tex_style)
-        formatter.import bibliographer.database
-        formatter.render bibliographer, self
       end
     end
 
     def render_fullcite_with_csl(bibliographer)
-      formatter = Formatters::CSL.new(bibliographer.options.style, locale: bibliographer.options.locale)
+      formatter = Formatter.new(bibliographer.options.style, locale: bibliographer.options.locale)
       prepare_fullcite_item bibliographer, formatter
       formatted_citation = formatter.render(:bibliography, id: citation_items.first.key).join
       formatted_citation = Helpers.html_to_asciidoc formatted_citation
@@ -58,7 +56,7 @@ module AsciidoctorBibliography
     end
 
     def render_citation_with_csl(bibliographer, style: bibliographer.options.style, tex: false)
-      formatter = Formatters::CSL.new(style, locale: bibliographer.options.locale)
+      formatter = Formatter.new(style, locale: bibliographer.options.locale)
       items = prepare_items bibliographer, formatter, tex: tex
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
       escape_brackets_inside_xref! formatted_citation
