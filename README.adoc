@@ -279,7 +279,8 @@ While the `cite` macro is reserved for CSL styling, all traditional Bib(La)TeX m
 * `citealp*`
 * `citeauthor`
 * `citeauthor*`
-* `citeyear` and `citeyearpar`.
+* `citeyear`
+* `citeyearpar`
 
 NOTE: no macros are missing since `\cite` is equivalent to `\citet`!
 
@@ -297,6 +298,8 @@ You can set their style in the header:
 ----
 
 Accepted values are `authoryear` (default) and `numeric`.
+
+Furthermore, `fullcite` is also available and accepts no parameters except a single reference key.
 
 == Development
 
