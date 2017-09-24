@@ -39,7 +39,7 @@ module AsciidoctorBibliography
 
       filtered_db = prepare_filtered_db bibliographer
       formatter.import filtered_db
-      formatter.sort(mode: :bibliography)
+      formatter.force_sort!(mode: :bibliography)
 
       formatter
     end

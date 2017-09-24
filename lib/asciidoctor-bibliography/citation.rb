@@ -75,7 +75,7 @@ module AsciidoctorBibliography
       #   varieables for metadata instead of as parameters for citations.
       cites_with_local_attributes = citation_items.map { |cite| prepare_metadata bibliographer, cite, affix: tex }
       formatter.import cites_with_local_attributes
-      formatter.sort(mode: :citation)
+      formatter.force_sort!(mode: :citation)
       formatter.data.map(&:cite).each { |item| prepare_item bibliographer.options, item, affix: !tex }
     end
 
