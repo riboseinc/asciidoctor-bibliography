@@ -3,7 +3,7 @@
 require_relative "styles_helper"
 
 describe "citeyearpar macro with numeric style" do
-  let(:options) {{ 'bibliography-tex-style' => 'numeric'}}
+  let(:options) { { "bibliography-tex-style" => "numeric" } }
 
   it "formats a single citation" do
     expect(formatted_citation("citeyearpar:[Erdos65]", options: options)).

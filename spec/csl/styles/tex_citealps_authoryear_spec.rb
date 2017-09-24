@@ -3,7 +3,7 @@
 require_relative "styles_helper"
 
 describe "citealp* macro with authoryear style" do
-  let(:options) {{ 'bibliography-tex-style' => 'authoryear'}}
+  let(:options) { { "bibliography-tex-style" => "authoryear" } }
 
   it "formats a single citation" do
     expect(formatted_citation("citealp*:[Erdos65]", options: options)).
@@ -40,5 +40,3 @@ describe "citealp* macro with authoryear style" do
       to eq "Erdős, Heyting, and Brouwer, 1965, somewhere"
   end
 end
-
-

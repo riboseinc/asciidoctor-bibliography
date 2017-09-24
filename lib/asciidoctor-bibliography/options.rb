@@ -8,7 +8,7 @@ module AsciidoctorBibliography
 
     DEFAULTS = {
       "bibliography-database" => nil,
-      "bibliography-locale" => 'en-US',
+      "bibliography-locale" => "en-US",
       "bibliography-style" => "apa",
       "bibliography-hyperlinks" => "true",
       "bibliography-order" => "alphabetical", # TODO: deprecate
