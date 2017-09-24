@@ -17,13 +17,15 @@ module AsciidoctorBibliography
         ::BibTeX.open(filename, filter: [LatexFilter]).to_citeproc
       end
 
+      # NOTE: the class below comes from asciidoctor-bibtex
+
       # This filter extends the original latex filter in bibtex-ruby to handle
       # unknown latex macros more gracefully. We could have used latex-decode
       # gem together with our custom replacement rules, but latex-decode eats up
       # all braces after it finishes all decoding. So we hack over the
       # LaTeX.decode function and insert our rules before `strip_braces`.
       class LatexFilter < ::BibTeX::Filter
-        def apply(value)
+        def apply(value) # rubocop:disable Metrics/MethodLength; keep this a list, though!
           text = value.to_s
           LaTeX::Decode::Base.normalize(text)
           LaTeX::Decode::Maths.decode!(text)
@@ -32,6 +34,7 @@ module AsciidoctorBibliography
           LaTeX::Decode::Punctuation.decode!(text)
           LaTeX::Decode::Symbols.decode!(text)
           LaTeX::Decode::Greek.decode!(text)
+          # TODO: could we be doing something smarter with some macros, e.g. \url?
           text.gsub!(/\\url\{(.+?)\}/, ' \\1 ')
           text.gsub!(/\\\w+(?=\s+\w)/, "")
           text.gsub!(/\\\w+(?:\[.+?\])?\s*\{(.+?)\}/, '\\1')
