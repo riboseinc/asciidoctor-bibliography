@@ -22,20 +22,5 @@ module AsciidoctorBibliography
     def appearance_index_of(id)
       @occurring_keys.index(id) + 1
     end
-
-    def sort
-      return unless options["order"] == "alphabetical"
-      @occurring_keys = @occurring_keys.sort_by do |target|
-        first_author_family_name(target)
-      end
-    end
-
-    private
-
-    def first_author_family_name(key)
-      authors = database.find_entry_by_id(key)["author"]
-      return "" if authors.nil?
-      authors.map { |h| h["family"] }.compact.first # TODO: is the first also alphabetically the first?
-    end
   end
 end
