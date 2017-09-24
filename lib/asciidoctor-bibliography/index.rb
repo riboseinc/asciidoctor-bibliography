@@ -22,9 +22,7 @@ module AsciidoctorBibliography
         formatter.replace_bibliography_sort bibliographer.options.sort
       end
 
-      filtered_db = bibliographer.occurring_keys.
-        map { |id| bibliographer.database.find_entry_by_id(id) }.
-        map { |entry| prepare_entry_metadata bibliographer, entry }
+      filtered_db = prepare_filtered_db bibliographer
       formatter.import filtered_db
       formatter.sort(mode: :bibliography)
 
@@ -38,6 +36,12 @@ module AsciidoctorBibliography
 
       # Intersperse the lines with empty ones to render as paragraphs.
       lines.join("\n\n").lines.map(&:strip)
+    end
+
+    def prepare_filtered_db(bibliographer)
+      bibliographer.occurring_keys.
+        map { |id| bibliographer.database.find_entry_by_id(id) }.
+        map { |entry| prepare_entry_metadata bibliographer, entry }
     end
 
     def prepare_entry_metadata(bibliographer, entry)
