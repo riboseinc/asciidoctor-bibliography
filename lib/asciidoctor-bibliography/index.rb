@@ -1,5 +1,5 @@
 require "asciidoctor/attribute_list"
-require_relative "formatters/csl"
+require_relative "formatter"
 
 require_relative "helpers"
 
@@ -16,7 +16,7 @@ module AsciidoctorBibliography
     end
 
     def render(bibliographer)
-      formatter = Formatters::CSL.new(bibliographer.options.style)
+      formatter = Formatter.new(bibliographer.options.style, locale: bibliographer.options.locale)
 
       unless bibliographer.options.sort.nil?
         formatter.replace_bibliography_sort bibliographer.options.sort
