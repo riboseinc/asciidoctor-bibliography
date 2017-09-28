@@ -23,20 +23,21 @@ TEST_BIBTEX_DATABASE = <<~BIBTEX.freeze
   }
 BIBTEX
 
-def init_bibliographer(options)
+def init_bibliographer(bibtex_db:, options: {})
   bibliographer = AsciidoctorBibliography::Bibliographer.new
 
   bibliographer.options = AsciidoctorBibliography::Options.new.
     merge("bibliography-hyperlinks" => "false").merge(options)
 
   bibliographer.database = AsciidoctorBibliography::Database.new.
-    concat(::BibTeX.parse(TEST_BIBTEX_DATABASE).to_citeproc)
+    concat(::BibTeX.parse(bibtex_db).to_citeproc)
 
   bibliographer
 end
 
 def formatted_citation(macro, options: {})
-  bibliographer = init_bibliographer options
+  bibliographer = init_bibliographer bibtex_db: TEST_BIBTEX_DATABASE,
+                                     options: options
 
   macro.gsub(AsciidoctorBibliography::Citation::REGEXP) do
     citation = AsciidoctorBibliography::Citation.new(*Regexp.last_match.captures)

@@ -28,14 +28,14 @@ module CiteProc
         end
 
         def apply_suffix
-          options[:suffix] += ' ' if aligned_first_field?
+          options[:suffix] += " " if aligned_first_field?
           super
         end
 
         private
 
         def aligned_first_field?
-          return false unless node.root.bibliography['second-field-align']
+          return false unless node.root.bibliography["second-field-align"]
           node.root.bibliography.layout.children.first == node
         end
       end
