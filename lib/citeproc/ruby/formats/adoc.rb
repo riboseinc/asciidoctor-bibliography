@@ -4,10 +4,6 @@ module CiteProc
   module Ruby
     module Formats
       class Adoc < Format
-        # TODO
-        # def bibliography(bibliography)
-        # end
-
         def apply_font_style
           output.replace "_#{output}_" if options[:'font-style'] == "italic"
         end
@@ -29,6 +25,18 @@ module CiteProc
         def apply_vertical_align
           output.replace "^#{output}^" if options[:vertical_align] == "sup"
           output.replace "~#{output}~" if options[:vertical_align] == "sub"
+        end
+
+        def apply_suffix
+          options[:suffix] += ' ' if aligned_first_field?
+          super
+        end
+
+        private
+
+        def aligned_first_field?
+          return false unless node.root.bibliography['second-field-align']
+          node.root.bibliography.layout.children.first == node
         end
       end
     end
