@@ -1,8 +1,9 @@
 # coding: utf-8
 
 require "asciidoctor-bibliography"
+require_relative "../../../citation_helper"
 
-TEST_BIBTEX_DATABASE = <<~BIBTEX.freeze
+TEST_ADOC_SPEC_DATABASE = <<~BIBTEX.freeze
   @article{Gettier63,
     title={Is justified true belief knowledge?},
     author={Gettier, Edmund L},
@@ -15,32 +16,20 @@ TEST_BIBTEX_DATABASE = <<~BIBTEX.freeze
   }
 BIBTEX
 
-def init_bibliographer(options)
-  bibliographer = AsciidoctorBibliography::Bibliographer.new
-
-  bibliographer.options = AsciidoctorBibliography::Options.new.
-    merge("bibliography-hyperlinks" => "false").merge(options)
-
-  bibliographer.database = AsciidoctorBibliography::Database.new.
-    concat(::BibTeX.parse(TEST_BIBTEX_DATABASE).to_citeproc)
-
-  bibliographer
-end
-
 def formatted_bibliography(macro, options: {})
-  bibliographer = init_bibliographer options
+  bibliographer = init_bibliographer bibtex_db: TEST_ADOC_SPEC_DATABASE,
+                                     options: options
 
   bibliographer.
-    add_citation AsciidoctorBibliography::Citation.new('cite', '', 'Gettier63')
+    add_citation AsciidoctorBibliography::Citation.new("cite", "", "Gettier63")
 
-  macro.lines.map do |line|
-    if line =~ AsciidoctorBibliography::Index::REGEXP
-      index = AsciidoctorBibliography::Index.new(*Regexp.last_match.captures)
-      index.render bibliographer
-    else
-      line
-    end
-  end.flatten.map! { |ref| ref.gsub(/^{empty}anchor:.*?\[\]/, "") }
+  entries = macro.lines.map do |line|
+    return line unless line =~ AsciidoctorBibliography::Index::REGEXP
+    index = AsciidoctorBibliography::Index.new(*Regexp.last_match.captures)
+    index.render bibliographer
+  end
+
+  entries.flatten.map! { |ref| ref.gsub(/^{empty}anchor:.*?\[\]/, "") }
 end
 
 describe "custom :adoc citeproc format" do
