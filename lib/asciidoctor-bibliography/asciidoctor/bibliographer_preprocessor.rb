@@ -33,7 +33,7 @@ module AsciidoctorBibliography
       end
 
       def fetch_citations(lines, bibliographer)
-        lines.join("\n").gsub!(Citation::REGEXP) do
+        lines.join("\n").gsub(Citation::REGEXP) do
           citation = Citation.new(*Regexp.last_match.captures)
           bibliographer.add_citation(citation)
           citation.uuid
