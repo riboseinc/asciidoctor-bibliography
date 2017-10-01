@@ -4,7 +4,7 @@ module AsciidoctorBibliography
   class CitationItem
     LOCATORS = CiteProc::CitationItem.labels.map(&:to_s).push("locator").freeze
 
-    attr_accessor :key, :target, :positional_attributes, :named_attributes, :locators
+    attr_accessor :key, :target, :positional_attributes, :named_attributes
 
     def initialize
       yield self if block_given?

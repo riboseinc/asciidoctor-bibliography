@@ -11,7 +11,7 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.email         = ["open.source@ribose.com"]
 
   spec.summary       = 'Citations and bibliography the "asciidoctor-way"'
-  spec.description   = <<~END
+  spec.description   = <<~SPEC
     asciidoctor-bibliography lets you handle citations and bibliography the "asciidoctor-way"!
 
     Its syntax is designed to be native-asciidoctor:
@@ -24,7 +24,8 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
     Citation output styles are fully bridged to the CSL library, supporting formats such as IEEE, APA, Chicago, DIN and ISO 690.
 
     The `bibliography::[]` command generates a full reference list that adheres to your configured citation style.
-END
+  SPEC
+
   spec.homepage      = "https://github.com/riboseinc/asciidoctor-bibliography"
   spec.license       = "MIT"
 
