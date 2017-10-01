@@ -78,7 +78,7 @@ Style/Encoding:
   SupportedStyles:
   - when_needed
   - always
-Naming/FileName:
+Style/FileName:
   Description: Use snake_case for source file names.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#snake-case-files
   Enabled: false
@@ -159,7 +159,7 @@ Style/MethodDefParentheses:
   SupportedStyles:
   - require_parentheses
   - require_no_parentheses
-Naming/MethodName:
+Style/MethodName:
   Description: Use the configured style when naming methods.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#snake-case-symbols-methods-vars
   Enabled: true
@@ -200,7 +200,7 @@ Style/PercentQLiterals:
   SupportedStyles:
   - lower_case_q
   - upper_case_q
-Naming/PredicateName:
+Style/PredicateName:
   Description: Check the names of predicate methods.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#bool-methods-qmark
   Enabled: true
@@ -321,7 +321,7 @@ Style/TrivialAccessors:
   - to_str
   - to_s
   - to_sym
-Naming/VariableName:
+Style/VariableName:
   Description: Use the configured style when naming variables.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#snake-case-symbols-methods-vars
   Enabled: true
@@ -460,7 +460,7 @@ Style/SymbolArray:
   Description: Use %i or %I for arrays of symbols.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#percent-i
   Enabled: false
-Naming/AccessorMethodName:
+Style/AccessorMethodName:
   Description: Check the naming of accessor methods for get_/set_.
   Enabled: false
 Style/Alias:
@@ -475,7 +475,7 @@ Style/AsciiComments:
   Description: Use only ascii symbols in comments.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#english-comments
   Enabled: false
-Naming/AsciiIdentifiers:
+Style/AsciiIdentifiers:
   Description: Use only ascii symbols in identifiers.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#english-identifiers
   Enabled: false
@@ -504,7 +504,7 @@ Style/CharacterLiteral:
   Description: Checks for uses of character literals.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-character-literals
   Enabled: false
-Naming/ClassAndModuleCamelCase:
+Style/ClassAndModuleCamelCase:
   Description: Use CamelCase for classes and modules.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#camelcase-classes
   Enabled: true
@@ -520,7 +520,7 @@ Style/ColonMethodCall:
   Description: 'Do not use :: for method call.'
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#double-colons
   Enabled: false
-Naming/ConstantName:
+Style/ConstantName:
   Description: Constants should use SCREAMING_SNAKE_CASE.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#screaming-snake-case
   Enabled: true
@@ -612,6 +612,10 @@ Style/Not:
 Style/OneLineConditional:
   Description: Favor the ternary operator(?:) over if/then/else/end constructs.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#ternary-operator
+  Enabled: false
+Style/OpMethod:
+  Description: When defining binary operators, name the argument other.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#other-arg
   Enabled: false
 Style/PerlBackrefs:
   Description: Avoid Perl-style regex back references.
