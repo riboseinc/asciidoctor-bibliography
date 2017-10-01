@@ -1,7 +1,7 @@
 require "asciidoctor"
 
 def setup_tmpdir(method_name = :tmpdir)
-  let(method_name) { File.join Dir.tmpdir, 'asciidoctor-bibliography_tests' }
+  let(method_name) { File.join Dir.tmpdir, "asciidoctor-bibliography_tests" }
 
   around(:each) do |example|
     FileUtils.rm_rf method(method_name).call
@@ -11,29 +11,28 @@ def setup_tmpdir(method_name = :tmpdir)
   end
 end
 
-def setup_main_document(path, content)
-  input_path = File.join(tmpdir, 'main.adoc')
-  output_path = File.join(tmpdir, 'main.html')
-  File.open(input_path, 'w') { |file| file.write content }
-  [ input_path, output_path ]
+def setup_main_document(_path, content)
+  input_path = File.join(tmpdir, "main.adoc")
+  output_path = File.join(tmpdir, "main.html")
+  File.open(input_path, "w") { |file| file.write content }
+  [input_path, output_path]
 end
 
-
-def setup_file(path, name, content)
-  File.open(File.join(tmpdir, name), 'w') { |file| file.write content }
+def setup_file(_path, name, content)
+  File.open(File.join(tmpdir, name), "w") { |file| file.write content }
 end
 
 def setup_bibliography(content)
   let(:bibliography_path) do
-    File.join(tmpdir, 'bibliography.bibtex')
+    File.join(tmpdir, "bibliography.bibtex")
   end
 
   before do
-    File.open(bibliography_path, 'w') { |file| file.write content }
+    File.open(bibliography_path, "w") { |file| file.write content }
   end
 end
 
-describe 'asciidoctor integration' do
+describe "asciidoctor integration" do
   setup_tmpdir
 
   setup_bibliography <<~BIBTEX
@@ -45,14 +44,14 @@ describe 'asciidoctor integration' do
     }
   BIBTEX
 
-  describe 'testing procedure' do
-    it 'works in the trivial case' do
+  describe "testing procedure" do
+    it "works in the trivial case" do
       input_path, output_path = setup_main_document tmpdir, <<~'ADOC'
         Hello World.
       ADOC
 
       expect { `asciidoctor #{input_path}` }.to_not raise_exception
-      expect(File.read output_path).to match <<~'BODY'
+      expect(File.read(output_path)).to match <<~'BODY'
         <div id="content">
         <div class="paragraph">
         <p>Hello World.</p>
@@ -62,8 +61,8 @@ describe 'asciidoctor integration' do
     end
   end
 
-  describe 'single file usage' do
-    it 'works with a single file, a citation and the bibliography' do
+  describe "single file usage" do
+    it "works with a single file, a citation and the bibliography" do
       input_path, output_path = setup_main_document tmpdir, <<~ADOC
         :bibliography-database: #{bibliography_path}
 
@@ -73,7 +72,7 @@ describe 'asciidoctor integration' do
       ADOC
 
       expect { `asciidoctor -r asciidoctor-bibliography #{input_path} --trace` }.to_not raise_exception
-      expect(File.read output_path).to include <<~'BODY'
+      expect(File.read(output_path)).to include <<~'BODY'
         <div id="content">
         <div class="paragraph">
         <p>Hello World. (<a href="#bibliography-Foo00">Bar, 2000</a>)</p>
@@ -86,9 +85,9 @@ describe 'asciidoctor integration' do
     end
   end
 
-  describe 'nested files usage' do
-    it 'works with a single file, a citation and the bibliography' do
-      setup_file tmpdir, 'nested.adoc', <<~ADOC
+  describe "nested files usage" do
+    it "works with a single file, a citation and the bibliography" do
+      setup_file tmpdir, "nested.adoc", <<~ADOC
         This is content from a nested file. cite:[Foo00]
 
         bibliography::[]
@@ -103,7 +102,7 @@ describe 'asciidoctor integration' do
       ADOC
 
       expect { `asciidoctor -r asciidoctor-bibliography #{input_path} --trace` }.to_not raise_exception
-      expect(File.read output_path).to include <<~'BODY'
+      expect(File.read(output_path)).to include <<~'BODY'
         <div id="content">
         <div class="paragraph">
         <p>Hello World. (<a href="#bibliography-Foo00">Bar, 2000</a>)</p>
