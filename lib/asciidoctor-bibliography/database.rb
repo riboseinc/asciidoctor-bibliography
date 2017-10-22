@@ -4,14 +4,14 @@ require_relative "errors"
 module AsciidoctorBibliography
   # This is an array of citeproc entries.
   class Database < Array
-    def initialize(*filenames)
-      filenames.each do |filename|
-        append filename
+    def initialize(*filepaths)
+      filepaths.each do |filepath|
+        append filepath
       end
     end
 
-    def append(filename)
-      concat Database.load(filename)
+    def append(filepath)
+      concat Database.load(filepath)
     end
 
     def find_entry_by_id(id)
@@ -23,8 +23,7 @@ module AsciidoctorBibliography
       result
     end
 
-    def self.load(filename)
-      filepath = File.expand_path filename
+    def self.load(filepath)
       raise Errors::Database::FileNotFound, filepath unless File.exist?(filepath)
 
       fileext = File.extname filepath
