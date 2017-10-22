@@ -12,8 +12,12 @@ module AsciidoctorBibliography
         document.bibliographer.options =
           ::AsciidoctorBibliography::Options.new_from_reader reader
 
+        database_filepath =
+          File.expand_path document.bibliographer.options.database,
+                           document.base_dir
+
         document.bibliographer.database =
-          ::AsciidoctorBibliography::Database.new document.bibliographer.options.database
+          ::AsciidoctorBibliography::Database.new database_filepath
 
         processed_lines = process_lines reader.read_lines, document.bibliographer
         reader.unshift_lines processed_lines
