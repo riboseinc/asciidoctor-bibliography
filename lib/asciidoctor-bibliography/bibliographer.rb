@@ -11,16 +11,19 @@ module AsciidoctorBibliography
       @citations = []
       @indices = []
       @database = nil
-      @occurring_keys = []
+      @occurring_keys = Hash.new([])
     end
 
     def add_citation(citation)
       citations << citation
-      @occurring_keys.concat(citation.citation_items.map(&:key)).uniq!
+      citation.citation_items.group_by(&:target).each do |target, citation_items|
+        @occurring_keys[target] ||= []
+        @occurring_keys[target].concat(citation_items.map(&:key)).uniq!
+      end
     end
 
-    def appearance_index_of(id)
-      @occurring_keys.index(id) + 1
+    def appearance_index_of(target, id)
+      @occurring_keys[target].index(id) + 1
     end
   end
 end

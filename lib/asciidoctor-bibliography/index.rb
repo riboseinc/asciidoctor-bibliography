@@ -9,7 +9,7 @@ module AsciidoctorBibliography
 
     def initialize(macro, target, attributes)
       @macro = macro
-      @target = target
+      @target = target.to_s.empty? ? "default" : target
       @attributes = ::Asciidoctor::AttributeList.new(attributes).parse
     end
 
@@ -19,7 +19,8 @@ module AsciidoctorBibliography
       lines = []
       formatter.bibliography.each_with_index do |reference, index|
         line = "{empty}"
-        line << "anchor:#{anchor_id(formatter.data[index].id)}[]"
+        id = anchor_id "bibliography", target, formatter.data[index].id
+        line << "anchor:#{id}[]"
         line << reference
         lines << line
       end
@@ -43,27 +44,19 @@ module AsciidoctorBibliography
     end
 
     def prepare_filtered_db(bibliographer)
-      bibliographer.occurring_keys.
+      bibliographer.occurring_keys[target].
         map { |id| bibliographer.database.find_entry_by_id(id) }.
         map { |entry| prepare_entry_metadata bibliographer, entry }
     end
 
     def prepare_entry_metadata(bibliographer, entry)
       entry.
-        merge('citation-number': bibliographer.appearance_index_of(entry["id"])).
+        merge('citation-number': bibliographer.appearance_index_of(target, entry["id"])).
         merge('citation-label': entry["id"]) # TODO: smart label generators
     end
 
-    def anchor_id(target)
-      ["bibliography", target].compact.join("-")
-    end
-
-    def render_entry_label(target, formatter)
-      formatter.render(:bibliography, id: target).join
-    end
-
-    def render_entry(target, formatter)
-      "anchor:#{anchor_id(target)}[]#{render_entry_label(target, formatter)}"
+    def anchor_id(*fragments)
+      fragments.compact.join("-")
     end
   end
 end

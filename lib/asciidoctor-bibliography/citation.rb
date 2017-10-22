@@ -21,9 +21,9 @@ module AsciidoctorBibliography
       @macro = macro
       @citation_items = []
       # rubocop:disable Performance/HashEachMethods
-      target_and_attributes_list_pairs.compact.each_slice(2).each do |_target, attribute_list|
+      target_and_attributes_list_pairs.compact.each_slice(2).each do |target, attribute_list|
         @citation_items << CitationItem.new do |cite|
-          # NOTE: we're not doing anything with targets right now.
+          cite.target = target.to_s.empty? ? "default" : target
           cite.parse_attribute_list attribute_list
         end
       end
@@ -81,7 +81,7 @@ module AsciidoctorBibliography
 
     def prepare_metadata(bibliographer, cite, affix: false)
       bibliographer.database.find_entry_by_id(cite.key).
-        merge 'citation-number': bibliographer.appearance_index_of(cite.key),
+        merge 'citation-number': bibliographer.appearance_index_of(cite.target, cite.key),
               'citation-label': cite.key, # TODO: smart label generators
               'locator': cite.locator.nil? ? nil : " ",
               'prefix': affix ? cite.prefix : nil,
@@ -93,7 +93,8 @@ module AsciidoctorBibliography
       # TODO: hyperlink, suppress_author and only_author options
       ci = citation_items.detect { |c| c.key == item.id }
       wrap_item item, ci.prefix, ci.suffix if affix
-      wrap_item item, "xref:#{xref_id(item.id)}{{{", "}}}" if options.hyperlinks?
+      id = xref_id "bibliography", ci.target, item.id
+      wrap_item item, "xref:#{id}{{{", "}}}" if options.hyperlinks?
       item.label, item.locator = ci.locator
     end
 
@@ -106,12 +107,8 @@ module AsciidoctorBibliography
       ":#{@uuid}:"
     end
 
-    def xref_id(key)
-      ["bibliography", key].compact.join("-")
-    end
-
-    def xref(key, label)
-      "xref:#{xref_id(key)}[#{label.gsub(']', '\]')}]"
+    def xref_id(*fragments)
+      fragments.compact.join("-")
     end
   end
 end
