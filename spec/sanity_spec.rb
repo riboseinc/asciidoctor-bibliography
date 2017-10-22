@@ -75,10 +75,10 @@ describe "asciidoctor integration" do
       expect(File.read(output_path)).to include <<~'BODY'
         <div id="content">
         <div class="paragraph">
-        <p>Hello World. (<a href="#bibliography-Foo00">Bar, 2000</a>)</p>
+        <p>Hello World. (<a href="#bibliography-default-Foo00">Bar, 2000</a>)</p>
         </div>
         <div class="paragraph">
-        <p><a id="bibliography-Foo00"></a>Bar, F. (2000). Title.</p>
+        <p><a id="bibliography-default-Foo00"></a>Bar, F. (2000). Title.</p>
         </div>
         </div>
       BODY
@@ -105,13 +105,13 @@ describe "asciidoctor integration" do
       expect(File.read(output_path)).to include <<~'BODY'
         <div id="content">
         <div class="paragraph">
-        <p>Hello World. (<a href="#bibliography-Foo00">Bar, 2000</a>)</p>
+        <p>Hello World. (<a href="#bibliography-default-Foo00">Bar, 2000</a>)</p>
         </div>
         <div class="paragraph">
-        <p>This is content from a nested file. (<a href="#bibliography-Foo00">Bar, 2000</a>)</p>
+        <p>This is content from a nested file. (<a href="#bibliography-default-Foo00">Bar, 2000</a>)</p>
         </div>
         <div class="paragraph">
-        <p><a id="bibliography-Foo00"></a>Bar, F. (2000). Title.</p>
+        <p><a id="bibliography-default-Foo00"></a>Bar, F. (2000). Title.</p>
         </div>
         </div>
       BODY
