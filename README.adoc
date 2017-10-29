@@ -150,6 +150,29 @@ To render the bibliography you simply use the following block macro:
 bibliography::[]
 ----
 
+You can handle multiple bibliographies by providing a target parameter to
+citation macros:
+
+[source,asciidoc]
+----
+cite:foo[Aa2017]+bar[Bb2017]
+----
+
+You can then render all citations targeting a specific bibliography
+by using the target parameter again:
+
+[source,asciidoc]
+----
+## Index of Foos
+
+bibliography::foo[]
+
+## Index of Bars
+
+bibliography::bar[]
+----
+
+Giving no target is equivalent to using `default` as a target.
 
 === Databases
 
