@@ -42,6 +42,13 @@ describe "asciidoctor integration" do
       publisher = {Publisher},
       year = {2000}
     }
+
+    @article{Qux00,
+      author = {Qux Zot},
+      title =	{Title},
+      publisher = {Publisher},
+      year = {3000}
+    }
   BIBTEX
 
   describe "testing procedure" do
@@ -112,6 +119,94 @@ describe "asciidoctor integration" do
         </div>
         <div class="paragraph">
         <p><a id="bibliography-default-Foo00"></a>Bar, F. (2000). Title.</p>
+        </div>
+        </div>
+      BODY
+    end
+  end
+
+  describe "multiple bibliographies usage" do
+    it "works with a single file and multiple bibliographies" do
+      setup_file tmpdir, "nested.adoc", <<~ADOC
+        This is content from a nested file. cite:[Foo00]
+
+        bibliography::[]
+      ADOC
+
+      input_path, output_path = setup_main_document tmpdir, <<~ADOC
+        :bibliography-database: #{bibliography_path}
+
+        ## Citations
+
+        cite:[Foo00]
+
+        cite:first[Qux00]
+
+        cite:first[Foo00]+last[Qux00]
+
+        ## Bibliographies
+
+        ### Default
+
+        bibliography::[]
+
+        ### First
+
+        bibliography::first[]
+
+        ### Last
+
+        bibliography::last[]
+      ADOC
+
+      expect { `asciidoctor -r asciidoctor-bibliography #{input_path} --trace` }.to_not raise_exception
+      expect(File.read(output_path)).to include <<~'BODY'
+        <div id="content">
+        <div class="sect1">
+        <h2 id="_citations">Citations</h2>
+        <div class="sectionbody">
+        <div class="paragraph">
+        <p>(<a href="#bibliography-default-Foo00">Bar, 2000</a>)</p>
+        </div>
+        <div class="paragraph">
+        <p>(<a href="#bibliography-first-Qux00">Zot, 3000</a>)</p>
+        </div>
+        <div class="paragraph">
+        <p>(<a href="#bibliography-first-Foo00">Bar, 2000</a>; <a href="#bibliography-last-Qux00">Zot, 3000</a>)</p>
+        </div>
+        </div>
+        </div>
+        <div class="sect1">
+        <h2 id="_bibliographies">Bibliographies</h2>
+        <div class="sectionbody">
+        <div class="sect2">
+        <h3 id="_default">Default</h3>
+        <div class="paragraph">
+        <p><a id="bibliography-default-Foo00"></a>Bar, F. (2000). Title.</p>
+        </div>
+        <div class="paragraph">
+        <p><a id="bibliography-default-Qux00"></a>Zot, Q. (3000). Title.</p>
+        </div>
+        </div>
+        <div class="sect2">
+        <h3 id="_first">First</h3>
+        <div class="paragraph">
+        <p><a id="bibliography-first-Foo00"></a>Bar, F. (2000). Title.</p>
+        </div>
+        <div class="paragraph">
+        <p><a id="bibliography-first-Qux00"></a>Zot, Q. (3000). Title.</p>
+        </div>
+        </div>
+        <div class="sect2">
+        <h3 id="_last">Last</h3>
+        <div class="paragraph">
+        <p><a id="bibliography-last-Foo00"></a>Bar, F. (2000). Title.</p>
+        </div>
+        <div class="paragraph">
+        <p><a id="bibliography-last-Qux00"></a>Zot, Q. (3000). Title.</p>
+        </div>
+        </div>
+        </div>
         </div>
         </div>
       BODY
