@@ -38,7 +38,11 @@ module AsciidoctorBibliography
     end
 
     def style
-      # Error throwing delegated to CSL library. Seems to have nice messages.
+      # First we check whether an internal style exists to qualify its path.
+      filepath = File.join AsciidoctorBibliography.csl_styles_root,
+                           self["bibliography-style"] + ".csl"
+      self["bibliography-style"] = filepath if File.exist? filepath
+      # Then error throwing is delegated to CSL library.
       self["bibliography-style"] || DEFAULTS["bibliography-style"]
     end
 
