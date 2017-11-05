@@ -20,7 +20,7 @@ module AsciidoctorBibliography
       formatter.bibliography.each_with_index do |reference, index|
         line = "{empty}"
         id = anchor_id "bibliography", target, formatter.data[index].id
-        line << "anchor:#{id}[]"
+        line << "anchor:#{id}[]" if bibliographer.options.hyperlinks?
         line << reference
         lines << line
       end
