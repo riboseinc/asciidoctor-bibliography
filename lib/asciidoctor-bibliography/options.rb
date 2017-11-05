@@ -39,9 +39,11 @@ module AsciidoctorBibliography
 
     def style
       # First we check whether an internal style exists to qualify its path.
-      filepath = File.join AsciidoctorBibliography.csl_styles_root,
-                           self["bibliography-style"] + ".csl"
-      self["bibliography-style"] = filepath if File.exist? filepath
+      if self["bibliography-style"]
+        filepath = File.join AsciidoctorBibliography.csl_styles_root,
+                             self["bibliography-style"] + ".csl"
+        self["bibliography-style"] = filepath if File.exist? filepath
+      end
       # Then error throwing is delegated to CSL library.
       self["bibliography-style"] || DEFAULTS["bibliography-style"]
     end
