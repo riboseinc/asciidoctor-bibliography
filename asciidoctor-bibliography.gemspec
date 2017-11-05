@@ -40,6 +40,8 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.add_dependency "latex-decode", "~> 0.2.2"
   spec.add_dependency "bibtex-ruby", "~> 4.4.4"
 
+  spec.add_dependency "nokogiri"
+
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "byebug"
   spec.add_development_dependency "rspec"

@@ -1,4 +1,5 @@
 require_relative "databases/bibtex"
+require_relative "databases/rfc"
 require_relative "errors"
 
 module AsciidoctorBibliography
@@ -30,6 +31,8 @@ module AsciidoctorBibliography
       case fileext
       when *Databases::BibTeX::EXTENSIONS
         Databases::BibTeX.load filepath
+      when *Databases::RFC::EXTENSIONS
+        Databases::RFC.load filepath
       else
         raise Errors::Database::UnsupportedFormat, fileext
       end
