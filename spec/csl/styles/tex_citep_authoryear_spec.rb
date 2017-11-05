@@ -3,7 +3,7 @@
 require_relative "../../citation_helper"
 
 describe "citep macro with authoryear style" do
-  let(:options) { { "bibliography-tex-style" => "authoryear" } }
+  let(:options) { { "bibliography-tex-style" => "authoryear", "bibliography-database" => "database.bib" } }
 
   it "formats a single citation" do
     expect(formatted_citation("citep:[Erdos65]", options: options)).
