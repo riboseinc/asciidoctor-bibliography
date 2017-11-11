@@ -12,7 +12,7 @@
     </group>
   </macro>
   <citation>
-    <layout prefix="+++" suffix="+++">
+    <layout>
       <group>
         <group prefix="&lt;xref" suffix="&gt;">
           <text variable="citation-label" prefix=" target=&quot;" suffix="&quot;"/>
