@@ -19,7 +19,7 @@
     </layout>
   </citation>
   <bibliography>
-    <layout prefix="+++" suffix="+++">
+    <layout>
       <text variable="note"/>
     </layout>
   </bibliography>
