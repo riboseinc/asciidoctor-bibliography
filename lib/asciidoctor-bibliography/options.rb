@@ -14,6 +14,8 @@ module AsciidoctorBibliography
       "bibliography-order" => "alphabetical", # TODO: deprecate
       "bibliography-tex-style" => "authoryear",
       "bibliography-sort" => nil,
+      "bibliography-prepend-empty" => "true",
+      "bibliography-passthrough" => "false",
     }.freeze
 
     def initialize
@@ -108,6 +110,38 @@ module AsciidoctorBibliography
       end
 
       value
+    end
+
+    def passthrough?(context)
+      # NOTE: allowed contexts are :citation and :reference
+      value = self["bibliography-passthrough"] || DEFAULTS["bibliography-passthrough"]
+      unless %w[true citations references false].include? value
+        raise Errors::Options::Invalid, <<~MESSAGE
+          Option :bibliography-passthrough: has an invalid value (#{value}).
+          Allowed values are 'true', 'citations', 'references' and 'false'.
+        MESSAGE
+      end
+
+      return true if value == "true"
+      return false if value == "false"
+      return context.to_s == "citation" if value == "citations"
+      return context.to_s == "reference" if value == "references"
+    end
+
+    def prepend_empty?(context)
+      # NOTE: allowed contexts are :citation and :reference
+      value = self["bibliography-prepend-empty"] || DEFAULTS["bibliography-prepend-empty"]
+      unless %w[true citations references false].include? value
+        raise Errors::Options::Invalid, <<~MESSAGE
+          Option :bibliography-prepend-empty: has an invalid value (#{value}).
+          Allowed values are 'true', 'citations', 'references' and 'false'.
+        MESSAGE
+      end
+
+      return true if value == "true"
+      return false if value == "false"
+      return context.to_s == "citation" if value == "citations"
+      return context.to_s == "reference" if value == "references"
     end
 
     private

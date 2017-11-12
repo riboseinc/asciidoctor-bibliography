@@ -48,7 +48,11 @@ module AsciidoctorBibliography
       prepare_fullcite_item bibliographer, formatter
       formatted_citation = formatter.render(:bibliography, id: citation_items.first.key).join
       # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
-      "{empty}" + formatted_citation
+      if bibliographer.options.passthrough?(:citation)
+        formatted_citation = ["+++", formatted_citation, "+++"].join
+      end
+      formatted_citation.prepend "{empty}" if bibliographer.options.prepend_empty?(:citation)
+      formatted_citation
     end
 
     def prepare_fullcite_item(bibliographer, formatter)
@@ -61,7 +65,11 @@ module AsciidoctorBibliography
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
       escape_brackets_inside_xref! formatted_citation
       # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
-      "{empty}" + formatted_citation
+      if bibliographer.options.passthrough?(:citation)
+        formatted_citation = ["+++", formatted_citation, "+++"].join
+      end
+      formatted_citation.prepend "{empty}" if bibliographer.options.prepend_empty?(:citation)
+      formatted_citation
     end
 
     def escape_brackets_inside_xref!(string)
