@@ -18,10 +18,12 @@ module AsciidoctorBibliography
 
       lines = []
       formatter.bibliography.each_with_index do |reference, index|
-        line = "{empty}"
-        id = anchor_id "bibliography", target, formatter.data[index].id
-        line << "anchor:#{id}[]" if bibliographer.options.hyperlinks?
-        line << reference
+        line = reference.dup
+        if bibliographer.options.hyperlinks?
+          id = anchor_id "bibliography", target, formatter.data[index].id
+          line.prepend "anchor:#{id}[]"
+        end
+        line.prepend "{empty}" if bibliographer.options.prepend_empty?(:reference)
         lines << line
       end
 

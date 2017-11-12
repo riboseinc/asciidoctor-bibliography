@@ -12,6 +12,50 @@ describe AsciidoctorBibliography::Options do
     end
   end
 
+  describe "#prepend_empty?" do
+    it "defaults to true" do
+      expect(described_class.new.prepend_empty?(:citation)).to be true
+      expect(described_class.new.prepend_empty?(:reference)).to be true
+    end
+
+    it "returns true when provided option is true" do
+      expect(described_class.new.merge("bibliography-prepend-empty" => "true").
+               prepend_empty?(:citation)).to be true
+      expect(described_class.new.merge("bibliography-prepend-empty" => "true").
+               prepend_empty?(:reference)).to be true
+    end
+
+    it "returns true for citations when provided option is citations" do
+      expect(described_class.new.merge("bibliography-prepend-empty" => "citations").
+               prepend_empty?(:citation)).to be true
+      expect(described_class.new.merge("bibliography-prepend-empty" => "citations").
+               prepend_empty?(:reference)).to be false
+    end
+
+    it "returns true for references when provided option is references" do
+      expect(described_class.new.merge("bibliography-prepend-empty" => "references").
+               prepend_empty?(:citation)).to be false
+      expect(described_class.new.merge("bibliography-prepend-empty" => "references").
+               prepend_empty?(:reference)).to be true
+    end
+
+    it "returns false when provided option is false" do
+      expect(described_class.new.merge("bibliography-prepend-empty" => "false").
+               prepend_empty?(:citation)).to be false
+      expect(described_class.new.merge("bibliography-prepend-empty" => "false").
+               prepend_empty?(:reference)).to be false
+    end
+
+    it "raises an error when provided option is invalid" do
+      expect { described_class.new.merge("bibliography-prepend-empty" => "foo").
+                 prepend_empty?(:citation) }.
+        to raise_exception AsciidoctorBibliography::Errors::Options::Invalid
+      expect { described_class.new.merge("bibliography-prepend-empty" => "foo").
+                 prepend_empty?(:reference) }.
+        to raise_exception AsciidoctorBibliography::Errors::Options::Invalid
+    end
+  end
+
   describe "#hyperlinks?" do
     it "defaults to true" do
       expect(described_class.new.hyperlinks?).to be true
