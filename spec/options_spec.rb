@@ -47,11 +47,15 @@ describe AsciidoctorBibliography::Options do
     end
 
     it "raises an error when provided option is invalid" do
-      expect { described_class.new.merge("bibliography-prepend-empty" => "foo").
-                 prepend_empty?(:citation) }.
+      expect do
+        described_class.new.merge("bibliography-prepend-empty" => "foo").
+          prepend_empty?(:citation)
+      end.
         to raise_exception AsciidoctorBibliography::Errors::Options::Invalid
-      expect { described_class.new.merge("bibliography-prepend-empty" => "foo").
-                 prepend_empty?(:reference) }.
+      expect do
+        described_class.new.merge("bibliography-prepend-empty" => "foo").
+          prepend_empty?(:reference)
+      end.
         to raise_exception AsciidoctorBibliography::Errors::Options::Invalid
     end
   end

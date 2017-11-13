@@ -20,7 +20,6 @@ module AsciidoctorBibliography
       @uuid = SecureRandom.uuid
       @macro = macro
       @citation_items = []
-      # rubocop:disable Performance/HashEachMethods
       target_and_attributes_list_pairs.compact.each_slice(2).each do |target, attribute_list|
         @citation_items << CitationItem.new do |cite|
           cite.target = target.to_s.empty? ? "default" : target

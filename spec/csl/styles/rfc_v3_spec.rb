@@ -3,7 +3,7 @@
 require_relative "../../citation_helper"
 
 describe "cite macro with rfc-v3 style" do
-  let(:options) { { "bibliography-style" => "rfc-v3", "bibliography-database" => "database.rfc.xml", "bibliography-passthrough" => "true", "bibliography-prepend-empty" => "false"  } }
+  let(:options) { { "bibliography-style" => "rfc-v3", "bibliography-database" => "database.rfc.xml", "bibliography-passthrough" => "true", "bibliography-prepend-empty" => "false" } }
 
   it "formats a single citation" do
     expect(formatted_citation("cite:[RFC2119]", options: options)).
