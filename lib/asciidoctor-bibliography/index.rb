@@ -23,7 +23,7 @@ module AsciidoctorBibliography
           id = anchor_id "bibliography", target, formatter.data[index].id
           line.prepend "anchor:#{id}[]"
         end
-        line = ["+++", line, "+++"].join  if bibliographer.options.passthrough?(:reference)
+        line = ["+++", line, "+++"].join if bibliographer.options.passthrough?(:reference)
         line.prepend "{empty}" if bibliographer.options.prepend_empty?(:reference)
         lines << line
       end
