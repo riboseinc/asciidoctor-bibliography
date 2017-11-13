@@ -184,9 +184,6 @@ describe "asciidoctor integration" do
         <div class="paragraph">
         <p><a id="bibliography-default-Foo00"></a>Bar, F. (2000). Title.</p>
         </div>
-        <div class="paragraph">
-        <p><a id="bibliography-default-Qux00"></a>Zot, Q. (3000). Title.</p>
-        </div>
         </div>
         <div class="sect2">
         <h3 id="_first">First</h3>
@@ -199,9 +196,6 @@ describe "asciidoctor integration" do
         </div>
         <div class="sect2">
         <h3 id="_last">Last</h3>
-        <div class="paragraph">
-        <p><a id="bibliography-last-Foo00"></a>Bar, F. (2000). Title.</p>
-        </div>
         <div class="paragraph">
         <p><a id="bibliography-last-Qux00"></a>Zot, Q. (3000). Title.</p>
         </div>

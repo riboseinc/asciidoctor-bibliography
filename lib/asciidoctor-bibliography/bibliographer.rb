@@ -11,7 +11,7 @@ module AsciidoctorBibliography
       @citations = []
       @indices = []
       @database = nil
-      @occurring_keys = Hash.new([])
+      @occurring_keys = {}
     end
 
     def add_citation(citation)
