@@ -30,28 +30,29 @@ module AsciidoctorBibliography
     end
 
     def render(bibliographer)
-      case macro
-      when "cite"
-        render_citation_with_csl(bibliographer)
-      when "fullcite"
-        render_fullcite_with_csl(bibliographer)
-      when *TEX_MACROS
-        filename = ["tex", macro.tr("*", "s"), bibliographer.options.tex_style].join("-")
-        filepath = File.join AsciidoctorBibliography.root, "lib/csl/styles", filename
-        render_citation_with_csl(bibliographer, style: filepath, tex: true)
-      end
-    end
-
-    def render_fullcite_with_csl(bibliographer)
-      formatter = Formatter.new(bibliographer.options.style, locale: bibliographer.options.locale)
-      prepare_fullcite_item bibliographer, formatter
-      formatted_citation = formatter.render(:bibliography, id: citation_items.first.key).join
+      formatted_citation =
+        case macro
+        when "cite"
+          render_citation_with_csl(bibliographer)
+        when "fullcite"
+          render_fullcite_with_csl(bibliographer)
+        when *TEX_MACROS
+          filename = ["tex", macro.tr("*", "s"), bibliographer.options.tex_style].join("-")
+          filepath = File.join AsciidoctorBibliography.root, "lib/csl/styles", filename
+          render_citation_with_csl(bibliographer, style: filepath, tex: true)
+        end
       # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
       if bibliographer.options.passthrough?(:citation)
         formatted_citation = ["+++", formatted_citation, "+++"].join
       end
       formatted_citation.prepend "{empty}" if bibliographer.options.prepend_empty?(:citation)
       formatted_citation
+    end
+
+    def render_fullcite_with_csl(bibliographer)
+      formatter = Formatter.new(bibliographer.options.style, locale: bibliographer.options.locale)
+      prepare_fullcite_item bibliographer, formatter
+      formatter.render(:bibliography, id: citation_items.first.key).join
     end
 
     def prepare_fullcite_item(bibliographer, formatter)
@@ -63,11 +64,6 @@ module AsciidoctorBibliography
       items = prepare_items bibliographer, formatter, tex: tex
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
       escape_brackets_inside_xref! formatted_citation
-      # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
-      if bibliographer.options.passthrough?(:citation)
-        formatted_citation = ["+++", formatted_citation, "+++"].join
-      end
-      formatted_citation.prepend "{empty}" if bibliographer.options.prepend_empty?(:citation)
       formatted_citation
     end
 
