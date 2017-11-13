@@ -1,3 +1,4 @@
+require "tmpdir"
 require "asciidoctor"
 
 def setup_tmpdir(method_name = :tmpdir)
