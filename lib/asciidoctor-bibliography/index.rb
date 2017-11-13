@@ -18,14 +18,8 @@ module AsciidoctorBibliography
 
       lines = []
       formatter.bibliography.each_with_index do |reference, index|
-        line = reference.dup
-        if bibliographer.options.hyperlinks?
-          id = anchor_id "bibliography", target, formatter.data[index].id
-          line.prepend "anchor:#{id}[]"
-        end
-        line = ["+++", line, "+++"].join if bibliographer.options.passthrough?(:reference)
-        line.prepend "{empty}" if bibliographer.options.prepend_empty?(:reference)
-        lines << line
+        id = anchor_id "bibliography", target, formatter.data[index].id
+        lines << wrap_up_reference(reference: reference, id: id, bibliographer: bibliographer)
       end
 
       # Intersperse the lines with empty ones to render as paragraphs.
@@ -33,6 +27,14 @@ module AsciidoctorBibliography
     end
 
     private
+
+    def wrap_up_reference(reference:, id:, bibliographer:)
+      text = reference.dup
+      text.prepend "anchor:#{id}[]" if bibliographer.options.hyperlinks?
+      text = ["+++", reference, "+++"].join if bibliographer.options.passthrough?(:reference)
+      text.prepend "{empty}" if bibliographer.options.prepend_empty?(:reference)
+      text
+    end
 
     def setup_formatter(bibliographer)
       formatter = Formatter.new(bibliographer.options.style, locale: bibliographer.options.locale)
