@@ -52,36 +52,30 @@ module AsciidoctorBibliography
 
     def locale
       value = self["bibliography-locale"] || DEFAULTS["bibliography-locale"]
-      unless CSL::Locale.list.include? value
-        raise Errors::Options::Invalid, <<~MESSAGE
-          Option :bibliography-locale: has an invalid value (#{value}).
-          Allowed values are #{CSL::Locale.list.inspect}.
-        MESSAGE
-      end
+      raise_invalid <<~MESSAGE unless CSL::Locale.list.include? value
+        Option :bibliography-locale: has an invalid value (#{value}).
+        Allowed values are #{CSL::Locale.list.inspect}.
+      MESSAGE
 
       value
     end
 
     def hyperlinks?
       value = self["bibliography-hyperlinks"] || DEFAULTS["bibliography-hyperlinks"]
-      unless %w[true false].include? value
-        raise Errors::Options::Invalid, <<~MESSAGE
-          Option :bibliography-hyperlinks: has an invalid value (#{value}).
-          Allowed values are 'true' and 'false'.
-        MESSAGE
-      end
+      raise_invalid <<~MESSAGE unless %w[true false].include? value
+        Option :bibliography-hyperlinks: has an invalid value (#{value}).
+        Allowed values are 'true' and 'false'.
+      MESSAGE
 
       value == "true"
     end
 
     def database
       value = self["bibliography-database"] || DEFAULTS["bibliography-database"]
-      if value.nil?
-        raise Errors::Options::Missing, <<~MESSAGE
-          Option :bibliography-database: is mandatory.
-          A bibliographic database is required.
-        MESSAGE
-      end
+      raise Errors::Options::Missing, <<~MESSAGE if value.nil?
+        Option :bibliography-database: is mandatory.
+        A bibliographic database is required.
+      MESSAGE
 
       value
     end
@@ -90,7 +84,7 @@ module AsciidoctorBibliography
       begin
         value = YAML.safe_load self["bibliography-sort"].to_s
       rescue Psych::SyntaxError => psych_error
-        raise Errors::Options::Invalid, <<~MESSAGE
+        raise_invalid <<~MESSAGE
           Option :bibliography-sort: is not a valid YAML string: \"#{psych_error}\".
         MESSAGE
       end
@@ -102,12 +96,10 @@ module AsciidoctorBibliography
 
     def tex_style
       value = self["bibliography-tex-style"] || DEFAULTS["bibliography-tex-style"]
-      unless %w[authoryear numeric].include? value
-        raise Errors::Options::Invalid, <<~MESSAGE
-          Option :bibliography-tex-style: has an invalid value (#{value}).
-          Allowed values are 'authoryear' (default) and 'numeric'.
-        MESSAGE
-      end
+      raise_invalid <<~MESSAGE unless %w[authoryear numeric].include? value
+        Option :bibliography-tex-style: has an invalid value (#{value}).
+        Allowed values are 'authoryear' (default) and 'numeric'.
+      MESSAGE
 
       value
     end
@@ -115,42 +107,43 @@ module AsciidoctorBibliography
     def passthrough?(context)
       # NOTE: allowed contexts are :citation and :reference
       value = self["bibliography-passthrough"] || DEFAULTS["bibliography-passthrough"]
-      unless %w[true citations references false].include? value
-        raise Errors::Options::Invalid, <<~MESSAGE
-          Option :bibliography-passthrough: has an invalid value (#{value}).
-          Allowed values are 'true', 'citations', 'references' and 'false'.
-        MESSAGE
-      end
+      raise_invalid <<~MESSAGE unless %w[true citations references false].include? value
+        Option :bibliography-passthrough: has an invalid value (#{value}).
+        Allowed values are 'true', 'citations', 'references' and 'false'.
+      MESSAGE
 
-      return true if value == "true"
-      return false if value == "false"
-      return context.to_s == "citation" if value == "citations"
-      return context.to_s == "reference" if value == "references"
+      evaluate_ext_boolean_value_vs_context value: value, context: context
     end
 
     def prepend_empty?(context)
       # NOTE: allowed contexts are :citation and :reference
       value = self["bibliography-prepend-empty"] || DEFAULTS["bibliography-prepend-empty"]
-      unless %w[true citations references false].include? value
-        raise Errors::Options::Invalid, <<~MESSAGE
-          Option :bibliography-prepend-empty: has an invalid value (#{value}).
-          Allowed values are 'true', 'citations', 'references' and 'false'.
-        MESSAGE
-      end
+      raise_invalid <<~MESSAGE unless %w[true citations references false].include? value
+        Option :bibliography-prepend-empty: has an invalid value (#{value}).
+        Allowed values are 'true', 'citations', 'references' and 'false'.
+      MESSAGE
 
-      return true if value == "true"
-      return false if value == "false"
-      return context.to_s == "citation" if value == "citations"
-      return context.to_s == "reference" if value == "references"
+      evaluate_ext_boolean_value_vs_context value: value, context: context
     end
 
     private
+
+    def evaluate_ext_boolean_value_vs_context(value:, context:)
+      return true if value.to_s == "true"
+      return false if value.to_s == "false"
+      return context.to_s == "citation" if value.to_s == "citations"
+      return context.to_s == "reference" if value.to_s == "references"
+    end
+
+    def raise_invalid(message)
+      raise Errors::Options::Invalid, message
+    end
 
     def validate_parsed_sort_type!(value)
       return value if value.nil?
       return value if value.is_a?(Array) && value.all? { |v| v.is_a? Hash }
       return [value] if value.is_a? Hash
-      raise Errors::Options::Invalid, <<~MESSAGE
+      raise_invalid <<~MESSAGE
         Option :bibliography-sort: has an invalid value (#{value}).
         Please refer to manual for more info.
       MESSAGE
@@ -160,7 +153,7 @@ module AsciidoctorBibliography
       # TODO: should we restrict these? Double check the CSL spec.
       allowed_keys = %w[variable macro sort names-min names-use-first names-use-last]
       return array unless array.any? { |hash| (hash.keys - allowed_keys).any? }
-      raise Errors::Options::Invalid, <<~MESSAGE
+      raise_invalid <<~MESSAGE
         Option :bibliography-sort: has a value containing invalid keys (#{array}).
         Allowed keys are #{allowed_keys.inspect}.
         Please refer to manual for more info.
