@@ -37,16 +37,23 @@ module AsciidoctorBibliography
         when "fullcite"
           render_fullcite_with_csl(bibliographer)
         when *TEX_MACROS
-          filename = ["tex", macro.tr("*", "s"), bibliographer.options.tex_style].join("-")
-          filepath = File.join AsciidoctorBibliography.root, "lib/csl/styles", filename
-          render_citation_with_csl(bibliographer, style: filepath, tex: true)
+          render_texmacro_with_csl(bibliographer)
         end
-      # We prepend an empty interpolation to avoid interferences w/ standard syntax (e.g. block role is "\n[foo]")
-      if bibliographer.options.passthrough?(:citation)
-        formatted_citation = ["+++", formatted_citation, "+++"].join
-      end
-      formatted_citation.prepend "{empty}" if bibliographer.options.prepend_empty?(:citation)
-      formatted_citation
+      wrap_up_citation citation: formatted_citation, bibliographer: bibliographer
+    end
+
+    def wrap_up_citation(citation:, bibliographer:)
+      text = citation.dup
+      # TODO: handle hyperlinks here, maybe?
+      text = ["+++", text, "+++"].join if bibliographer.options.passthrough?(:citation)
+      text.prepend "{empty}" if bibliographer.options.prepend_empty?(:citation)
+      text
+    end
+
+    def render_texmacro_with_csl(bibliographer)
+      filename = ["tex", macro.tr("*", "s"), bibliographer.options.tex_style].join("-")
+      filepath = File.join AsciidoctorBibliography.root, "lib/csl/styles", filename
+      render_citation_with_csl(bibliographer, style: filepath, tex: true)
     end
 
     def render_fullcite_with_csl(bibliographer)
