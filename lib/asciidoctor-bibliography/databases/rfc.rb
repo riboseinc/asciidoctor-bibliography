@@ -24,8 +24,7 @@ module AsciidoctorBibliography
           "issued" => {
             "date-parts" => get_date_parts(reference_tag),
           },
-          # NOTE: we need to keep the original XML somewhere
-          #   in order to render the bibliography <references>.
+          # NOTE: we keep the original XML to re-render it when needed
           "note" => reference_tag.to_xml,
         }
       end
