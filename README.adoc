@@ -324,6 +324,22 @@ Accepted values are `authoryear` (default) and `numeric`.
 
 Furthermore, `fullcite` is also available and accepts no parameters except a single reference key.
 
+==== Advanced options
+
+When rendered citations (used at the beginning of a line) or references start with a special character, it might throw off `asciidoctor`. To avoid this an `{empty}` is prepended by default. Using the `bibliography-prepend-empty` you can decide whether to prepend it to citations (`citation`), references (`reference`), both (`true`) or neither (`false`). Default is `true`.
+
+[source,asciidoc]
+----
+:bibliography-prepend-empty: true
+----
+
+Sometimes it is desirable to wrap the rendered citations in a passthrough. Using the `bibliography-passthrough` you can decide whether to wrap citations (`citation`), references (`reference`), both (`true`) or neither (`false`). They are wrapped in an inline passthrough (`+++`). Default is `false`.
+
+[source,asciidoc]
+----
+:bibliography-passthrough: false
+----
+
 == Development
 
 We follow Sandi Metz's Rules for this gem, you can read the
