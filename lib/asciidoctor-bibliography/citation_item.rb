@@ -18,6 +18,10 @@ module AsciidoctorBibliography
       named_attributes["suffix"]
     end
 
+    def text
+      named_attributes["text"]
+    end
+
     def locators
       named_attributes.select { |key, _| LOCATORS.include? key }
     end

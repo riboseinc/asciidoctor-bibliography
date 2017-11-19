@@ -95,4 +95,18 @@ describe AsciidoctorBibliography::CitationItem do
       expect(subject.suffix).to be_nil
     end
   end
+
+  describe "#text" do
+    subject { described_class.new }
+
+    it "returns the text if it exist" do
+      subject.parse_attribute_list("foo, text='prefix {ref} suffix'")
+      expect(subject.text).to eq("prefix {ref} suffix")
+    end
+
+    it "returns nil if no text exists" do
+      subject.parse_attribute_list("foo, bar, zod=quz")
+      expect(subject.text).to be_nil
+    end
+  end
 end

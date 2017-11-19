@@ -131,6 +131,16 @@ To `prefix` and `suffix` citations with arbitrary strings you can use the relati
 cite:[Aa2017, prefix="see ", suffix=" if you will"]
 ----
 
+You can replace the rendered citation with arbitrary `text` or interpolate it directly:
+
+[source,asciidoc]
+----
+cite:[Aa2017, text="replacement text"]
+// the next two lines are equivalent:
+cite:[Aa2017, prefix="see ", suffix=" if you will"]
+cite:[Aa2017, text="see {cite} if you will"]
+----
+
 To cite multiple resources you concatenate them as follows:
 
 [source,asciidoc]
