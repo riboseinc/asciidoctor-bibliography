@@ -71,6 +71,7 @@ module AsciidoctorBibliography
       items = prepare_items bibliographer, formatter, tex: tex
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
       escape_brackets_inside_xref! formatted_citation
+      interpolate_formatted_citation! formatted_citation
       formatted_citation
     end
 
@@ -80,9 +81,20 @@ module AsciidoctorBibliography
       end
     end
 
+    def interpolate_formatted_citation!(formatted_citation)
+      citation_items.each do |citation_item|
+        key = Regexp.escape citation_item.key
+        formatted_citation.gsub!(/___#{key}___(?<citation>.*?)___\/#{key}___/) do
+          # NOTE: this is slight overkill but easy to extend
+          (citation_item.text || "{cite}").
+            sub("{cite}", Regexp.last_match[:citation])
+        end
+      end
+    end
+
     def prepare_items(bibliographer, formatter, tex: false)
       # NOTE: when we're using our custom TeX CSL styles prefix/suffix are used as
-      #   varieables for metadata instead of as parameters for citations.
+      #   variables for metadata instead of as parameters for citations.
       cites_with_local_attributes = citation_items.map { |cite| prepare_metadata bibliographer, cite, affix: tex }
       formatter.import cites_with_local_attributes
       formatter.force_sort!(mode: :citation)
@@ -104,6 +116,7 @@ module AsciidoctorBibliography
       ci = citation_items.detect { |c| c.key == item.id }
       wrap_item item, ci.prefix, ci.suffix if affix
       id = xref_id "bibliography", ci.target, item.id
+      wrap_item item, "___#{item.id}___", "___/#{item.id}___"
       wrap_item item, "xref:#{id}{{{", "}}}" if options.hyperlinks?
       item.label, item.locator = ci.locator
     end

@@ -13,6 +13,16 @@ describe "cite macro with apa style" do
   end
 end
 
+describe "cite macro with arbitrary interpolated text" do
+  it "formats a complex citation" do
+    expect(formatted_citation("cite:[Erdos65, text=foo {cite} bar]",
+                              options: { "bibliography-style" => "apa",
+                                         "bibliography-database" => "database.bib",
+                                         "bibliography-hyperlinks" => "true" })).
+      to eq "(xref:bibliography-default-Erdos65[foo Erdős, Heyting, & Brouwer, 1965 bar])"
+  end
+end
+
 describe "fullcite macro with apa style" do
   it "formats a complex citation" do
     expect(formatted_citation("fullcite:[Erdos65]",
