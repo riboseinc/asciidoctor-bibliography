@@ -1,7 +1,7 @@
 = Citations and Bibliography the "asciidoctor-way"
 
 asciidoctor-bibliography lets you handle citations and bibliography the
-"http://asciidoctor.org/[asciidoctor]-way"!
+http://asciidoctor.org/[asciidoctor]-way!
 
 image:https://img.shields.io/gem/v/asciidoctor-bibliography.svg["Gem Version", link="https://rubygems.org/gems/asciidoctor-bibliography"]
 image:https://img.shields.io/travis/riboseinc/asciidoctor-bibliography/master.svg["Build Status", link="https://travis-ci.org/riboseinc/asciidoctor-bibliography"]
