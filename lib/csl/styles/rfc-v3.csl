@@ -12,7 +12,7 @@
   </macro>
   <citation>
     <layout>
-      <group delimiter=" " prefix="&lt;relref " suffix="/&gt;">
+      <group delimiter=" " prefix="&lt;xref " suffix="/&gt;">
         <text variable="citation-label" prefix="target=&quot;" suffix="&quot;"/>
         <text variable="locator" prefix="section=&quot;" suffix="&quot;"/>
       </group>
