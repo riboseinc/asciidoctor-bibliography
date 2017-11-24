@@ -1,27 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <style xmlns="http://purl.org/net/xbiblio/csl" class="in-text" version="1.0" demote-non-dropping-particle="never">
   <info>
-    <title>RFC v2 style</title>
-    <id>rfc-v2</id>
-    <updated>2017-11-04T15:15:55+00:00</updated>
+    <title>RFC v3 style</title>
+    <id>rfc-v3</id>
+    <updated>2017-11-04T16:30:44+00:00</updated>
   </info>
   <macro name="citation-locator">
     <group>
       <label variable="locator" text-case="capitalize-first"/>
-      <text variable="locator" prefix=" "/>
     </group>
   </macro>
   <citation>
     <layout>
-      <group>
-        <group prefix="&lt;xref" suffix="&gt;">
-          <text variable="citation-label" prefix=" target=&quot;" suffix="&quot;"/>
-        </group>
-        <group delimiter=", ">
-          <text variable="citation-label" prefix="[" suffix="]"/>
-          <text macro="citation-locator"/>
-        </group>
-        <text value="&lt;/xref&gt;"/>
+      <group delimiter=" " prefix="&lt;xref " suffix="/&gt;">
+        <text variable="citation-label" prefix="target=&quot;" suffix="&quot;"/>
+        <text variable="locator" prefix="section=&quot;" suffix="&quot;"/>
       </group>
     </layout>
   </citation>

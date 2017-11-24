@@ -7,12 +7,12 @@ describe "cite macro with rfc-v2 style" do
 
   it "formats a single citation" do
     expect(formatted_citation("cite:[RFC2119]", options: options)).
-      to eq '+++<xref target="RFC2119">[RFC2119]</xref>+++'
+      to eq '+++<xref target="RFC2119"/>+++'
   end
 
   it "formats a single citation with locator" do
     expect(formatted_citation("cite:[RFC2119, section=1.2.3]", options: options)).
-      to eq '+++<xref target="RFC2119">[RFC2119], Section 1.2.3</xref>+++'
+      to eq '+++<xref target=\"RFC2119\" section=\"1.2.3\"/>+++'
   end
 
   it "formats a single bibliography entry" do
