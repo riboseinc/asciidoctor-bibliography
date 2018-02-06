@@ -11,9 +11,13 @@ require "latex/decode/greek"
 module AsciidoctorBibliography
   module Databases
     module BibTeX
-      EXTENSIONS = %w[.bib .bibtex].freeze
+      EXTENSIONS = %w[.bib .bibtex .biblatex].freeze
 
       def self.load(filename)
+        # TODO: detect BibLaTeX code w/ other extensions
+        warn <<~MESSAGE if File.extname(filename) == '.biblatex'
+          WARNING: you are requiring a BibLaTeX database; only features compatible with BibTeX are guaranteed to work.
+        MESSAGE
         ::BibTeX.open(filename, filter: [LatexFilter]).to_citeproc
       end
 
