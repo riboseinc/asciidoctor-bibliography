@@ -193,7 +193,11 @@ Specifying a database file is mandatory and it can be done in the header with it
 :bibliography-database: my_database.bib
 ----
 
-Currently only the `BibTeX` format is supported; more will come soon.
+Currently only the `BibTeX` format is supported, with `.bib` or `.bibtex` extensions.
+
+`BibLaTeX` databases can be used too, but only the subset of features belonging to `BibTeX`
+are safe to use: unknown attributes will be silently ignored. If the file has `.biblatex`
+extension the you will receive a warning on compilation.
 
 
 === Styling
