@@ -304,9 +304,11 @@ As for the `sort` option, the valid values are `ascending` (default) and `descen
 
 === TeX-mode
 
-While the `cite` macro is reserved for CSL styling, all traditional Bib(La)TeX macros are accessible through the same syntax with their usual names:
+While the `cite` macro is reserved for CSL styling and works with thousands of styles,
+the traditional Bib(La)TeX macros are also implemented with their usual names
+and can be used with a few styles:
 
-* `citet`
+* `citet` (in `LaTeX` world `\citet` is equivalent to `\cite`)
 * `citet*`
 * `citealt`
 * `citealt*`
@@ -318,8 +320,6 @@ While the `cite` macro is reserved for CSL styling, all traditional Bib(La)TeX m
 * `citeauthor*`
 * `citeyear`
 * `citeyearpar`
-
-NOTE: no macros are missing since `\cite` is equivalent to `\citet`!
 
 To cite multiple items you can concatenate them just like with `cite`.
 
@@ -336,7 +336,13 @@ You can set their style in the header:
 
 Accepted values are `authoryear` (default) and `numeric`.
 
-Furthermore, `fullcite` is also available and accepts no parameters except a single reference key.
+IMPORTANT: The `cite` macro and the `cite...` macros described in this section are completely
+independent mechanisms. The former is styled with `:bibliography-style:` (thousands of styles available)
+while the latter is styled with with `:bibliography-tex-style:` (much more limited, only has the
+styles listed above).
+
+The macro `fullcite` is also available and accepts no parameters except a single reference key.
+Unlike its siblings, it is able to render CSL styles and is configured using `:bibliography-style:`.
 
 ==== Advanced options
 
