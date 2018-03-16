@@ -22,10 +22,11 @@ module AsciidoctorBibliography
       merge DEFAULTS
     end
 
-    def self.new_from_reader(reader)
+    def self.build(document, reader)
       header_attributes = get_header_attributes_hash reader
       header_attributes.select! { |key, _| DEFAULTS.keys.include? key }
-      new.merge header_attributes
+      cli_attributes = document.attributes.select { |key, _| DEFAULTS.keys.include? key }
+      new.merge!(header_attributes).merge!(cli_attributes)
     end
 
     def self.get_header_attributes_hash(reader)

@@ -360,6 +360,17 @@ Sometimes it is desirable to wrap the rendered citations in a passthrough. Using
 :bibliography-passthrough: false
 ----
 
+==== CLI usage
+
+All header attributes described above can also be passed through the commandline as is customary. E.g.:
+
+[source,console]
+----
+$ asciidoctor -r asciidoctor-bibliography -a bibliography-style=ieee my_first_document.adoc
+----
+
+Values given in such way will take highest priority.
+
 == Development
 
 We follow Sandi Metz's Rules for this gem, you can read the

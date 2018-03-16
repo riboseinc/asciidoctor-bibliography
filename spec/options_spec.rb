@@ -160,9 +160,16 @@ describe AsciidoctorBibliography::Options do
     end
   end
 
-  describe ".new_from_reader" do
+  describe ".build" do
+    let(:document) do
+      ::Asciidoctor::Document.new.tap do |doc|
+        # NOTE: these attributes would come from CLI
+        doc.attributes.merge! "bibliography-database" => "high_priority"
+      end
+    end
+
     let(:reader) do
-      ::Asciidoctor::PreprocessorReader.new(::Asciidoctor::Document.new, <<~SOURCE.lines)
+      ::Asciidoctor::PreprocessorReader.new(document, <<~SOURCE.lines)
         = This is the document title
         :bibliography-database: foo
         :bibliography-locale: bar
@@ -175,10 +182,10 @@ describe AsciidoctorBibliography::Options do
       SOURCE
     end
 
-    subject { described_class.new_from_reader reader }
+    subject { described_class.build document, reader }
 
-    it "extracts all bibliography options ignoring others" do
-      expect(subject).to eq("bibliography-database" => "foo",
+    it "extracts all bibliography options ignoring others and includes CLI attributes" do
+      expect(subject).to eq("bibliography-database" => "high_priority",
                             "bibliography-locale" => "bar",
                             "bibliography-style" => "baz",
                             "bibliography-hyperlinks" => "quz",

@@ -10,7 +10,7 @@ module AsciidoctorBibliography
     class BibliographerPreprocessor < ::Asciidoctor::Extensions::Preprocessor
       def process(document, reader)
         document.bibliographer.options =
-          ::AsciidoctorBibliography::Options.new_from_reader reader
+          ::AsciidoctorBibliography::Options.build document, reader
 
         database_filepath =
           File.expand_path document.bibliographer.options.database,
