@@ -1,3 +1,3 @@
 module AsciidoctorBibliography
-  VERSION = "0.7.2.pre".freeze
+  VERSION = "0.7.2".freeze
 end
