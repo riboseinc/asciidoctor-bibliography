@@ -23,8 +23,8 @@ module CiteProc
         # end
 
         def apply_vertical_align
-          output.replace "^#{output}^" if options[:vertical_align] == "sup"
-          output.replace "~#{output}~" if options[:vertical_align] == "sub"
+          output.replace "^#{output}^" if options[:"vertical-align"] == "sup"
+          output.replace "~#{output}~" if options[:"vertical-align"] == "sub"
         end
 
         def apply_suffix
