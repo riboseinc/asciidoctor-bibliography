@@ -35,18 +35,16 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   spec.add_dependency "asciidoctor", "~> 1.5.6"
+  spec.add_dependency "bibtex-ruby", "~> 4.4.4"
   spec.add_dependency "citeproc-ruby", "~> 1.1.7"
   spec.add_dependency "csl-styles", "~> 1.0.1"
   spec.add_dependency "latex-decode", "~> 0.2.2"
-  spec.add_dependency "bibtex-ruby", "~> 4.4.4"
-
   spec.add_dependency "nokogiri", "~> 1.8.1"
 
-  spec.add_development_dependency "bundler"
-  spec.add_development_dependency "byebug"
-  spec.add_development_dependency "rspec"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "simplecov"
-  spec.add_development_dependency "yard"
-  spec.add_development_dependency "rubocop"
+  spec.add_development_dependency "byebug", "~> 10.0.1"
+  spec.add_development_dependency "rake", "~> 12.3.0"
+  spec.add_development_dependency "rspec", "~> 3.7.0"
+  spec.add_development_dependency "rubocop", "~> 0.54.0"
+  spec.add_development_dependency "simplecov", "~> 0.16.1"
+  spec.add_development_dependency "yard", "~> 0.9.12"
 end
