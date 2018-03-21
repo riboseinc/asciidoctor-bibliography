@@ -46,7 +46,7 @@ describe CiteProc::Ruby::Formats::Adoc do
     describe ".apply_suffix" do
       before { processor.import(BibTeX.open("spec/fixtures/database.bib").to_citeproc) }
       it "adds space between first and second field" do
-        processor.items["Gettier63"].merge({"citation-number": "0"})
+        processor.items["Gettier63"].merge("citation-number": "0")
         expect(rendered_bibliography).to match(/^\[0\] E. L. Gettier/)
       end
     end
