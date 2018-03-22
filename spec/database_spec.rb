@@ -42,6 +42,12 @@ describe AsciidoctorBibliography::Database do
       expect { db.append("spec/fixtures/database.bib") }.to(change { db.length })
       expect { db.append("spec/fixtures/database.bibtex") }.to(change { db.length })
     end
+
+    it "raises error if conflicting ids are found" do
+      db.append("spec/fixtures/database.bib")
+      expect { db.append("spec/fixtures/database.bib") }.
+        to raise_exception AsciidoctorBibliography::Errors::Database::ConflictingIds
+    end
   end
 
   describe ".load" do

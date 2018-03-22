@@ -11,6 +11,7 @@ module AsciidoctorBibliography
       class UnsupportedFormat < Error; end
       class FileNotFound < Error; end
       class IdNotFound < Error; end
+      class ConflictingIds < Error; end
     end
   end
 end
