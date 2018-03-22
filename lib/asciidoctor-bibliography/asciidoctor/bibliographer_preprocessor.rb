@@ -12,12 +12,8 @@ module AsciidoctorBibliography
         document.bibliographer.options =
           ::AsciidoctorBibliography::Options.build document, reader
 
-        database_filepath =
-          File.expand_path document.bibliographer.options.database,
-                           document.base_dir
-
         document.bibliographer.database =
-          ::AsciidoctorBibliography::Database.new database_filepath
+          ::AsciidoctorBibliography::Database.new *expand_db_globs(document)
 
         processed_lines = process_lines reader.read_lines, document.bibliographer
         reader.unshift_lines processed_lines
@@ -61,6 +57,19 @@ module AsciidoctorBibliography
           else
             line
           end
+        end.flatten
+      end
+
+      def expand_db_globs(document)
+        glob_pattern(
+          document.bibliographer.options.database,
+          document.base_dir,
+        )
+      end
+
+      def glob_pattern(pattern_string, base_dir)
+        pattern_string.split(/(?<!\\)\s+/).map do |pattern|
+          Dir.chdir(base_dir) { Dir.glob(pattern) }
         end.flatten
       end
     end

@@ -13,6 +13,8 @@ module AsciidoctorBibliography
 
     def append(filepath)
       concat Database.load(filepath)
+      ensure_no_conflicts!
+      self
     end
 
     def find_entry_by_id(id)
@@ -36,6 +38,16 @@ module AsciidoctorBibliography
       else
         raise Errors::Database::UnsupportedFormat, fileext
       end
+    end
+
+    private
+
+    def ensure_no_conflicts!
+      ids = map { |entry| entry["id"] }
+      conflicting_ids = ids.select { |id| ids.count(id) > 1 }.uniq.sort
+      raise Errors::Database::ConflictingIds, <<~MESSAGE if conflicting_ids.any?
+        Conflicting ids were found during database import: #{conflicting_ids}.
+      MESSAGE
     end
   end
 end
