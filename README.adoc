@@ -199,7 +199,7 @@ Currently only the `BibTeX` format is supported, with `.bib` or `.bibtex` extens
 are safe to use: unknown attributes will be silently ignored. If the file has `.biblatex`
 extension the you will receive a warning on compilation.
 
-If you need to include multipla databases, you can simply list their names.
+If you need to include multiple databases, you can simply list their names.
 Wildcards are allowed too:
 
 [source,asciidoc]
