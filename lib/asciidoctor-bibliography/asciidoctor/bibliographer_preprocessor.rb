@@ -15,7 +15,8 @@ module AsciidoctorBibliography
         document.bibliographer.database =
           ::AsciidoctorBibliography::Database.new *expand_db_globs(document)
 
-        processed_lines = process_lines reader.read_lines, document.bibliographer
+        lines = remove_comments(reader.read_lines)
+        processed_lines = process_lines lines, document.bibliographer
         reader.unshift_lines processed_lines
         reader
       end
@@ -29,6 +30,14 @@ module AsciidoctorBibliography
         lines = render_citations lines, bibliographer
         # and finally we render indices.
         render_indices lines, bibliographer
+      end
+
+      def remove_comments(lines)
+        # Remove block comments
+        ls = lines.join("\n").split(/^\/\/\/\/\n/).
+               select.with_index { |_, i| i.even? }.join
+        # Remove line comments
+        ls.split("\n").reject { |line| line.start_with?('//') }
       end
 
       def fetch_citations(lines, bibliographer)
