@@ -70,18 +70,9 @@ module AsciidoctorBibliography
       formatter = Formatter.new(style, locale: bibliographer.options.locale)
       items = prepare_items bibliographer, formatter, tex: tex
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
-      # Andy's new method--to replace escape_brackets_inside_xref!
       escape_commas! formatted_citation
-      #escape_brackets_inside_xref! formatted_citation
       interpolate_formatted_citation! formatted_citation
       formatted_citation
-    end
-
-# Not using this, since Andy's emendation (see above)
-    def escape_brackets_inside_xref!(string)
-      string.gsub!(/{{{(?<xref_label>.*?)}}}/) do
-        ["[", Regexp.last_match[:xref_label].gsub("]", '\]'), "]"].join
-      end
     end
 
     def interpolate_formatted_citation!(formatted_citation)
@@ -120,7 +111,7 @@ module AsciidoctorBibliography
       wrap_item item, ci.prefix, ci.suffix if affix
       id = xref_id "bibliography", ci.target, item.id
       wrap_item item, "___#{item.id}___", "___/#{item.id}___"
-      wrap_item item, "{{{#{id},", "}}}" if options.hyperlinks?    # Andy changed this line
+      wrap_item item, "{{{#{id},", "}}}" if options.hyperlinks?
       item.label, item.locator = ci.locator
     end
 
@@ -129,13 +120,12 @@ module AsciidoctorBibliography
       item.suffix = item.suffix.to_s + suffix.to_s
     end
     
-    # Andy's new method
     def escape_commas! (str)
       cypher = nil
       idx = str.index(',')
       cypher = str.gsub!(',', '&#44;')
 	  # Now, must re-insert the FIRST comma it replaced
-	  # but, must first cater for any '&#44;' that had been embedded in targeted item.id:
+	  # but, first cater for any '&#44;' that had been embedded in targeted item.id:
       idx2 = str.index('&#44;')
       until idx2 == idx
         str.sub!('&#44;', '___my_very_odd_STR!NG_indeedy___')
