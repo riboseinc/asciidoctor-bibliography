@@ -70,11 +70,14 @@ module AsciidoctorBibliography
       formatter = Formatter.new(style, locale: bibliographer.options.locale)
       items = prepare_items bibliographer, formatter, tex: tex
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
-      escape_brackets_inside_xref! formatted_citation
+      # Andy's new method--to replace escape_brackets_inside_xref!
+      escape_commas! formatted_citation
+      #escape_brackets_inside_xref! formatted_citation
       interpolate_formatted_citation! formatted_citation
       formatted_citation
     end
 
+# Not using this, since Andy's emendation (see above)
     def escape_brackets_inside_xref!(string)
       string.gsub!(/{{{(?<xref_label>.*?)}}}/) do
         ["[", Regexp.last_match[:xref_label].gsub("]", '\]'), "]"].join
@@ -117,13 +120,35 @@ module AsciidoctorBibliography
       wrap_item item, ci.prefix, ci.suffix if affix
       id = xref_id "bibliography", ci.target, item.id
       wrap_item item, "___#{item.id}___", "___/#{item.id}___"
-      wrap_item item, "xref:#{id}{{{", "}}}" if options.hyperlinks?
+      wrap_item item, "{{{#{id},", "}}}" if options.hyperlinks?    # Andy changed this line
       item.label, item.locator = ci.locator
     end
 
     def wrap_item(item, prefix, suffix)
       item.prefix = prefix.to_s + item.prefix.to_s
       item.suffix = item.suffix.to_s + suffix.to_s
+    end
+    
+    # Andy's new method
+    def escape_commas! (str)
+      cypher = nil
+      idx = str.index(',')
+      cypher = str.gsub!(',', '&#44;')
+	  # Now, must re-insert the FIRST comma it replaced
+	  # but, must first cater for any '&#44;' that had been embedded in targeted item.id:
+      idx2 = str.index('&#44;')
+      until idx2 == idx
+        str.sub!('&#44;', '___my_very_odd_STR!NG_indeedy___')
+        idx2 = str.index('&#44;')
+      end
+	  # re-insert first comma
+      cypher = str.sub!('&#44;', ',')
+	  # clean up
+      str.gsub!('___my_very_odd_STR!NG_indeedy___', '&#44;')
+      cypher = str.gsub!(/{{{(?<xref_label>.*?)}}}/) do
+        ["<<", Regexp.last_match[:xref_label], ">>"].join
+      end
+      cypher
     end
 
     def uuid
