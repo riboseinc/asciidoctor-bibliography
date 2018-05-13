@@ -122,7 +122,7 @@ module AsciidoctorBibliography
 
     def un_curlybrace!(str)
       str.gsub!(/{{{(?<xref_label>.*?)}}}/) do
-        ["<<", escape_commas(Regexp.last_match[:xref_label].to_s), ">>"].join
+        ["<<", Regexp.last_match[:xref_label], ">>"].join
       end
     end
 
