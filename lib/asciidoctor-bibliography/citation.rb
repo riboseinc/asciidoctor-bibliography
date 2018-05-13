@@ -126,19 +126,6 @@ module AsciidoctorBibliography
       end
     end
 
-    def escape_commas(str)
-      idx = str.index(",")
-      str.gsub!(",", "&#44;")
-      idx2 = str.index("&#44;")
-      until idx2 == idx
-        str.sub!("&#44;", "___my_very_odd_STR!NG_indeedy___")
-        idx2 = str.index("&#44;")
-      end
-      str.sub!("&#44;", ",")
-      str.gsub!("___my_very_odd_STR!NG_indeedy___", "&#44;")
-      str
-    end
-
     def uuid
       ":#{@uuid}:"
     end
