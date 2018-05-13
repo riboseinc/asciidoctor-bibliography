@@ -75,6 +75,12 @@ module AsciidoctorBibliography
       formatted_citation
     end
 
+    def un_curlybrace!(str)
+      str.gsub!(/{{{(?<xref_label>.*?)}}}/) do
+        ["<<", Regexp.last_match[:xref_label], ">>"].join
+      end
+    end
+
     def interpolate_formatted_citation!(formatted_citation)
       citation_items.each do |citation_item|
         key = Regexp.escape citation_item.key
@@ -118,12 +124,6 @@ module AsciidoctorBibliography
     def wrap_item(item, prefix, suffix)
       item.prefix = prefix.to_s + item.prefix.to_s
       item.suffix = item.suffix.to_s + suffix.to_s
-    end
-
-    def un_curlybrace!(str)
-      str.gsub!(/{{{(?<xref_label>.*?)}}}/) do
-        ["<<", Regexp.last_match[:xref_label], ">>"].join
-      end
     end
 
     def uuid
