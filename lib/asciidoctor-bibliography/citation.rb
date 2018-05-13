@@ -119,24 +119,18 @@ module AsciidoctorBibliography
       item.prefix = prefix.to_s + item.prefix.to_s
       item.suffix = item.suffix.to_s + suffix.to_s
     end
-    
-    def escape_commas! (str)
-      idx = str.index(',')
-      str.gsub!(',', '&#44;')
-	  # Now, must re-insert the FIRST comma it replaced
-	  # but, first cater for any '&#44;' that had been embedded in targeted item.id:
-      idx2 = str.index('&#44;')
+
+    def escape_commas!(str)
+      idx = str.index(",")
+      str.gsub!(",", "&#44;")
+      idx2 = str.index("&#44;")
       until idx2 == idx
-        str.sub!('&#44;', '___my_very_odd_STR!NG_indeedy___')
-        idx2 = str.index('&#44;')
+        str.sub!("&#44;", "___my_very_odd_STR!NG_indeedy___")
+        idx2 = str.index("&#44;")
       end
-	  # re-insert first comma
-      str.sub!('&#44;', ',')
-	  # clean up
-      str.gsub!('___my_very_odd_STR!NG_indeedy___', '&#44;')
-      str.gsub!(/{{{(?<xref_label>.*?)}}}/) do
-        ["<<", Regexp.last_match[:xref_label], ">>"].join
-      end
+      str.sub!("&#44;", ",")
+      str.gsub!("___my_very_odd_STR!NG_indeedy___", "&#44;")
+      str.gsub!(/{{{(?<xref_label>.*?)}}}/) { ["<<", Regexp.last_match[:xref_label], ">>"].join }
     end
 
     def uuid
