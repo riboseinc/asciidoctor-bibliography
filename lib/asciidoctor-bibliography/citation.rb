@@ -121,9 +121,8 @@ module AsciidoctorBibliography
     end
     
     def escape_commas! (str)
-      cypher = nil
       idx = str.index(',')
-      cypher = str.gsub!(',', '&#44;')
+      str.gsub!(',', '&#44;')
 	  # Now, must re-insert the FIRST comma it replaced
 	  # but, first cater for any '&#44;' that had been embedded in targeted item.id:
       idx2 = str.index('&#44;')
@@ -132,13 +131,12 @@ module AsciidoctorBibliography
         idx2 = str.index('&#44;')
       end
 	  # re-insert first comma
-      cypher = str.sub!('&#44;', ',')
+      str.sub!('&#44;', ',')
 	  # clean up
       str.gsub!('___my_very_odd_STR!NG_indeedy___', '&#44;')
-      cypher = str.gsub!(/{{{(?<xref_label>.*?)}}}/) do
+      str.gsub!(/{{{(?<xref_label>.*?)}}}/) do
         ["<<", Regexp.last_match[:xref_label], ">>"].join
       end
-      cypher
     end
 
     def uuid
