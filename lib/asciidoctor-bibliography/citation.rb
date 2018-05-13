@@ -70,7 +70,7 @@ module AsciidoctorBibliography
       formatter = Formatter.new(style, locale: bibliographer.options.locale)
       items = prepare_items bibliographer, formatter, tex: tex
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
-      escape_commas! formatted_citation
+      un_curlybrace! formatted_citation
       interpolate_formatted_citation! formatted_citation
       formatted_citation
     end
@@ -120,7 +120,13 @@ module AsciidoctorBibliography
       item.suffix = item.suffix.to_s + suffix.to_s
     end
 
-    def escape_commas!(str)
+    def un_curlybrace!(str)
+      str.gsub!(/{{{(?<xref_label>.*?)}}}/) do
+        ["<<", escape_commas(Regexp.last_match[:xref_label].to_s), ">>"].join 
+      end
+    end
+
+    def escape_commas(str)
       idx = str.index(",")
       str.gsub!(",", "&#44;")
       idx2 = str.index("&#44;")
@@ -130,7 +136,7 @@ module AsciidoctorBibliography
       end
       str.sub!("&#44;", ",")
       str.gsub!("___my_very_odd_STR!NG_indeedy___", "&#44;")
-      str.gsub!(/{{{(?<xref_label>.*?)}}}/) { ["<<", Regexp.last_match[:xref_label], ">>"].join }
+      str
     end
 
     def uuid
