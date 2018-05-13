@@ -75,8 +75,8 @@ module AsciidoctorBibliography
       formatted_citation
     end
 
-    def un_curlybrace!(str)
-      str.gsub!(/{{{(?<xref_label>.*?)}}}/) do
+    def un_curlybrace!(string)
+      string.gsub!(/{{{(?<xref_label>.*?)}}}/) do
         ["<<", Regexp.last_match[:xref_label], ">>"].join
       end
     end
