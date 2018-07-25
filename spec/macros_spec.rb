@@ -31,3 +31,13 @@ describe "fullcite macro with apa style" do
       to eq "Erdős, P., Heyting, A., & Brouwer, L. E. (1965). Some very hard sums. _Difficult Maths Today_, 30."
   end
 end
+
+describe "cite macro using an unknown key" do
+  it "formats bold question marks" do
+    expect(formatted_citation("cite:[Erdos65]+[foobar]",
+                              options: { "bibliography-style" => "apa",
+                                         "bibliography-database" => "database.bib",
+                                         "bibliography-hyperlinks" => "true" })).
+      to eq "*??*"
+  end
+end
