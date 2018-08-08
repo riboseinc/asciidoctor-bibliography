@@ -49,9 +49,12 @@ module AsciidoctorBibliography
     end
 
     def prepare_filtered_db(bibliographer)
-      bibliographer.occurring_keys[target].
-        map { |id| bibliographer.database.find_entry_by_id(id) }.
-        map { |entry| prepare_entry_metadata bibliographer, entry }
+      if bibliographer.occurring_keys.include? target
+         bibliographer.occurring_keys[target].
+           map { |id| bibliographer.database.find_entry_by_id(id) }.
+           map { |entry| prepare_entry_metadata bibliographer, entry }
+      else {}
+      end
     end
 
     def prepare_entry_metadata(bibliographer, entry)
