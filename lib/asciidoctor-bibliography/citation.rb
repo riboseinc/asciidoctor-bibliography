@@ -51,16 +51,19 @@ module AsciidoctorBibliography
         return MISSING_ID_MARK
       end
 
-      formatted_citation =
-        case macro
-        when "cite"
-          render_citation_with_csl(bibliographer)
-        when "fullcite"
-          render_fullcite_with_csl(bibliographer)
-        when *TEX_MACROS
-          render_texmacro_with_csl(bibliographer)
-        end
+      formatted_citation = render_with_csl(bibliographer)
       wrap_up_citation citation: formatted_citation, bibliographer: bibliographer
+    end
+
+    def render_with_csl(bibliographer)
+      case macro
+      when "cite"
+        render_citation_with_csl(bibliographer)
+      when "fullcite"
+        render_fullcite_with_csl(bibliographer)
+      when *TEX_MACROS
+        render_texmacro_with_csl(bibliographer)
+      end
     end
 
     def wrap_up_citation(citation:, bibliographer:)
