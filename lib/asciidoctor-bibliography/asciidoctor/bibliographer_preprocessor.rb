@@ -35,9 +35,9 @@ module AsciidoctorBibliography
       def remove_comments(lines)
         # Remove block comments
         ls = lines.join("\n").split(/^\/\/\/\/\n/).
-               select.with_index { |_, i| i.even? }.join
+          select.with_index { |_, i| i.even? }.join
         # Remove line comments
-        ls.split("\n").reject { |line| line.start_with?('//') }
+        ls.split("\n").reject { |line| line.start_with?("//") }
       end
 
       def fetch_citations(lines, bibliographer)
