@@ -344,7 +344,7 @@ You can set their style in the header:
 Accepted values are `authoryear` (default) and `numeric`.
 
 IMPORTANT: The `cite` macro and the `cite...` macros described in this section are completely
-independent mechanisms. The former is styled with `:bibliography-style:` (thousands of styles available)
+independent mechanisms. The former, along with the bibliography, is styled with `:bibliography-style:` (thousands of styles available)
 while the latter is styled with with `:bibliography-tex-style:` (much more limited, only has the
 styles listed above).
 
