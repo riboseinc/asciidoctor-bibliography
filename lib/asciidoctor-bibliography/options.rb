@@ -15,7 +15,7 @@ module AsciidoctorBibliography
       "bibliography-tex-style" => "authoryear",
       "bibliography-sort" => nil,
       "bibliography-prepend-empty" => "true",
-      "bibliography-passthrough" => "false",
+      "bibliography-passthrough" => "false"
     }.freeze
 
     def initialize

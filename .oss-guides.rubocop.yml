@@ -124,7 +124,6 @@ Style/IfUnlessModifier:
   Description: Favor modifier if/unless usage when you have a single-line body.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#if-as-a-modifier
   Enabled: false
-  MaxLineLength: 80
 Style/LambdaCall:
   Description: Use lambda.call(...) instead of lambda.(...).
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#proc-call
@@ -276,11 +275,19 @@ Style/SymbolProc:
   Enabled: true
   IgnoredMethods:
   - respond_to
-Style/TrailingCommaInLiteral:
-  Description: Checks for trailing comma in parameter lists and literals.
+Style/TrailingCommaInArrayLiteral:
+  Description: Checks for trailing comma in parameter lists.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas
   Enabled: true
   EnforcedStyleForMultiline: comma
+  SupportedStylesForMultiline:
+  - comma
+  - no_comma
+Style/TrailingCommaInHashLiteral:
+  Description: Checks for trailing comma in parameter hashes.
+  StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas
+  Enabled: true
+  EnforcedStyleForMultiline: no_comma
   SupportedStylesForMultiline:
   - comma
   - no_comma
@@ -329,7 +336,6 @@ Style/WhileUntilModifier:
   Description: Favor modifier while/until usage when you have a single-line body.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#while-as-a-modifier
   Enabled: false
-  MaxLineLength: 80
 Style/WordArray:
   Description: Use %w or %W for arrays of words.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#percent-w
@@ -392,14 +398,14 @@ Lint/AssignmentInCondition:
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#safe-assignment-in-condition
   Enabled: false
   AllowSafeAssignment: true
-Lint/EndAlignment:
+Layout/EndAlignment:
   Description: Align ends correctly.
   Enabled: true
   EnforcedStyleAlignWith: keyword
   SupportedStylesAlignWith:
   - keyword
   - variable
-Lint/DefEndAlignment:
+Layout/DefEndAlignment:
   Description: Align ends corresponding to defs correctly.
   Enabled: true
   EnforcedStyleAlignWith: start_of_line
@@ -956,10 +962,10 @@ Lint/AmbiguousRegexpLiteral:
   Description: Checks for ambiguous regexp literals in the first argument of a method
     invocation without parenthesis.
   Enabled: false
-Lint/BlockAlignment:
+Layout/BlockAlignment:
   Description: Align block ends correctly.
   Enabled: true
-Lint/ConditionPosition:
+Layout/ConditionPosition:
   Description: Checks for condition placed in a confusing position relative to the
     keyword.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#same-line-condition
