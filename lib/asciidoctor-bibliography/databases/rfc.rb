@@ -22,10 +22,10 @@ module AsciidoctorBibliography
           "author" => get_author_list(reference_tag),
           "title" => reference_tag.xpath("//title").first&.text&.strip,
           "issued" => {
-            "date-parts" => get_date_parts(reference_tag),
+            "date-parts" => get_date_parts(reference_tag)
           },
           # NOTE: we keep the original XML to re-render it when needed
-          "note" => reference_tag.to_xml,
+          "note" => reference_tag.to_xml
         }
       end
 
@@ -43,7 +43,7 @@ module AsciidoctorBibliography
         author_tags.map do |author_tag|
           {
             "family" => author_tag&.attr("surname"),
-            "given" => author_tag&.attr("initials"),
+            "given" => author_tag&.attr("initials")
           }
         end
       end
