@@ -3,7 +3,6 @@
 require "asciidoctor-bibliography"
 require_relative "../../../citation_helper"
 
-
 describe CiteProc::Ruby::Formats::Adoc do
   before { processor.import(BibTeX.open("spec/fixtures/database.bib").to_citeproc) }
 

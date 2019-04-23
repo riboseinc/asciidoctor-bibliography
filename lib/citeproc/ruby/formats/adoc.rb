@@ -35,8 +35,12 @@ module CiteProc
         private
 
         def aligned_first_field?
-          return false unless node.root.bibliography["second-field-align"]
-          node.root.bibliography.layout.children.first == node
+          return node.root.bibliography.layout.children.first == node if aligned_first_accessible?
+          false
+        end
+
+        def aligned_first_accessible?
+          !(node.root.is_a? CSL::Locale) && node.root.bibliography["second-field-align"]
         end
       end
     end
