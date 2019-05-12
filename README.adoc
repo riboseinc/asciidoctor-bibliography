@@ -327,6 +327,7 @@ and can be used with a few styles:
 * `citeauthor*`
 * `citeyear`
 * `citeyearpar`
+* `nocite`
 
 To cite multiple items you can concatenate them just like with `cite`.
 
