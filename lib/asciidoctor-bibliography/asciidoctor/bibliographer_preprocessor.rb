@@ -42,7 +42,9 @@ module AsciidoctorBibliography
 
       def fetch_citations(lines, bibliographer)
         lines.join("\n").gsub(Citation::REGEXP) do
-          citation = Citation.new(*Regexp.last_match.captures)
+          macro_name, macro_pars = Regexp.last_match.captures
+          target_and_attributes_list_pairs = macro_pars.scan(Citation::MACRO_PARAMETERS_REGEXP)
+          citation = Citation.new(macro_name, *target_and_attributes_list_pairs)
           bibliographer.add_citation(citation)
           citation.uuid
         end.lines.map(&:chomp)
