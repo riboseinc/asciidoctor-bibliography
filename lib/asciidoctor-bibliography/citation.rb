@@ -11,7 +11,24 @@ module AsciidoctorBibliography
 
     MACRO_NAME_REGEXP = TEX_MACROS.dup.concat(%w[cite fullcite]).
       map { |s| Regexp.escape s }.join("|").freeze
-    REGEXP = /\\?(#{MACRO_NAME_REGEXP}):(?:(\S*?)?\[(|.*?[^\\])\])(?:\+(\S*?)?\[(|.*?[^\\])\])*/
+
+    REGEXP = /
+      \\?  (#{MACRO_NAME_REGEXP})                # macro name
+      (
+        (?:   :  (?:\S*?)  \[(?:|.*?[^\\])\]  )  # first target with attributes list
+        (?:  \+  (?:\S*?)  \[(?:|.*?[^\\])\]  )* # other targets with wttributes lists
+      )
+    /x
+
+    MACRO_PARAMETERS_REGEXP = /
+      \G                # restart metching from here
+      (?:
+        [:+]            # separator
+        (\S*?)          # optional target
+        \[(|.*?[^\\])\] # attributes list
+      )
+    /x
+
     REF_ATTRIBUTES = %i[chapter page section clause].freeze
 
     MISSING_ID_MARK = "*??*".freeze
@@ -22,7 +39,7 @@ module AsciidoctorBibliography
       @uuid = SecureRandom.uuid
       @macro = macro
       @citation_items = []
-      target_and_attributes_list_pairs.compact.each_slice(2).each do |target, attribute_list|
+      target_and_attributes_list_pairs.each do |target, attribute_list|
         @citation_items << CitationItem.new do |cite|
           cite.target = target.to_s.empty? ? "default" : target
           cite.parse_attribute_list attribute_list

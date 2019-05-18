@@ -24,7 +24,9 @@ def formatted_citation(macro, options: {})
   bibliographer = init_bibliographer options: options
 
   macro.gsub(AsciidoctorBibliography::Citation::REGEXP) do
-    citation = AsciidoctorBibliography::Citation.new(*Regexp.last_match.captures)
+    macro_name, macro_pars = Regexp.last_match.captures
+    target_and_attributes_list_pairs = macro_pars.scan(AsciidoctorBibliography::Citation::MACRO_PARAMETERS_REGEXP)
+    citation = AsciidoctorBibliography::Citation.new(macro_name, *target_and_attributes_list_pairs)
     bibliographer.add_citation(citation)
     citation.render bibliographer
   end
@@ -33,7 +35,9 @@ end
 def formatted_bibliography(macro, options: {})
   bibliographer = init_bibliographer options: options
   macro.gsub(AsciidoctorBibliography::Citation::REGEXP) do
-    citation = AsciidoctorBibliography::Citation.new(*Regexp.last_match.captures)
+    macro_name, macro_pars = Regexp.last_match.captures
+    target_and_attributes_list_pairs = macro_pars.scan(AsciidoctorBibliography::Citation::MACRO_PARAMETERS_REGEXP)
+    citation = AsciidoctorBibliography::Citation.new(macro_name, *target_and_attributes_list_pairs)
     bibliographer.add_citation(citation)
     # citation.render bibliographer
     index = AsciidoctorBibliography::Index.new("bibliography", "", "")
