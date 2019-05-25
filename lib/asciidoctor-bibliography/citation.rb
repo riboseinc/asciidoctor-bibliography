@@ -111,14 +111,14 @@ module AsciidoctorBibliography
       formatter = Formatter.new(style, locale: bibliographer.options.locale)
       items = prepare_items bibliographer, formatter, tex: tex
       formatted_citation = formatter.engine.renderer.render(items, formatter.engine.style.citation)
-      escape_brackets_inside_xref! formatted_citation
+      un_curlybrace! formatted_citation
       interpolate_formatted_citation! formatted_citation
       formatted_citation
     end
 
-    def escape_brackets_inside_xref!(string)
+    def un_curlybrace!(string)
       string.gsub!(/{{{(?<xref_label>.*?)}}}/) do
-        ["[", Regexp.last_match[:xref_label].gsub("]", '\]'), "]"].join
+        ["<<", Regexp.last_match[:xref_label], ">>"].join
       end
     end
 
@@ -158,7 +158,7 @@ module AsciidoctorBibliography
       wrap_item item, ci.prefix, ci.suffix if affix
       id = xref_id "bibliography", ci.target, item.id
       wrap_item item, "___#{item.id}___", "___/#{item.id}___"
-      wrap_item item, "xref:#{id}{{{", "}}}" if options.hyperlinks?
+      wrap_item item, "{{{#{id},", "}}}" if options.hyperlinks?
       item.label, item.locator = ci.locator
     end
 
