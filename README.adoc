@@ -150,6 +150,7 @@ cite:[Aa2017]+[Bb2017]+[Cc2017]
 
 You can apply a different locator to each one.
 
+IMPORTANT: when using a `prefix`, `suffix` or `text` containing `]` (the right square bracket character) remember to escape it as the corresponding HTML sequence `&amp;rsqb;`. E.g.: `cite:[Foo2019, text="see {cite} or [this&amp;rsqb; perhaps"]`.
 
 === Bibliographies
 
