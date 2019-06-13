@@ -7,9 +7,9 @@ require "csl/styles"
 module AsciidoctorBibliography
   class Citation
     TEX_MACROS = %w[citet citet* citealt citealt* citep citep* citealp citealp*
-                    citeauthor citeauthor* citeyear citeyearpar nocite].freeze
+                    citeauthor citeauthor* citeyear citeyearpar].freeze
 
-    MACRO_NAME_REGEXP = TEX_MACROS.dup.concat(%w[cite fullcite]).
+    MACRO_NAME_REGEXP = TEX_MACROS.dup.concat(%w[cite fullcite nocite]).
       map { |s| Regexp.escape s }.join("|").freeze
 
     REGEXP = /
