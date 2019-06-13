@@ -328,8 +328,12 @@ and can be used with a few styles:
 * `citeauthor*`
 * `citeyear`
 * `citeyearpar`
+* `nocite`
 
 To cite multiple items you can concatenate them just like with `cite`.
+
+IMPORTANT: The `nocite` macro does not provide an equivalent to the ordinary `TeX`
+wildcard notation `\nocite{*}` to print all references.
 
 All macros accept standard locators, `locator`, `suffix` and `prefix`.
 The behaviour of these parameters is designed to reproduce the one expected

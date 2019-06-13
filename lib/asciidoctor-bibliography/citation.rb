@@ -9,7 +9,7 @@ module AsciidoctorBibliography
     TEX_MACROS = %w[citet citet* citealt citealt* citep citep* citealp citealp*
                     citeauthor citeauthor* citeyear citeyearpar].freeze
 
-    MACRO_NAME_REGEXP = TEX_MACROS.dup.concat(%w[cite fullcite]).
+    MACRO_NAME_REGEXP = TEX_MACROS.dup.concat(%w[cite fullcite nocite]).
       map { |s| Regexp.escape s }.join("|").freeze
 
     REGEXP = /
@@ -78,6 +78,8 @@ module AsciidoctorBibliography
         render_citation_with_csl(bibliographer)
       when "fullcite"
         render_fullcite_with_csl(bibliographer)
+      when "nocite"
+        ""
       when *TEX_MACROS
         render_texmacro_with_csl(bibliographer)
       end
