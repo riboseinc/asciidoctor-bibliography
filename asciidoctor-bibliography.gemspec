@@ -34,7 +34,7 @@ Gem::Specification.new do |spec| # rubocop:disable Metrics/BlockLength
   spec.test_files    = `git ls-files -- {spec}/*`.split("\n")
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
-  spec.add_dependency "asciidoctor", "~> 1.5.6"
+  spec.add_dependency "asciidoctor", ">= 1.5.6"
   spec.add_dependency "bibtex-ruby", "~> 4.4.4"
   spec.add_dependency "citeproc-ruby", "~> 1.1.7"
   spec.add_dependency "csl-styles", "~> 1.0.1"
