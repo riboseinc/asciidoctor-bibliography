@@ -124,7 +124,7 @@ module AsciidoctorBibliography
           # NOTE: this handles custom citation text (slight overkill but easy to extend)
           # NOTE: escaping ] is necessary to safely nest macros (e.g. citing in a footnote)
           (citation_item.text || "{cite}").
-            sub("{cite}", Regexp.last_match[:citation].gsub("]", "&rsqb;"))
+            sub("{cite}", escape_square_brackets(Regexp.last_match[:citation]))
         end
       end
     end
@@ -169,6 +169,12 @@ module AsciidoctorBibliography
 
     def xref_id(*fragments)
       fragments.compact.join("-")
+    end
+
+    private
+
+    def escape_square_brackets(string)
+      string.gsub("[", "&lsqb;").gsub("]", "&rsqb;")
     end
   end
 end
