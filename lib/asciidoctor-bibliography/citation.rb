@@ -170,8 +170,8 @@ module AsciidoctorBibliography
     def xref_id(*fragments)
       fragments.compact.join("-")
     end
-  
-  private
+
+    private
 
     def escape_square_brackets(string)
       string.gsub("[", "&lsqb;").gsub("]", "&rsqb;")
