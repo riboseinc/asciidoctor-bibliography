@@ -240,5 +240,4 @@ describe "asciidoctor integration" do
       BODY
     end
   end
-
 end
