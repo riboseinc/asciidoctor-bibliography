@@ -207,4 +207,38 @@ describe "asciidoctor integration" do
       BODY
     end
   end
+
+  describe "including metadata files" do
+    it "reads the bibliography configuration from the included file" do
+      setup_file tmpdir, "database.bib", <<~ADOC
+        @book{Lane12a,
+          author = {P. Lane},
+          title =	 {Book title},
+          publisher = {Publisher},
+          year =	 {2000}
+        }
+      ADOC
+
+      setup_file tmpdir, "metadata.adoc", <<~ADOC
+        :bibliography-database: #{tmpdir}/database.bib
+        :bibliography-style: ieee
+      ADOC
+
+      input_path, output_path = setup_main_document tmpdir, <<~ADOC
+        include::metadata.adoc[]
+
+        This is a citation: cite:[Lane12a]. Yay!
+      ADOC
+
+      expect { `asciidoctor -r asciidoctor-bibliography #{input_path} --trace` }.to_not raise_exception
+      expect(File.read(output_path)).to include <<~'BODY'
+        <div id="content">
+        <div class="paragraph">
+        <p>This is a citation: <a href="#bibliography-default-Lane12a">&lsqb;1&rsqb;</a>. Yay!</p>
+        </div>
+        </div>
+      BODY
+    end
+  end
+
 end
