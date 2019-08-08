@@ -30,14 +30,14 @@ module AsciidoctorBibliography
     end
 
     def self.get_header_attributes_hash(reader)
-      # We peek at the document attributes we need, without perturbing the parsing flow.
-      # NOTE: we'll use this in a preprocessor and they haven't been parsed yet, there.
+      # NOTE: we peek at the document attributes using a throwaway document/reader pair
+      # so the parsing flow isn't perturbed in any way.
       tmp_document = ::Asciidoctor::Document.new
-      tmp_reader = ::Asciidoctor::PreprocessorReader.new(tmp_document, reader.source_lines)
-
-      ::Asciidoctor::Parser.
-        parse(tmp_reader, tmp_document, header_only: true).
-        attributes
+      # NOTE: peek_lines processes `include` directives (among other things),
+      # so we're able to get document attributes from included files.
+      tmp_reader = ::Asciidoctor::PreprocessorReader.new(tmp_document, reader.peek_lines)
+      ::Asciidoctor::Parser.parse_document_header(tmp_reader, tmp_document)
+      tmp_document.attributes
     end
 
     def style
