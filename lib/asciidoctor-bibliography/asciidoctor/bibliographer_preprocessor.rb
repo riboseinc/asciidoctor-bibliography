@@ -79,9 +79,14 @@ module AsciidoctorBibliography
       end
 
       def glob_pattern(pattern_string, base_dir)
-        pattern_string.split(/(?<!\\)\s+/).map do |pattern|
-          Dir.chdir(base_dir) { Dir.glob(pattern) }
+        pattern_string.split.map do |pattern|
+          Dir.chdir(base_dir) { Dir.glob(normalize_separator(pattern)) }
         end.flatten
+      end
+
+      def normalize_separator(path)
+        return path if File::ALT_SEPARATOR.nil?
+        path.gsub(File::ALT_SEPARATOR, File::SEPARATOR)
       end
     end
   end
