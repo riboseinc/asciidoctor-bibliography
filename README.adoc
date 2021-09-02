@@ -424,11 +424,11 @@ copyright covering the contribution to use the contribution by all means.
 
 Here are a few technical guidelines to follow:
 
-1. Open an https://github.com/riboseinc/asciidoctor-bibliography/issues[issues] to discuss a new feature.
+1. Open an https://github.com/riboseinc/asciidoctor-bibliography/issues[issue] to discuss a new feature.
 2. Write tests to support your new feature.
 3. Make sure the entire test suite passes locally and on CI.
 4. Open a Pull Request.
-5. https://github.com/thoughtbot/guides/tree/master/protocol/git=write-a-feature[Squash your commits] after receiving feedback.
+5. https://github.com/thoughtbot/guides/tree/main/git#write-a-feature[Squash your commits] after receiving feedback.
 6. Party!
 
 == Credits
