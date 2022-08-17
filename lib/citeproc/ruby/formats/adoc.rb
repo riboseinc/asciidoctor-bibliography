@@ -40,7 +40,9 @@ module CiteProc
         end
 
         def aligned_first_accessible?
-          !(node.root.is_a? CSL::Locale) && node.root.bibliography["second-field-align"]
+          !(node.root.is_a? CSL::Locale) &&
+            node.root.respond_to?(:bibliography) &&
+            node.root.bibliography["second-field-align"]
         end
       end
     end
