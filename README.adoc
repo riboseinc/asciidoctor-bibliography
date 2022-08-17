@@ -1,10 +1,11 @@
 = Citations and Bibliography the "asciidoctor-way"
 
-asciidoctor-bibliography lets you handle citations and bibliography the
-http://asciidoctor.org/[asciidoctor]-way!
+asciidoctor-bibliography lets you handle citations and bibliography in
+http://asciidoctor.org/[asciidoctor].
 
-image:https://img.shields.io/gem/v/asciidoctor-bibliography.svg["Gem Version", link="https://rubygems.org/gems/asciidoctor-bibliography"]
-image:https://img.shields.io/travis/riboseinc/asciidoctor-bibliography/master.svg["Build Status", link="https://travis-ci.org/riboseinc/asciidoctor-bibliography"]
+image:https://github.com/riboseinc/asciidoctor-bibliography/actions/workflows/rspec.yml/badge.svg["Build Status", link="https://github.com/riboseinc/asciidoctor-bibliography/actions/workflows/test-and-release.yml"]
+image:https://img.shields.io/gem/v/fontist.svg["Gem Version", link="https://rubygems.org/gems/fontist"]
+image:https://img.shields.io/github/issues-pr-raw/riboseinc/asciidoctor-bibliography.svg["Pull Requests", link="https://github.com/riboseinc/asciidoctor-bibliography/pulls"]
 image:https://codeclimate.com/github/riboseinc/asciidoctor-bibliography/badges/gpa.svg["Code Climate", link="https://codeclimate.com/github/riboseinc/asciidoctor-bibliography"]
 
 
