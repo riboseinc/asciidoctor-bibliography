@@ -86,7 +86,7 @@ describe "asciidoctor integration" do
         <p>Hello World. (<a href="#bibliography-default-Foo00">Bar, 2000</a>)</p>
         </div>
         <div class="paragraph">
-        <p><a id="bibliography-default-Foo00"></a>Bar, F. (2000). Title.</p>
+        <p><a id="bibliography-default-Foo00"></a>Bar, F. (2000). <em>Title</em>.</p>
         </div>
         </div>
       BODY
@@ -119,7 +119,7 @@ describe "asciidoctor integration" do
         <p>This is content from a nested file. (<a href="#bibliography-default-Foo00">Bar, 2000</a>)</p>
         </div>
         <div class="paragraph">
-        <p><a id="bibliography-default-Foo00"></a>Bar, F. (2000). Title.</p>
+        <p><a id="bibliography-default-Foo00"></a>Bar, F. (2000). <em>Title</em>.</p>
         </div>
         </div>
       BODY
@@ -183,22 +183,22 @@ describe "asciidoctor integration" do
         <div class="sect2">
         <h3 id="_default">Default</h3>
         <div class="paragraph">
-        <p><a id="bibliography-default-Foo00"></a>Bar, F. (2000). Title.</p>
+        <p><a id="bibliography-default-Foo00"></a>Bar, F. (2000). <em>Title</em>.</p>
         </div>
         </div>
         <div class="sect2">
         <h3 id="_first">First</h3>
         <div class="paragraph">
-        <p><a id="bibliography-first-Foo00"></a>Bar, F. (2000). Title.</p>
+        <p><a id="bibliography-first-Foo00"></a>Bar, F. (2000). <em>Title</em>.</p>
         </div>
         <div class="paragraph">
-        <p><a id="bibliography-first-Qux00"></a>Zot, Q. (3000). Title.</p>
+        <p><a id="bibliography-first-Qux00"></a>Zot, Q. (3000). <em>Title</em>.</p>
         </div>
         </div>
         <div class="sect2">
         <h3 id="_last">Last</h3>
         <div class="paragraph">
-        <p><a id="bibliography-last-Qux00"></a>Zot, Q. (3000). Title.</p>
+        <p><a id="bibliography-last-Qux00"></a>Zot, Q. (3000). <em>Title</em>.</p>
         </div>
         </div>
         </div>
