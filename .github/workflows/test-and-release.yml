@@ -39,4 +39,4 @@ jobs:
     steps:
       - uses: cadwallion/publish-rubygems-action@master
         env:
-          RUBYGEMS_API_KEY: ${{secrets.RIBOSE_CI_RUBYGEMS_API_KEY}}
+          RUBYGEMS_API_KEY: ${{secrets.RIBOSE_RUBYGEMS_API_KEY}}
