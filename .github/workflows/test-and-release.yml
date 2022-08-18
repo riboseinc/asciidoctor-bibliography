@@ -37,6 +37,11 @@ jobs:
     runs-on: ubuntu-latest
     if: contains(github.ref, 'refs/tags/v')
     steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7
+          bundler-cache: true
       - uses: cadwallion/publish-rubygems-action@master
         env:
           RUBYGEMS_API_KEY: ${{secrets.RIBOSE_RUBYGEMS_API_KEY}}
